@@ -61,6 +61,29 @@
     .category a{color:var(--green);font-size:13px;font-weight:800}
     .category .pill{display:inline-block}
 
+    /* Ugovor o djelu — added independently to preserve existing tools. */
+    .contract-section-intro{max-width:800px}
+    .contract-card{margin-top:24px}
+    .contract-card fieldset{border:1px solid var(--border);border-radius:14px;padding:22px;margin:0 0 22px;min-width:0}
+    .contract-card legend{padding:0 9px;color:var(--navy);font-size:17px;font-weight:800}
+    .contract-card .field{min-width:0}
+    .contract-card .field input{min-height:46px}
+    .contract-summary-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 20px;margin:0 0 22px;padding:17px;background:#F8FAFB;border:1px solid var(--border);border-radius:12px}
+    .contract-summary-meta p{margin:0;font-size:13px;overflow-wrap:anywhere}
+    .contract-summary-meta strong{color:var(--navy)}
+    .contract-results{margin-top:28px}
+    .contract-results .calculator{margin-top:18px}
+    .contract-payment-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+    .contract-payment-card{border:1px solid var(--border);border-radius:14px;background:#fff;padding:18px;box-shadow:var(--shadow);min-width:0}
+    .contract-payment-card .payment-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--green-light);color:var(--green);font-weight:800;font-size:19px;margin-bottom:12px}
+    .contract-payment-card h4{font-size:14px;line-height:1.4;color:var(--navy);margin:0 0 8px}
+    .contract-payment-card strong{display:block;font-size:23px;color:var(--green);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+    .contract-payment-card p{font-size:12px;color:var(--muted);margin:5px 0 0}
+    .contract-action-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:22px}
+    .contract-print-report{display:none}
+    .contract-formula-note{margin-top:10px}
+    @media(max-width:900px){.contract-payment-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:600px){.contract-card fieldset{padding:17px 14px}.contract-summary-meta,.contract-payment-grid{grid-template-columns:1fr}.contract-action-row .button{width:100%}}
     .ams-section-intro{max-width:760px}
     .ams-card{margin-top:24px}
     .ams-card fieldset{border:1px solid var(--border);border-radius:14px;padding:22px;margin:0 0 22px;min-width:0}
@@ -197,6 +220,35 @@
     .calendar-method-note{padding-top:9px;border-top:1px solid rgba(102,87,46,.18)}
     @media(max-width:900px){.calendar-controls{grid-template-columns:1fr 1fr}.calendar-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.calendar-annual-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.calendar-holiday-list{grid-template-columns:1fr}}
     @media(max-width:600px){.calendar-card{padding:16px}.calendar-controls{grid-template-columns:1fr}.calendar-controls .button{width:100%}.calendar-print-actions .button{width:100%}.calendar-summary{gap:8px}.calendar-stat{padding:12px}.calendar-stat strong{font-size:22px}.calendar-annual-grid{grid-template-columns:1fr}.calendar-day{min-height:85px;padding:5px}.calendar-event-label{font-size:9px;padding:2px 3px}.calendar-holiday-item{grid-template-columns:1fr}.calendar-month-header h3{font-size:22px}}
+    @page ugovorReport{size:A4 portrait;margin:10mm}
+    @media print{
+      body.contract-print-only{page:ugovorReport;-webkit-print-color-adjust:exact;print-color-adjust:exact;background:#fff!important;color:#172331!important}
+      body.contract-print-only>.topbar,body.contract-print-only>header,body.contract-print-only>footer{display:none!important}
+      body.contract-print-only>main{display:block!important;margin:0!important;padding:0!important}
+      body.contract-print-only>main>section:not(#ugovor-o-djelu){display:none!important}
+      body.contract-print-only #ugovor-o-djelu{display:block!important;background:#fff!important;margin:0!important;padding:0!important}
+      body.contract-print-only #ugovor-o-djelu>.container{width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
+      body.contract-print-only #ugovor-o-djelu>.container>:not(#ugovorResult){display:none!important}
+      body.contract-print-only #ugovorResult{display:block!important;margin:0!important;padding:0!important}
+      body.contract-print-only #ugovorResult>.section-heading{margin-bottom:10px!important}
+      body.contract-print-only #ugovorResult .calculator{margin:0 0 10px!important;padding:14px!important;box-shadow:none!important;border:1px solid #D4DCE3!important;border-radius:8px!important}
+      body.contract-print-only #ugovorResult .contract-action-row{display:none!important}
+      body.contract-print-only #ugovorResult .contract-summary-meta{padding:8px!important;margin-bottom:10px!important}
+      body.contract-print-only #ugovorResult .results{margin:10px 0!important;gap:7px!important}
+      body.contract-print-only #ugovorResult .result{padding:9px!important}
+      body.contract-print-only #ugovorResult .result strong{font-size:14pt!important}
+      body.contract-print-only #ugovorResult .details{margin-top:10px!important;overflow:visible!important}
+      body.contract-print-only #ugovorResult .details summary{padding:8px!important}
+      body.contract-print-only #ugovorResult .details summary:after{display:none!important}
+      body.contract-print-only #ugovorResult table{font-size:8pt!important}
+      body.contract-print-only #ugovorResult th,body.contract-print-only #ugovorResult td{padding:5px 7px!important}
+      body.contract-print-only #ugovorResult .contract-payment-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important}
+      body.contract-print-only #ugovorResult .contract-payment-card{padding:9px!important;box-shadow:none!important;break-inside:avoid}
+      body.contract-print-only #ugovorResult .contract-payment-card .payment-icon{display:none!important}
+      body.contract-print-only #ugovorResult .contract-payment-card h4{font-size:8pt!important}
+      body.contract-print-only #ugovorResult .contract-payment-card strong{font-size:12pt!important}
+      body.contract-print-only #ugovorResult .notice{padding:8px!important;margin-top:10px!important}
+    }
     @media print{
       @page{size:A4 landscape;margin:8mm}
       html,body{height:auto!important;background:#fff!important}
@@ -308,8 +360,8 @@
           <article class="category">
             <div class="category-icon">§</div>
             <h3>Ugovor o djelu</h3>
-            <p>Obračuni naknada, poreza i doprinosa po osnovu ugovora o djelu.</p>
-            <span class="pill">U pripremi</span>
+            <p>Obračun bruto naknade, poreza i doprinosa te generisanje obrasca AUG-1031.</p>
+            <a href="#ugovor-o-djelu">Otvori obračun →</a>
           </article>
           <article class="category">
             <div class="category-icon">▤</div>
@@ -528,6 +580,153 @@
             </article>
           </div>
           <a id="amsDownloadLink" class="button ams-download" href="#" download="ams-1035-obrazac.pdf">Preuzmi popunjen obrazac AMS-1035 (PDF) ↓</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="calculator-section" id="ugovor-o-djelu">
+      <div class="container">
+        <div class="section-heading contract-section-intro">
+          <span class="eyebrow">Ugovor o djelu</span>
+          <h2>Obračun naknade i obrazac AUG-1031</h2>
+          <p>Unesite ugovorenu neto naknadu i podatke isplatioca i poreznog obveznika. Kalkulator preračunava bruto naknadu, porez i doprinose, a zatim popunjava originalni obrazac AUG-1031.</p>
+        </div>
+
+        <form id="contractForm" class="calculator contract-card">
+          <fieldset>
+            <legend>Dio 1 — Podaci o isplatiocu</legend>
+            <div class="ams-form-grid">
+              <div class="field">
+                <label for="contractPayerName">Naziv isplatioca / firme *</label>
+                <input id="contractPayerName" name="payerName" type="text" maxlength="160" autocomplete="organization" required>
+              </div>
+              <div class="field">
+                <label for="contractPayerId">JIB/JMB isplatioca — 13 cifara *</label>
+                <input id="contractPayerId" name="payerId" type="text" inputmode="numeric" pattern="[0-9]{13}" maxlength="13" placeholder="Unesite 13 cifara" required>
+              </div>
+              <div class="field ams-field-wide">
+                <label for="contractPayerAddress">Adresa isplatioca *</label>
+                <input id="contractPayerAddress" name="payerAddress" type="text" maxlength="180" autocomplete="street-address" required>
+              </div>
+              <div class="field">
+                <label for="contractPaymentDate">Datum isplate *</label>
+                <input id="contractPaymentDate" name="paymentDate" type="date" required>
+              </div>
+              <div class="field">
+                <label for="contractPeriod">Period mjesec/godina *</label>
+                <input id="contractPeriod" name="period" type="month" required>
+                <span class="help">Odaberite mjesec i godinu, npr. oktobar 2026. Na obrascu se prikazuje 10/2026.</span>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Dio 2 — Podaci o poreznom obvezniku</legend>
+            <div class="ams-form-grid">
+              <div class="field">
+                <label for="contractTaxpayerJmbg">JMB poreznog obveznika — 13 cifara *</label>
+                <input id="contractTaxpayerJmbg" name="taxpayerJmbg" type="text" inputmode="numeric" pattern="[0-9]{13}" maxlength="13" placeholder="Unesite 13 cifara" required>
+              </div>
+              <div class="field">
+                <label for="contractTaxpayerName">Prezime i ime poreznog obveznika *</label>
+                <input id="contractTaxpayerName" name="taxpayerName" type="text" maxlength="140" autocomplete="name" required>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Dio 3 — Ugovorena naknada</legend>
+            <div class="ams-form-grid">
+              <div class="field ams-field-wide">
+                <label for="contractNetAmount">Ugovorena neto naknada za isplatu (KM) *</label>
+                <input id="contractNetAmount" name="netAmount" type="number" min="0.01" step="0.01" value="1200.00" inputmode="decimal" required>
+                <span class="help">Primjer iz obračuna: 1.200,00 KM. Kalkulator izračunava bruto naknadu i pripadajuće obaveze.</span>
+              </div>
+            </div>
+            <div class="notice contract-formula-note">
+              <strong>Metod obračuna za ugovor o djelu:</strong><br>
+              Priznati rashodi su 20% od bruto naknade. Zdravstveni doprinos iznosi 4% od dohotka nakon priznatih rashoda, porez 10% od osnovice nakon zdravstvenog doprinosa, a PIO na teret isplatioca 6% od dohotka. Bruto naknada se preračunava prema formuli iz dostavljenog obračuna: neto naknada ÷ 0,8912.
+            </div>
+          </fieldset>
+
+          <div class="privacy-notice">
+            <div class="privacy-icon" aria-hidden="true">🔒</div>
+            <div>
+              <strong>Privatnost ličnih i osjetljivih podataka</strong>
+              <p>Podaci se obrađuju privremeno u vašem pregledniku. Stranica ih ne šalje na server i ne pohranjuje ih u bazu, kolačiće, lokalnu pohranu ili druge trajne spremišne lokacije. Osvježavanjem ili zatvaranjem stranice podaci iz forme se uklanjaju. PDF se generiše na vašem uređaju i preuzeta datoteka ostaje pod vašom kontrolom.</p>
+            </div>
+          </div>
+
+          <div class="contract-action-row">
+            <button id="contractGenerateButton" class="button" type="submit">Obračunaj i generiši AUG-1031 PDF →</button>
+            <button class="button secondary" type="reset">Očisti formu</button>
+          </div>
+          <p id="contractStatus" class="ams-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <div id="ugovorResult" class="contract-results" hidden>
+          <div class="section-heading">
+            <span class="eyebrow">Rezultat obračuna</span>
+            <h2>Rekapitulacija naknade i obaveza</h2>
+            <p>Novčani iznosi prikazani su na dvije decimale. Obračun koristi formule iz vašeg primjera; prije službene upotrebe provjerite primjenjivost stopa i pravila za konkretan period.</p>
+          </div>
+          <div class="calculator">
+            <div class="calculator-top">
+              <div><h3>Pregled obračuna</h3><p class="sub">Obrazac AUG-1031 · Povremena samostalna djelatnost — ugovor o djelu</p></div>
+              <span class="pill">Automatski obračun</span>
+            </div>
+            <div class="contract-summary-meta">
+              <p><strong>Isplatilac:</strong> <span id="contractMetaPayer"></span></p>
+              <p><strong>JIB/JMB:</strong> <span id="contractMetaPayerId"></span></p>
+              <p><strong>Porezni obveznik:</strong> <span id="contractMetaTaxpayer"></span></p>
+              <p><strong>Period:</strong> <span id="contractMetaPeriod"></span></p>
+              <p><strong>Datum isplate:</strong> <span id="contractMetaPaymentDate"></span></p>
+            </div>
+            <div class="results">
+              <div class="result primary"><span>Ugovorena neto naknada</span><strong id="contractNetResult">1.200,00 KM</strong></div>
+              <div class="result"><span>Bruto iznos naknade (kolona 9)</span><strong id="contractGrossResult">1.346,50 KM</strong></div>
+              <div class="result"><span>Ukupan trošak isplatioca</span><strong id="contractTotalCostResult">1.423,13 KM</strong></div>
+            </div>
+
+            <details class="details" open>
+              <summary>Svi koraci obračuna</summary>
+              <div class="table-wrap"><table>
+                <thead><tr><th>Korak / stavka</th><th>Formula</th><th>Iznos</th></tr></thead>
+                <tbody>
+                  <tr><td>Ugovorena neto naknada</td><td>Uneseni iznos</td><td id="contractStepNet">1.200,00 KM</td></tr>
+                  <tr><td><strong>Bruto iznos naknade — kolona 9</strong></td><td>Neto ÷ 0,8912</td><td id="contractStepGross">1.346,50 KM</td></tr>
+                  <tr><td>Priznati rashodi — kolona 10</td><td>Kolona 9 × 20%</td><td id="contractStepExpenses">269,30 KM</td></tr>
+                  <tr><td><strong>Iznos dohotka — kolona 11</strong></td><td>Kolona 9 − kolona 10</td><td id="contractStepIncome">1.077,20 KM</td></tr>
+                  <tr><td>Zdravstveno osiguranje — kolona 12</td><td>Kolona 11 × 4%</td><td id="contractStepHealth">43,09 KM</td></tr>
+                  <tr><td><strong>Osnovica za porez — kolona 13</strong></td><td>Kolona 11 − kolona 12</td><td id="contractStepTaxBase">1.034,11 KM</td></tr>
+                  <tr><td>Porez na dohodak — kolona 14</td><td>Kolona 13 × 10%</td><td id="contractStepTax">103,41 KM</td></tr>
+                  <tr><td>PIO na teret isplatioca — kolona 15</td><td>Kolona 11 × 6%</td><td id="contractStepPio">64,63 KM</td></tr>
+                  <tr><td>Provjera neto isplate</td><td>Bruto − zdravstvo − porez</td><td id="contractStepNetCheck">1.200,00 KM</td></tr>
+                  <tr><td>Opšta vodna naknada</td><td>Neto × 0,5%</td><td id="contractStepWater">6,00 KM</td></tr>
+                  <tr><td>Zaštita od prirodnih i drugih nepogoda</td><td>Neto × 0,5%</td><td id="contractStepDisaster">6,00 KM</td></tr>
+                  <tr class="table-total"><td><strong>Ukupan trošak isplatioca</strong></td><td>Bruto + PIO + ostale naknade</td><td id="contractStepTotalCost">1.423,13 KM</td></tr>
+                </tbody>
+              </table></div>
+            </details>
+
+            <div class="section-heading" style="margin:26px 0 12px">
+              <h3 style="font-size:21px">Rekapitulacija doprinosa i uplata</h3>
+              <p>Informativni iznosi po vrstama obaveza. Brojevi računa, šifre prihoda, općine i pozivi na broj nisu dio ovog pregleda.</p>
+            </div>
+            <div class="contract-payment-grid">
+              <article class="contract-payment-card"><div class="payment-icon">%</div><h4>Porez na dohodak — uplata Poreznoj upravi</h4><strong id="contractPayTax">103,41 KM</strong><p>Kolona 14 obrasca.</p></article>
+              <article class="contract-payment-card"><div class="payment-icon">＋</div><h4>Zdravstveno osiguranje — Kanton (89,80%)</h4><strong id="contractPayHealthCanton">38,69 KM</strong><p>89,80% od doprinosa za zdravstveno osiguranje.</p></article>
+              <article class="contract-payment-card"><div class="payment-icon">＋</div><h4>Zdravstveno osiguranje — Federacija (10,20%)</h4><strong id="contractPayHealthFederation">4,39 KM</strong><p>10,20% od doprinosa za zdravstveno osiguranje.</p></article>
+              <article class="contract-payment-card"><div class="payment-icon">▤</div><h4>Penzijsko i invalidsko osiguranje — PIO (6%)</h4><strong id="contractPayPio">64,63 KM</strong><p>Na teret isplatioca, kolona 15.</p></article>
+              <article class="contract-payment-card"><div class="payment-icon">＋</div><h4>Opšta vodna naknada (0,5% neto)</h4><strong id="contractPayWater">6,00 KM</strong><p>Obračunata na neto naknadu prema formuli iz primjera.</p></article>
+              <article class="contract-payment-card"><div class="payment-icon">＋</div><h4>Zaštita od prirodnih i drugih nepogoda (0,5% neto)</h4><strong id="contractPayDisaster">6,00 KM</strong><p>Obračunata na neto naknadu prema formuli iz primjera.</p></article>
+            </div>
+            <div class="notice"><strong>Napomena o zaokruživanju:</strong> svi novčani iznosi prikazuju se na dvije decimale. Pojedinačne stavke raspodjele zdravstvenog doprinosa za Kanton i Federaciju računaju se zasebno prema procentima; zbir prikazanih iznosa može odstupati za 0,01 KM od ukupnog iznosa zbog zaokruživanja.</div>
+            <div class="contract-action-row">
+              <a id="contractDownloadLink" class="button" href="#" download="aug-1031-obrazac.pdf">Preuzmi popunjen obrazac AUG-1031 (PDF) ↓</a>
+              <button id="contractPrintButton" class="button secondary" type="button">Štampaj rekapitulaciju / Sačuvaj kao PDF</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1036,6 +1235,312 @@
       }, 0);
     });
   </script>
+  <script>
+    // AUG-1031 contract-of-work calculator and local PDF generator.
+    // Inputs remain in memory only; no form values are transmitted or stored.
+    (() => {
+      const form = document.getElementById("contractForm");
+      if (!form) return;
+      const $c = (id) => document.getElementById(id);
+      const status = $c("contractStatus");
+      const generateButton = $c("contractGenerateButton");
+      const result = $c("ugovorResult");
+      const downloadLink = $c("contractDownloadLink");
+      const printButton = $c("contractPrintButton");
+      let pdfObjectUrl = null;
+      let lastValues = null;
+      let hasGenerated = false;
+
+      const round = (value) => Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+      const fmtAmount = (value) => new Intl.NumberFormat("bs-BA", {
+        minimumFractionDigits: 2, maximumFractionDigits: 2
+      }).format(round(value));
+      const fmtMoney = (value) => fmtAmount(value) + " KM";
+      const safeMoney = (id) => Number($c(id).value);
+
+      function calculateContract() {
+        const netAgreed = round(safeMoney("contractNetAmount"));
+        // These formulas follow the supplied workbook for the 20% recognized-expense contract-work case.
+        const grossExact = netAgreed / 0.8912;
+        const expenses = grossExact * 0.20;
+        const income = grossExact - expenses;
+        const health = income * 0.04;
+        const taxBase = income - health;
+        const tax = taxBase * 0.10;
+        const netCalculated = grossExact - health - tax;
+        const pio = income * 0.06;
+        const water = netCalculated * 0.005;
+        const disaster = netCalculated * 0.005;
+        const employerCost = grossExact + pio + water + disaster;
+        const healthCanton = health * 0.898;
+        const healthFederation = health * 0.102;
+        return {
+          netAgreed, gross: grossExact, expenses, income, health, taxBase, tax,
+          netCalculated, pio, water, disaster, employerCost, healthCanton,
+          healthFederation, otherFees: water + disaster
+        };
+      }
+
+      function setText(id, value) { $c(id).textContent = value; }
+      function setAmount(id, value) { setText(id, fmtMoney(value)); }
+      function setReportMetadata() {
+        const [periodYear, periodMonth] = $c("contractPeriod").value.split("-");
+        const [payYear, payMonth, payDay] = $c("contractPaymentDate").value.split("-");
+        setText("contractMetaPayer", $c("contractPayerName").value.trim());
+        setText("contractMetaPayerId", $c("contractPayerId").value.trim());
+        setText("contractMetaTaxpayer", $c("contractTaxpayerName").value.trim());
+        setText("contractMetaPeriod", `${periodMonth}/${periodYear}`);
+        setText("contractMetaPaymentDate", `${payDay}.${payMonth}.${payYear}.`);
+      }
+
+      function updateSummary(values) {
+        setReportMetadata();
+        setAmount("contractNetResult", values.netAgreed);
+        setAmount("contractGrossResult", values.gross);
+        setAmount("contractTotalCostResult", values.employerCost);
+        setAmount("contractStepNet", values.netAgreed);
+        setAmount("contractStepGross", values.gross);
+        setAmount("contractStepExpenses", values.expenses);
+        setAmount("contractStepIncome", values.income);
+        setAmount("contractStepHealth", values.health);
+        setAmount("contractStepTaxBase", values.taxBase);
+        setAmount("contractStepTax", values.tax);
+        setAmount("contractStepPio", values.pio);
+        setAmount("contractStepNetCheck", values.netCalculated);
+        setAmount("contractStepWater", values.water);
+        setAmount("contractStepDisaster", values.disaster);
+        setAmount("contractStepTotalCost", values.employerCost);
+        setAmount("contractPayTax", values.tax);
+        setAmount("contractPayHealthCanton", values.healthCanton);
+        setAmount("contractPayHealthFederation", values.healthFederation);
+        setAmount("contractPayPio", values.pio);
+        setAmount("contractPayWater", values.water);
+        setAmount("contractPayDisaster", values.disaster);
+      }
+
+      function drawCross(ctx, rect) {
+        const [x0, y0, x1, y1] = rect;
+        ctx.save();
+        ctx.strokeStyle = "#000000";
+        ctx.lineWidth = 1.05;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(x0 + 2.5, y0 + 3.2);
+        ctx.lineTo(x1 - 2.5, y1 - 3.2);
+        ctx.moveTo(x0 + 2.5, y1 - 3.2);
+        ctx.lineTo(x1 - 2.5, y0 + 3.2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      async function generateAugPdf(values) {
+        if (!window.PDFLib) throw new Error("Biblioteka za izradu PDF-a nije učitana. Provjerite internetsku vezu i pokušajte ponovo.");
+        const response = await fetch("./aug-1031-blank.pdf", { cache: "no-store" });
+        if (!response.ok) throw new Error("Nije pronađen obrazac AUG-1031. Dodajte datoteku aug-1031-blank.pdf u isti GitHub repozitorij kao index.html.");
+        const templateBytes = await response.arrayBuffer();
+        const pdfDoc = await PDFLib.PDFDocument.load(templateBytes);
+        const page = pdfDoc.getPages()[0];
+        const pageWidth = page.getWidth();
+        const pageHeight = page.getHeight();
+        const scale = 4;
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(pageWidth * scale);
+        canvas.height = Math.round(pageHeight * scale);
+        const ctx = canvas.getContext("2d", { alpha: true });
+        if (!ctx) throw new Error("Preglednik ne može pripremiti sloj za popunjavanje PDF obrasca.");
+        ctx.scale(scale, scale);
+        ctx.clearRect(0, 0, pageWidth, pageHeight);
+        ctx.fillStyle = "#000000";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.direction = "ltr";
+
+        // Coordinates are taken from the widget rectangles of the supplied official template,
+        // converted to canvas top-left coordinates. Text is rasterized in-browser, like AMS-1035.
+        function drawText(rect, value, options = {}) {
+          const text = String(value ?? "").trim();
+          if (!text) return;
+          const [x0, y0, x1, y1] = rect;
+          const padding = options.padding ?? 4;
+          const availableWidth = Math.max(1, x1 - x0 - padding * 2);
+          let size = options.size ?? 10.2;
+          const minSize = options.minSize ?? 6.3;
+          const align = options.align ?? "center";
+          const weight = options.bold ? "bold " : "";
+          ctx.font = `${weight}${size}px Arial, Helvetica, sans-serif`;
+          while (ctx.measureText(text).width > availableWidth && size > minSize) {
+            size = Math.max(minSize, size - 0.25);
+            ctx.font = `${weight}${size}px Arial, Helvetica, sans-serif`;
+          }
+          const x = align === "left" ? x0 + padding : (x0 + x1) / 2;
+          const y = (y0 + y1) / 2 + (options.yOffset ?? 1.5);
+          ctx.textAlign = align === "left" ? "left" : "center";
+          ctx.fillText(text, x, y, availableWidth);
+          ctx.textAlign = "center";
+        }
+
+        function drawChars(rect, value, cells, size = 8.4) {
+          const text = String(value ?? "");
+          if (!text) return;
+          const [x0, y0, x1, y1] = rect;
+          const cellWidth = (x1 - x0) / cells;
+          ctx.font = `${size}px Arial, Helvetica, sans-serif`;
+          ctx.textAlign = "center";
+          const y = (y0 + y1) / 2 + 0.7;
+          for (let i = 0; i < Math.min(text.length, cells); i++) {
+            ctx.fillText(text[i], x0 + cellWidth * (i + 0.5), y, cellWidth * 0.82);
+          }
+        }
+
+        const payerName = $c("contractPayerName").value.trim();
+        const payerId = $c("contractPayerId").value.trim();
+        const payerAddress = $c("contractPayerAddress").value.trim();
+        const paymentDate = $c("contractPaymentDate").value;
+        const period = $c("contractPeriod").value;
+        const taxpayerJmbg = $c("contractTaxpayerJmbg").value.trim();
+        const taxpayerName = $c("contractTaxpayerName").value.trim();
+        const [year, month, day] = paymentDate.split("-");
+        const [periodYear, periodMonth] = period.split("-");
+
+        // Header: one page out of one, and mark option (a) contract for work.
+        drawText([539.8, 63.7, 588.8, 76.9], "1", { size: 8.5, minSize: 8.5, padding: 1 });
+        drawText([539.8, 94.4, 588.8, 107.8], "1", { size: 8.5, minSize: 8.5, padding: 1 });
+        drawCross(ctx, [172.5, 119.0, 183.3, 131.2]);
+
+        // Part 1 — payer details. Text boxes are left-aligned; identifiers and dates use character cells.
+        drawText([29.2, 171.4, 386.2, 191.5], payerName, { size: 10.5, minSize: 6.3, padding: 8, align: "left", yOffset: 3.5 });
+        drawChars([399.4, 176.9, 608.5, 190.0], payerId, 13, 8.8);
+        drawText([29.2, 199.6, 386.2, 219.6], payerAddress, { size: 10.2, minSize: 6.3, padding: 8, align: "left", yOffset: 3.5 });
+        drawChars([454.6, 205.0, 486.7, 218.0], day, 2, 8.8);
+        drawChars([490.6, 205.0, 522.8, 218.0], month, 2, 8.8);
+        drawChars([542.2, 205.0, 574.4, 218.0], year.slice(-2), 2, 8.8);
+        drawChars([626.3, 186.1, 658.6, 199.2], periodMonth, 2, 8.8);
+        drawChars([677.9, 186.1, 710.2, 199.2], periodYear.slice(-2), 2, 8.8);
+
+        // Part 2 — one taxpayer/beneficiary row.
+        drawChars([64.3, 310.1, 243.8, 321.0], taxpayerJmbg, 13, 8.8);
+        drawText([282.1, 308.3, 393.8, 323.8], taxpayerName, { size: 9.6, minSize: 6.1, padding: 4, yOffset: 0.5 });
+
+        // Part 2 numeric columns (9–15): row one, then bold totals row. Amounts always show two decimals.
+        const cols = [
+          [395.4, 441.2], [442.8, 488.6], [490.2, 536.0],
+          [537.6, 583.0], [585.5, 630.4], [632.9, 677.4], [680.6, 763.3]
+        ];
+        const rowY = [308.3, 323.8];
+        const formValues = [values.gross, values.expenses, values.income, values.health, values.taxBase, values.tax, values.pio];
+        cols.forEach((col, i) => drawText([col[0], rowY[0], col[1], rowY[1]], fmtAmount(formValues[i]), { size: 8.7, minSize: 6.8, padding: 1.5, yOffset: 0.1 }));
+
+        const totalY = [442.2, 460.9];
+        cols.forEach((col, i) => drawText([col[0], totalY[0], col[1], totalY[1]], fmtAmount(formValues[i]), { size: 9.1, minSize: 7, padding: 1.3, bold: true, yOffset: 0.1 }));
+
+        // Keep using the reliable transparent raster overlay; do not embed TTF/fontkit fonts.
+        const overlayBlob = await new Promise((resolve, reject) => {
+          canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error("Nije moguće pripremiti sloj za PDF obrazac.")), "image/png");
+        });
+        const overlayBytes = new Uint8Array(await overlayBlob.arrayBuffer());
+        const overlayImage = await pdfDoc.embedPng(overlayBytes);
+        // Flatten existing widget appearances into the page before adding text.
+        // Unlike removeField(), flattening preserves the official template's drawn
+        // character boxes, including the 13-digit identifier cells and checkboxes.
+        const pdfForm = pdfDoc.getForm();
+        pdfForm.flatten({ updateFieldAppearances: false });
+        page.drawImage(overlayImage, { x: 0, y: 0, width: pageWidth, height: pageHeight });
+        pdfDoc.setTitle("Obrazac AUG-1031 — Akontacija poreza po odbitku za povremene samostalne djelatnosti");
+        pdfDoc.setAuthor("Knjigovodstveni kalkulatori");
+        pdfDoc.setSubject("Popunjen obrazac AUG-1031 — ugovor o djelu");
+        pdfDoc.setCreator("Knjigovodstveni kalkulatori — lokalni generator PDF-a");
+        const bytes = await pdfDoc.save();
+        return new Blob([bytes], { type: "application/pdf" });
+      }
+
+      function clearResults(message = "") {
+        if (pdfObjectUrl) {
+          URL.revokeObjectURL(pdfObjectUrl);
+          pdfObjectUrl = null;
+        }
+        downloadLink.removeAttribute("href");
+        result.hidden = true;
+        lastValues = null;
+        hasGenerated = false;
+        status.classList.remove("error");
+        status.textContent = message;
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        status.classList.remove("error");
+        if (!$c("contractPayerId").value.trim().match(/^\d{13}$/)) {
+          status.textContent = "JIB/JMB isplatioca mora sadržavati tačno 13 cifara.";
+          status.classList.add("error");
+          $c("contractPayerId").focus();
+          return;
+        }
+        if (!$c("contractTaxpayerJmbg").value.trim().match(/^\d{13}$/)) {
+          status.textContent = "JMB poreznog obveznika mora sadržavati tačno 13 cifara.";
+          status.classList.add("error");
+          $c("contractTaxpayerJmbg").focus();
+          return;
+        }
+        const net = Number($c("contractNetAmount").value);
+        if (!Number.isFinite(net) || net <= 0) {
+          status.textContent = "Unesite ugovorenu neto naknadu veću od 0,00 KM.";
+          status.classList.add("error");
+          $c("contractNetAmount").focus();
+          return;
+        }
+        generateButton.disabled = true;
+        generateButton.textContent = "Obračun i generisanje obrasca…";
+        status.textContent = "Obračun i PDF pripremaju se lokalno u vašem pregledniku. Uneseni podaci se ne šalju na server.";
+        try {
+          const values = calculateContract();
+          updateSummary(values);
+          const pdfBlob = await generateAugPdf(values);
+          if (pdfObjectUrl) URL.revokeObjectURL(pdfObjectUrl);
+          pdfObjectUrl = URL.createObjectURL(pdfBlob);
+          downloadLink.href = pdfObjectUrl;
+          result.hidden = false;
+          lastValues = values;
+          hasGenerated = true;
+          status.textContent = "Obračun je završen i obrazac AUG-1031 je generisan. Pregledajte rekapitulaciju i preuzmite PDF.";
+          result.scrollIntoView({ behavior: "smooth", block: "start" });
+        } catch (error) {
+          console.error("AUG-1031 generator error:", error);
+          status.textContent = error instanceof Error ? error.message : "Došlo je do greške pri generisanju obrasca AUG-1031. Pokušajte ponovo.";
+          status.classList.add("error");
+        } finally {
+          generateButton.disabled = false;
+          generateButton.textContent = "Obračunaj i generiši AUG-1031 PDF →";
+        }
+      });
+
+      form.addEventListener("input", () => {
+        if (hasGenerated || pdfObjectUrl || !result.hidden) {
+          clearResults("Podaci su promijenjeni. Ponovo pokrenite obračun kako bi PDF i rekapitulacija odgovarali novom unosu.");
+        }
+      });
+      form.addEventListener("change", () => {
+        if (hasGenerated || pdfObjectUrl || !result.hidden) {
+          clearResults("Podaci su promijenjeni. Ponovo pokrenite obračun kako bi PDF i rekapitulacija odgovarali novom unosu.");
+        }
+      });
+      form.addEventListener("reset", () => {
+        setTimeout(() => clearResults("Forma je očišćena. Uneseni podaci nisu sačuvani."), 0);
+      });
+
+      printButton.addEventListener("click", () => {
+        if (!lastValues) {
+          status.textContent = "Prvo generišite obračun, pa zatim štampajte rekapitulaciju.";
+          return;
+        }
+        document.body.classList.add("contract-print-only");
+        const restore = () => document.body.classList.remove("contract-print-only");
+        window.addEventListener("afterprint", restore, { once: true });
+        window.print();
+        setTimeout(restore, 1500);
+      });
+    })();
+  </script>
+
   <script>
     // Kalendar FBiH: calculated entirely in the browser; no personal data is requested or stored.
     (() => {
