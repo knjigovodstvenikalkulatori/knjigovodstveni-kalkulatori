@@ -148,7 +148,7 @@
             <div class="category-icon">₥</div>
             <h3>Plaće i naknade</h3>
             <p>Bruto i neto plaća, doprinosi i druga primanja.</p>
-            <a href="#kalkulator">Otvori kalkulator →</a>
+            <a href="#kalkulator">Otvori kalkulatore →</a>
           </article>
           <article class="category">
             <div class="category-icon">§</div>
@@ -188,12 +188,12 @@
       <div class="container">
         <div class="section-heading">
           <span class="eyebrow">Kalkulator plaće</span>
-          <h2>Izračunajte neto plaću</h2>
-          <p>Unesite bruto plaću i koeficijent ličnog odbitka. Rezultati se automatski ažuriraju prilikom promjene unosa.</p>
+          <h2>Kalkulatori plaća i naknada</h2>
+          <p>Odaberite odgovarajući alat: izračun neto plaće iz bruto iznosa ili izračun bruto plaće kada je poznata neto isplata zaposleniku.</p>
         </div>
         <div class="calculator">
           <div class="calculator-top">
-            <div><h3>Obračun bruto plaće</h3><p class="sub">Federacija Bosne i Hercegovine · iznosi u KM</p></div>
+            <div><h3>Izračun neto plaće</h3><p class="sub">Kada je poznata bruto plaća · Federacija BiH</p></div>
             <span class="pill">Automatski obračun</span>
           </div>
           <div class="inputs">
@@ -266,6 +266,45 @@
             <p class="source-note">Prikazana raspodjela uplata informativnog je karaktera. Prije službene upotrebe provjerite važeće instrukcije za uplatu i pravila raspodjele za odgovarajući obračunski period.</p>
           </details>
           <p class="source-note">* Ukupan trošak poslodavca obuhvata bruto plaću, doprinose na plaću i prikazane ostale naknade.</p>
+        </div>
+
+        <div class="calculator" id="izracun-bruto" style="margin-top:26px">
+          <div class="calculator-top">
+            <div>
+              <span class="eyebrow">Plaće i naknade</span>
+              <h3 style="margin-top:12px">Izračun bruto plaće</h3>
+              <p class="sub">Kada je poznat neto iznos koji se isplaćuje zaposleniku.</p>
+            </div>
+            <span class="pill">Automatski obračun</span>
+          </div>
+          <div class="inputs">
+            <div class="field">
+              <label for="knownNet">Neto plaća nakon poreza — isplata zaposleniku (KM)</label>
+              <input id="knownNet" type="number" min="0" step="0.01" value="1000" inputmode="decimal">
+              <span class="help">Unesite neto iznos koji zaposlenik treba primiti.</span>
+            </div>
+            <div class="field">
+              <label for="grossCoefficient">Koeficijent ličnog odbitka</label>
+              <input id="grossCoefficient" type="number" min="0" step="0.1" value="1.00" inputmode="decimal">
+              <span class="help">Iznos ličnog odbitka = koeficijent × 300 KM.</span>
+            </div>
+          </div>
+          <div class="results" style="grid-template-columns:repeat(2,minmax(0,1fr))" aria-live="polite" aria-atomic="true">
+            <div class="result"><span>Iznos ličnog odbitka</span><strong id="grossPersonalDeduction">300,00 KM</strong></div>
+            <div class="result primary"><span>Bruto plaća zaposlenika</span><strong id="calculatedGross">1.562 KM</strong></div>
+          </div>
+          <details class="details">
+            <summary>Prikaži formulu obračuna</summary>
+            <div style="padding:18px 20px">
+              <p style="margin-top:0;color:var(--muted);font-size:13px">Bruto plaća = [((neto plaća − lični odbitak) ÷ 0,90) + lični odbitak] ÷ 0,69</p>
+              <div class="preview-row"><span>Neto plaća nakon poreza</span><strong id="formulaNet">1.000,00 KM</strong></div>
+              <div class="preview-row"><span>Umanjeno za lični odbitak</span><strong id="formulaMinusDeduction">700,00 KM</strong></div>
+              <div class="preview-row"><span>Podijeljeno sa 0,90</span><strong id="formulaDivide90">777,78 KM</strong></div>
+              <div class="preview-row"><span>Uvećano za lični odbitak</span><strong id="formulaAddDeduction">1.077,78 KM</strong></div>
+              <div class="preview-total"><span>IZRAČUNATA BRUTO PLAĆA, ZAOKRUŽENA NA CIJELU KM</span><strong id="formulaGrossRounded">1.562 KM</strong></div>
+            </div>
+          </details>
+          <div class="notice"><strong>Napomena:</strong> rezultat se za prikaz zaokružuje na cijelu KM. Provjerite da li su stopa, osnovica i lični odbitak primjenjivi na konkretan obračunski period i situaciju zaposlenika.</div>
         </div>
       </div>
     </section>
@@ -340,10 +379,36 @@
       };
       Object.entries(vals).forEach(([id,value])=>setMoney(id,value));
     }
+    function calculateGrossFromNet() {
+      const net = safe($("knownNet").value);
+      const coefficient = safe($("grossCoefficient").value);
+      const personalDeduction = coefficient * 300;
+      const minusDeduction = net - personalDeduction;
+      const dividedBy90 = minusDeduction / 0.90;
+      const addDeduction = dividedBy90 + personalDeduction;
+      const grossExact = addDeduction / 0.69;
+      const grossRounded = Math.max(0, Math.round(grossExact));
+
+      setMoney("grossPersonalDeduction", personalDeduction);
+      $("calculatedGross").textContent = new Intl.NumberFormat("bs-BA", {
+        maximumFractionDigits: 0
+      }).format(grossRounded) + " KM";
+      setMoney("formulaNet", net);
+      setMoney("formulaMinusDeduction", minusDeduction);
+      setMoney("formulaDivide90", dividedBy90);
+      setMoney("formulaAddDeduction", addDeduction);
+      $("formulaGrossRounded").textContent = new Intl.NumberFormat("bs-BA", {
+        maximumFractionDigits: 0
+      }).format(grossRounded) + " KM";
+    }
+
     $("gross").addEventListener("input", calculate);
     $("coefficient").addEventListener("input", calculate);
+    $("knownNet").addEventListener("input", calculateGrossFromNet);
+    $("grossCoefficient").addEventListener("input", calculateGrossFromNet);
     $("year").textContent = new Date().getFullYear();
     calculate();
+    calculateGrossFromNet();
   </script>
 </body>
 </html>
