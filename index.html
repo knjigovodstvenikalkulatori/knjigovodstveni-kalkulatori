@@ -654,7 +654,7 @@
       // the printed form's original vector lines and boxes remain on the page.
       const form = pdfDoc.getForm();
       for (const field of [...form.getFields()]) {
-        form.deleteField(field);
+        form.removeField(field);
       }
 
       const black = PDFLib.rgb(0, 0, 0);
