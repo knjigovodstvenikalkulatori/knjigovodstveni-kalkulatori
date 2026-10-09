@@ -494,7 +494,6 @@
     </div>
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js"></script>
   <script>
     const $ = (id) => document.getElementById(id);
     const money = (value) => new Intl.NumberFormat("bs-BA", {minimumFractionDigits:2, maximumFractionDigits:2}).format(Number.isFinite(value) ? value : 0) + " KM";
@@ -629,69 +628,66 @@
       $("amsPayHealthFederation").textContent = formatAmsMoney(values.federationHealth);
     }
     async function generateAmsPdf(values) {
-      if (!window.PDFLib || !window.fontkit) {
-        throw new Error("Biblioteke za izradu PDF-a nisu učitane. Provjerite internetsku vezu i pokušajte ponovo.");
+      if (!window.PDFLib) {
+        throw new Error("Biblioteka za izradu PDF-a nije učitana. Provjerite internetsku vezu i pokušajte ponovo.");
       }
 
       const templateResponse = await fetch("./ams-1035-blank.pdf", { cache: "no-store" });
       if (!templateResponse.ok) {
         throw new Error("Nije pronađen prazan AMS-1035 obrazac. Datoteku ams-1035-blank.pdf treba dodati u isti GitHub repozitorij kao index.html.");
       }
-      const [templateBytes, fontResponse] = await Promise.all([
-        templateResponse.arrayBuffer(),
-        fetch("https://fonts.gstatic.com/s/arimo/v35/P5sfzZCDf9_T_3cV7NCUECyoxNk37cxsBxDAVQI4aA.ttf")
-      ]);
-      if (!fontResponse.ok) throw new Error("Nije moguće učitati font za ispis obrasca. Pokušajte ponovo kasnije.");
-      const fontBytes = await fontResponse.arrayBuffer();
+      const templateBytes = await templateResponse.arrayBuffer();
       const pdfDoc = await PDFLib.PDFDocument.load(templateBytes);
-      pdfDoc.registerFontkit(window.fontkit);
-      // Do not subset this font. pdf-lib/fontkit subsetting can drop or remap
-      // glyphs in some TTF fonts, which caused missing letters and punctuation
-      // in generated AMS-1035 documents. Full embedding is larger but reliable.
-      const font = await pdfDoc.embedFont(fontBytes, { subset: false });
       const page = pdfDoc.getPages()[0];
+      const pageWidth = page.getWidth();
+      const pageHeight = page.getHeight();
 
-      // The source form contains several comb-style text fields for individual
-      // characters. Updating their generated appearances caused lost digits and
-      // punctuation in several PDF viewers. Remove only the AcroForm widgets;
-      // the printed form's original vector lines and boxes remain on the page.
-      const form = pdfDoc.getForm();
-      for (const field of [...form.getFields()]) {
-        form.removeField(field);
-      }
+      // Render all entered values through the browser's text engine into a
+      // transparent high-resolution overlay. This avoids fragile TTF/fontkit
+      // parsing and appearance-stream mapping in the original AcroForm.
+      // Nothing the user enters is sent to a remote service.
+      const scale = 4;
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(pageWidth * scale);
+      canvas.height = Math.round(pageHeight * scale);
+      const ctx = canvas.getContext("2d", { alpha: true });
+      if (!ctx) throw new Error("Preglednik ne može pripremiti sloj za ispis PDF obrasca.");
+      ctx.scale(scale, scale);
+      ctx.clearRect(0, 0, pageWidth, pageHeight);
+      ctx.fillStyle = "#000000";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.direction = "ltr";
 
-      const black = PDFLib.rgb(0, 0, 0);
       function drawCentered(rect, value, options = {}) {
         const text = String(value ?? "");
         if (!text) return;
-        const x0 = rect[0], y0 = rect[1], x1 = rect[2], y1 = rect[3];
+        const [x0, y0, x1, y1] = rect;
         const padding = options.padding ?? 8;
         let size = options.size ?? 10.5;
         const minSize = options.minSize ?? 6.5;
         const availableWidth = Math.max(1, x1 - x0 - padding * 2);
-        let textWidth = font.widthOfTextAtSize(text, size);
-        while (textWidth > availableWidth && size > minSize) {
+        ctx.font = `${size}px Arial, Helvetica, sans-serif`;
+        while (ctx.measureText(text).width > availableWidth && size > minSize) {
           size = Math.max(minSize, size - 0.25);
-          textWidth = font.widthOfTextAtSize(text, size);
+          ctx.font = `${size}px Arial, Helvetica, sans-serif`;
         }
-        const x = x0 + ((x1 - x0) - textWidth) / 2;
-        // PDF text uses a baseline; this offset vertically centres the glyphs
-        // inside the field without relying on PDF form appearance streams.
-        const y = y0 + ((y1 - y0) - size) / 2 + size * 0.18;
-        page.drawText(text, { x, y, size, font, color: black });
+        const x = x0 + (x1 - x0) / 2;
+        const y = pageHeight - (y0 + y1) / 2;
+        ctx.fillText(text, x, y, availableWidth);
       }
 
       function drawCharacters(rect, value, cellCount, size = 9) {
         const text = String(value ?? "");
         if (!text) return;
-        const x0 = rect[0], y0 = rect[1], x1 = rect[2], y1 = rect[3];
+        const [x0, y0, x1, y1] = rect;
         const cellWidth = (x1 - x0) / cellCount;
-        const y = y0 + ((y1 - y0) - size) / 2 + size * 0.18;
+        ctx.font = `${size}px Arial, Helvetica, sans-serif`;
+        const centerY = pageHeight - (y0 + y1) / 2;
         for (let i = 0; i < Math.min(text.length, cellCount); i++) {
           const character = text[i];
-          const charWidth = font.widthOfTextAtSize(character, size);
-          const x = x0 + i * cellWidth + (cellWidth - charWidth) / 2;
-          page.drawText(character, { x, y, size, font, color: black });
+          const centerX = x0 + i * cellWidth + cellWidth / 2;
+          ctx.fillText(character, centerX, centerY, cellWidth * 0.9);
         }
       }
 
@@ -712,8 +708,7 @@
       drawCentered([582.0, 532.08, 635.76, 543.84], "1", { size: 7.5, minSize: 7.5, padding: 2 });
       drawCentered([582.0, 507.12, 635.76, 518.64], "1", { size: 7.5, minSize: 7.5, padding: 2 });
 
-      // Part 1: recipient. The JMBG and date boxes are drawn digit by digit
-      // so every character sits in its own original box.
+      // Part 1: recipient and dates. Digits are centred in individual boxes.
       drawCentered([87.6, 416.04, 350.04, 443.16], recipientName, { size: 11.5, minSize: 7, padding: 8 });
       drawCharacters([359.28, 420.24, 551.52, 435.36], jmbg, 13, 10.5);
       drawCentered([68.4, 385.92, 350.04, 414.72], recipientAddress, { size: 11, minSize: 7, padding: 8 });
@@ -728,8 +723,7 @@
       drawCentered([366.12, 325.32, 634.44, 354.12], payerAddress, { size: 11, minSize: 7, padding: 8 });
       drawCentered([665.4, 325.32, 803.4, 354.12], payerCountry, { size: 10.5, minSize: 7, padding: 8 });
 
-      // Part 3: calculated values, with decimal comma and exactly two decimals.
-      // Only the first income row is used; the transfer row totals columns 10-14.
+      // Part 3: values are localized by the browser and always use two decimals.
       const row1Rects = [
         [38.28, 240.0, 206.4, 262.92],
         [208.32, 240.0, 326.16, 262.92],
@@ -760,6 +754,20 @@
       totalRects.forEach((rect, index) => {
         drawCentered(rect, formatPdfAmount(totalValues[index]), { size: 11.5, minSize: 8, padding: 4 });
       });
+
+      // Embed transparent canvas image instead of embedding a TTF font.
+      // This is intentionally rasterized at 4x page resolution to keep text crisp
+      // and to avoid variable-font/fontkit buffer failures in PDF generation.
+      const overlayBlob = await new Promise((resolve, reject) => {
+        canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error("Nije moguće pripremiti tekst za PDF.")), "image/png");
+      });
+      const overlayBytes = new Uint8Array(await overlayBlob.arrayBuffer());
+      const overlayImage = await pdfDoc.embedPng(overlayBytes);
+
+      // Clear AcroForm widgets; printed lines and labels are part of the template.
+      const form = pdfDoc.getForm();
+      for (const field of [...form.getFields()]) form.removeField(field);
+      page.drawImage(overlayImage, { x: 0, y: 0, width: pageWidth, height: pageHeight });
 
       pdfDoc.setTitle("Obrazac AMS-1035 — Akontacija poreza po odbitku");
       pdfDoc.setAuthor("Knjigovodstveni kalkulatori");
