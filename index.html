@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#17324D">
   <meta name="description" content="Besplatni informativni kalkulator bruto i neto plaće za Federaciju Bosne i Hercegovine, s pregledom doprinosa i troška poslodavca.">
-  <title>Kalkulator neto plaće | Knjigovodstveni kalkulatori</title>
+  <title>Knjigovodstveni kalkulatori | Vaši obračuni. Jednostavnije.</title>
   <style>
     :root {
       --navy:#17324D; --navy-dark:#102438; --green:#267A57;
@@ -52,6 +52,14 @@
     .section-heading{max-width:720px;margin-bottom:30px}
     .section-heading h2{color:var(--navy);font-size:clamp(28px,4vw,38px);line-height:1.2;letter-spacing:-1px;margin:12px 0}
     .section-heading p{color:var(--muted);margin:0}
+    .categories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .category{border:1px solid var(--border);border-radius:var(--radius);padding:23px 21px;background:#fff;box-shadow:var(--shadow);transition:transform .18s,border-color .18s}
+    .category:hover{transform:translateY(-3px);border-color:#A9CDB8}
+    .category-icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:var(--green-light);color:var(--green);font-size:23px;font-weight:800;margin-bottom:16px}
+    .category h3{color:var(--navy);margin:0 0 8px;font-size:17px}
+    .category p{color:var(--muted);font-size:13px;margin:0 0 15px}
+    .category a{color:var(--green);font-size:13px;font-weight:800}
+    .category .pill{display:inline-block}
     .calculator-section{background:var(--gray)}
     .calculator{background:#fff;padding:30px;border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow)}
     .calculator-top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:24px}
@@ -95,8 +103,8 @@
     footer strong{color:#fff}
     footer p{max-width:520px}
     .footer-bottom{border-top:1px solid #314457;padding-top:19px;color:#AAB8C5}
-    @media(max-width:900px){.hero-grid{grid-template-columns:1fr}.preview{max-width:540px}.nav-links{gap:14px}.results{grid-template-columns:repeat(3,minmax(0,1fr))}}
-    @media(max-width:600px){.container{width:min(100% - 28px,1120px)}.topbar .container{font-size:11px}.nav{min-height:70px}.brand{font-size:14px;gap:9px}.brand-mark{width:37px;height:37px}.nav-links{font-size:12px;gap:12px}.nav-links a:nth-child(2){display:none}.nav-links .button{display:none}.hero{padding:48px 0}.hero-copy{font-size:15px}section{padding:48px 0}.calculator{padding:19px}.inputs{grid-template-columns:1fr}.results{grid-template-columns:1fr}.result strong{font-size:22px}.cta{padding:26px 22px;align-items:flex-start;flex-direction:column}.preview-total strong{font-size:21px}h1{letter-spacing:-1.4px}}
+    @media(max-width:900px){.hero-grid{grid-template-columns:1fr}.preview{max-width:540px}.nav-links{gap:14px}.results{grid-template-columns:repeat(3,minmax(0,1fr))}.categories{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:600px){.container{width:min(100% - 28px,1120px)}.topbar .container{font-size:11px}.nav{min-height:70px}.brand{font-size:14px;gap:9px}.brand-mark{width:37px;height:37px}.nav-links{font-size:12px;gap:12px}.nav-links a:nth-child(2){display:none}.nav-links .button{display:none}.hero{padding:48px 0}.hero-copy{font-size:15px}section{padding:48px 0}.calculator{padding:19px}.inputs{grid-template-columns:1fr}.categories{grid-template-columns:1fr}.results{grid-template-columns:1fr}.result strong{font-size:22px}.cta{padding:26px 22px;align-items:flex-start;flex-direction:column}.preview-total strong{font-size:21px}h1{letter-spacing:-1.4px}}
   </style>
 </head>
 <body>
@@ -104,25 +112,74 @@
   <header>
     <nav class="container nav" aria-label="Glavna navigacija">
       <a class="brand" href="#pocetna"><span class="brand-mark">K</span><span>Knjigovodstveni<br>kalkulatori</span></a>
-      <div class="nav-links"><a href="#kalkulator">Kalkulator plaće</a><a href="#metodologija">Metodologija</a><a class="button" href="#kalkulator">Izračunaj plaću ↗</a></div>
+      <div class="nav-links"><a href="#kategorije">Kategorije</a><a href="#o-projektu">O projektu</a><a class="button" href="#kalkulator">Pronađi kalkulator ↗</a></div>
     </nav>
   </header>
   <main>
     <section class="hero" id="pocetna">
       <div class="container hero-grid">
         <div>
-          <span class="eyebrow">✦ Besplatan praktični alat</span>
-          <h1>Obračun plaće.<br><span>Jasno i pregledno.</span></h1>
-          <p class="hero-copy">Informativni kalkulator bruto i neto plaće za Federaciju Bosne i Hercegovine, uz pregled doprinosa, poreza, troška poslodavca i raspodjele uplata.</p>
-          <div class="hero-actions"><a class="button" href="#kalkulator">Pokreni kalkulator →</a><a class="button secondary" href="#metodologija">Kako se računa?</a></div>
-          <p class="hero-note">Bez registracije • Besplatno korištenje • Rezultat se računa u vašem pregledniku</p>
+          <span class="eyebrow">✦ Knjigovodstveni kalkulatori FBiH</span>
+          <h1>Vaši obračuni.<br><span>Jednostavnije.</span></h1>
+          <p class="hero-copy">Besplatni online kalkulatori, praktični alati i korisni predlošci za fizička i pravna lica u Federaciji Bosne i Hercegovine. Jasni obračuni i korisne informacije na jednom mjestu.</p>
+          <div class="hero-actions"><a class="button" href="#kategorije">Pronađi kalkulator →</a><a class="button secondary" href="#o-projektu">Upoznaj projekat</a></div>
+          <p class="hero-note">Informativni alati • Bez registracije • Besplatan pristup</p>
         </div>
         <div class="preview">
-          <div class="preview-head"><strong>Šta kalkulator prikazuje?</strong><span class="live-dot">● FBiH</span></div>
-          <div class="preview-row"><span>Ulazni podatak</span><strong>Bruto plaća</strong></div>
-          <div class="preview-row"><span>Lični odbitak</span><strong>Prema koeficijentu</strong></div>
-          <div class="preview-row"><span>Obračun</span><strong>Porez i doprinosi</strong></div>
-          <div class="preview-total"><span>DETALJAN PREGLED</span><strong>Neto plaća i trošak poslodavca</strong></div>
+          <div class="preview-head"><strong>Pregled alata</strong><span class="live-dot">● FBiH</span></div>
+          <div class="preview-row"><span>Kalkulatori</span><strong>Plaće i naknade</strong></div>
+          <div class="preview-row"><span>Dokumenti</span><strong>Predlošci i urneci</strong></div>
+          <div class="preview-row"><span>Informacije</span><strong>Propisi i vodiči</strong></div>
+          <div class="preview-total"><span>VAŠ PRAKTIČNI FINANSIJSKI ALAT</span><strong>Jasno. Tačno. Pregledno.</strong></div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="kategorije">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Istražite alate</span>
+          <h2>Šta želite izračunati ili pronaći?</h2>
+          <p>Odaberite kategoriju. Dostupni alati otvaraju se direktno, a nove kategorije ćemo postepeno popunjavati korisnim sadržajem.</p>
+        </div>
+        <div class="categories">
+          <article class="category">
+            <div class="category-icon">₥</div>
+            <h3>Plaće i naknade</h3>
+            <p>Bruto i neto plaća, doprinosi i druga primanja.</p>
+            <a href="#kalkulator">Otvori kalkulator →</a>
+          </article>
+          <article class="category">
+            <div class="category-icon">§</div>
+            <h3>Ugovor o djelu</h3>
+            <p>Obračuni naknada, poreza i doprinosa po osnovu ugovora o djelu.</p>
+            <span class="pill">U pripremi</span>
+          </article>
+          <article class="category">
+            <div class="category-icon">▤</div>
+            <h3>Predlošci i urneci</h3>
+            <p>Praktični obrasci, primjeri dokumenata i predlošci za poslovanje.</p>
+            <span class="pill">U pripremi</span>
+          </article>
+          <article class="category">
+            <div class="category-icon">%</div>
+            <h3>Porezi i doprinosi</h3>
+            <p>Informativni obračuni poreznih obaveza i doprinosa.</p>
+            <span class="pill">U pripremi</span>
+          </article>
+          <article class="category">
+            <div class="category-icon">▣</div>
+            <h3>Poslovanje</h3>
+            <p>Alati i obračuni za obrte i privredna društva.</p>
+            <span class="pill">U pripremi</span>
+          </article>
+          <article class="category">
+            <div class="category-icon">📚</div>
+            <h3>Propisi i vodiči</h3>
+            <p>Razumljiva objašnjenja, relevantni propisi i korisni izvori.</p>
+            <span class="pill">U pripremi</span>
+          </article>
         </div>
       </div>
     </section>
@@ -148,7 +205,7 @@
             <div class="field">
               <label for="coefficient">Koeficijent ličnog odbitka</label>
               <input id="coefficient" type="number" min="0" step="0.1" value="1" inputmode="decimal">
-              <span class="help">U Excel predlošku osnovni odbitak iznosi 300 KM × koeficijent.</span>
+              <span class="help">Lični odbitak računa se prema unesenom koeficijentu.</span>
             </div>
           </div>
           <div class="results" aria-live="polite" aria-atomic="true">
@@ -180,7 +237,7 @@
                 <tr><td>Osiguranje od nezaposlenosti (0,5%)</td><td id="employerUnemployment">7,81 KM</td></tr>
                 <tr class="table-total"><td>Ukupno doprinosi na plaću (5%)</td><td id="employerTotal">78,10 KM</td></tr>
 
-                <tr class="table-section"><td colspan="2">Ostale naknade prema Excel predlošku</td></tr>
+                <tr class="table-section"><td colspan="2">Ostale naknade i doprinosi</td></tr>
                 <tr><td>Opšta vodna naknada (0,5% neto)</td><td id="waterFee">5,00 KM</td></tr>
                 <tr><td>Zaštita od prirodnih i drugih nepogoda (0,5% neto)</td><td id="disasterFee">5,00 KM</td></tr>
                 <tr><td>Naknada za rehabilitaciju osoba sa invaliditetom (0,5% bruto)</td><td id="disabilityFee">7,81 KM</td></tr>
@@ -194,7 +251,7 @@
             <div class="table-wrap"><table>
               <thead><tr><th>Stavka uplate</th><th>Iznos</th></tr></thead>
               <tbody>
-                <tr><td>PIO/MIO (doprinos zaposlenika i poslodavca, prema predlošku)</td><td id="payPio">304,59 KM</td></tr>
+                <tr><td>PIO/MIO — zbirni iznos doprinosa</td><td id="payPio">304,59 KM</td></tr>
                 <tr><td>Zdravstveno osiguranje — kanton (89,80%)</td><td id="payHealthCanton">203,39 KM</td></tr>
                 <tr><td>Zdravstveno osiguranje — Federacija (10,20%)</td><td id="payHealthFederation">23,10 KM</td></tr>
                 <tr><td>Osiguranje od nezaposlenosti — kanton (70%)</td><td id="payUnemploymentCanton">21,87 KM</td></tr>
@@ -206,19 +263,23 @@
                 <tr class="table-total"><td>Neto plaća za isplatu radniku</td><td id="payNet">1.000,00 KM</td></tr>
               </tbody>
             </table></div>
-            <p class="source-note">Raspodjela je prenesena prema formulama u dostavljenom Excel predlošku i treba je provjeriti prema važećim pravilima uplate prije službene upotrebe.</p>
+            <p class="source-note">Prikazana raspodjela uplata informativnog je karaktera. Prije službene upotrebe provjerite važeće instrukcije za uplatu i pravila raspodjele za odgovarajući obračunski period.</p>
           </details>
-          <p class="source-note">* Trošak poslodavca ovdje uključuje bruto plaću, doprinose na plaću i tri dodatne naknade iz Excel predloška.</p>
+          <p class="source-note">* Ukupan trošak poslodavca obuhvata bruto plaću, doprinose na plaću i prikazane ostale naknade.</p>
         </div>
       </div>
     </section>
 
+    <section id="o-projektu">
+      <div class="container"><div class="section-heading"><span class="eyebrow">O projektu</span><h2>Knjigovodstveni alati za svakodnevne potrebe.</h2><p>Projekat okuplja besplatne informativne kalkulatore, predloške i vodiče za fizička i pravna lica u Federaciji Bosne i Hercegovine. Sadržaj ćemo širiti po kategorijama, uz jasno navedene pretpostavke i izvore.</p></div></div>
+    </section>
+
     <section id="metodologija">
       <div class="container">
-        <div class="section-heading"><span class="eyebrow">Metodologija</span><h2>Jasan obračun i važne napomene</h2><p>Kalkulator je izrađen na osnovu formula iz dostavljene Excel datoteke. Prikazane stope i dodatne naknade treba provjeriti za konkretan porezni period i situaciju zaposlenika.</p></div>
+        <div class="section-heading"><span class="eyebrow">Metodologija</span><h2>Jasan obračun i važne napomene</h2><p>Kalkulator prikazuje informativni obračun prema navedenim stopama i pretpostavkama. Primjenjivost pojedinih naknada i obračunskih pravila potrebno je potvrditi za konkretan porezni period i situaciju zaposlenika.</p></div>
         <div class="info-grid">
           <article class="info-card"><h3>Kako se računa?</h3><p>Od bruto plaće obračunavaju se doprinosi zaposlenika. Osnovica poreza računa se nakon doprinosa i ličnog odbitka, a zatim se obračunava porez na dohodak.</p></article>
-          <article class="info-card"><h3>Trošak poslodavca</h3><p>Prikaz uključuje doprinose na plaću i dodatne naknade koje su navedene u Excel predlošku. Njihovu primjenjivost treba potvrditi prema važećim propisima.</p></article>
+          <article class="info-card"><h3>Trošak poslodavca</h3><p>Prikaz uključuje doprinose na plaću i ostale prikazane naknade. Njihovu primjenjivost treba potvrditi prema važećim propisima.</p></article>
           <article class="info-card"><h3>Informativni karakter</h3><p>Posebni slučajevi, dodatni odbici, naknade, izuzeci i promjene propisa mogu uticati na konačan obračun. Za službenu upotrebu provjerite važeće izvore.</p></article>
         </div>
       </div>
