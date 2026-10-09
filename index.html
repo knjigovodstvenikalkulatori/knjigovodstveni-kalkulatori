@@ -301,10 +301,10 @@
               <div class="preview-row"><span>Umanjeno za lični odbitak</span><strong id="formulaMinusDeduction">700,00 KM</strong></div>
               <div class="preview-row"><span>Podijeljeno sa 0,90</span><strong id="formulaDivide90">777,78 KM</strong></div>
               <div class="preview-row"><span>Uvećano za lični odbitak</span><strong id="formulaAddDeduction">1.077,78 KM</strong></div>
-              <div class="preview-total"><span>IZRAČUNATA BRUTO PLAĆA, ZAOKRUŽENA NA CIJELU KM</span><strong id="formulaGrossRounded">1.562 KM</strong></div>
+              <div class="preview-total"><span>IZRAČUNATA BRUTO PLAĆA</span><strong id="formulaGrossRounded">1.562 KM</strong></div>
             </div>
           </details>
-          <div class="notice"><strong>Napomena:</strong> rezultat se za prikaz zaokružuje na cijelu KM. Provjerite da li su stopa, osnovica i lični odbitak primjenjivi na konkretan obračunski period i situaciju zaposlenika.</div>
+          <div class="notice"><strong>Napomena:</strong> svi novčani iznosi prikazuju se i zaokružuju na dvije decimale. Provjerite da li su stopa, osnovica i lični odbitak primjenjivi na konkretan obračunski period i situaciju zaposlenika.</div>
         </div>
       </div>
     </section>
@@ -387,19 +387,15 @@
       const dividedBy90 = minusDeduction / 0.90;
       const addDeduction = dividedBy90 + personalDeduction;
       const grossExact = addDeduction / 0.69;
-      const grossRounded = Math.max(0, Math.round(grossExact));
+      const grossRounded = Math.max(0, Math.round((grossExact + Number.EPSILON) * 100) / 100);
 
       setMoney("grossPersonalDeduction", personalDeduction);
-      $("calculatedGross").textContent = new Intl.NumberFormat("bs-BA", {
-        maximumFractionDigits: 0
-      }).format(grossRounded) + " KM";
+      $("calculatedGross").textContent = money(grossRounded);
       setMoney("formulaNet", net);
       setMoney("formulaMinusDeduction", minusDeduction);
       setMoney("formulaDivide90", dividedBy90);
       setMoney("formulaAddDeduction", addDeduction);
-      $("formulaGrossRounded").textContent = new Intl.NumberFormat("bs-BA", {
-        maximumFractionDigits: 0
-      }).format(grossRounded) + " KM";
+      $("formulaGrossRounded").textContent = money(grossRounded);
     }
 
     $("gross").addEventListener("input", calculate);
