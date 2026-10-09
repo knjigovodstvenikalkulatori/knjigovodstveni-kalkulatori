@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#17324D">
-  <meta name="description" content="Besplatni informativni kalkulator bruto i neto plaće za Federaciju Bosne i Hercegovine, s pregledom doprinosa i troška poslodavca.">
+  <meta name="description" content="Besplatni knjigovodstveni kalkulatori, kalendar radnih dana i praznika te obrasci za Federaciju Bosne i Hercegovine.">
   <title>Knjigovodstveni kalkulatori | Vaši obračuni. Jednostavnije.</title>
   <style>
     :root {
@@ -130,7 +130,124 @@
     footer p{max-width:520px}
     .footer-bottom{border-top:1px solid #314457;padding-top:19px;color:#AAB8C5}
     @media(max-width:900px){.hero-grid{grid-template-columns:1fr}.preview{max-width:540px}.nav-links{gap:14px}.results{grid-template-columns:repeat(3,minmax(0,1fr))}.categories{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:600px){.container{width:min(100% - 28px,1120px)}.topbar .container{font-size:11px}.nav{min-height:70px}.brand{font-size:14px;gap:9px}.brand-mark{width:37px;height:37px}.nav-links{font-size:12px;gap:12px}.nav-links a:nth-child(3){display:none}.nav-links .button{display:none}.hero{padding:48px 0}.hero-copy{font-size:15px}section{padding:48px 0}.calculator{padding:19px}.inputs{grid-template-columns:1fr}.categories{grid-template-columns:1fr}.results{grid-template-columns:1fr}.result strong{font-size:22px}.cta{padding:26px 22px;align-items:flex-start;flex-direction:column}.preview-total strong{font-size:21px}h1{letter-spacing:-1.4px}}
+    @media(max-width:600px){.container{width:min(100% - 28px,1120px)}.topbar .container{font-size:11px}.nav{min-height:70px}.brand{font-size:14px;gap:9px}.brand-mark{width:37px;height:37px}.nav-links{font-size:12px;gap:12px}.nav-links a:nth-child(1),.nav-links a:nth-child(4){display:none}.nav-links .button{display:none}.hero{padding:48px 0}.hero-copy{font-size:15px}section{padding:48px 0}.calculator{padding:19px}.inputs{grid-template-columns:1fr}.categories{grid-template-columns:1fr}.results{grid-template-columns:1fr}.result strong{font-size:22px}.cta{padding:26px 22px;align-items:flex-start;flex-direction:column}.preview-total strong{font-size:21px}h1{letter-spacing:-1.4px}}
+
+    /* Kalendar FBiH — isolated styles; existing calculator and AMS styles stay unchanged. */
+    .calendar-section{background:#F7F9FB}
+    .calendar-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:25px;box-shadow:var(--shadow)}
+    .calendar-controls{display:grid;grid-template-columns:minmax(100px,.7fr) minmax(150px,1fr) minmax(170px,1.2fr) auto;gap:14px;align-items:end}
+    .calendar-control label{display:block;color:var(--navy);font-size:13px;font-weight:750;margin-bottom:7px}
+    .calendar-control input,.calendar-control select{width:100%;min-height:47px;padding:11px 12px;border:1px solid #D4DDE4;border-radius:10px;background:white;color:var(--text)}
+    .calendar-control input:focus,.calendar-control select:focus{outline:2px solid #B9DCC8;border-color:var(--green)}
+    .calendar-print-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px;padding-bottom:21px;border-bottom:1px solid var(--border)}
+    .calendar-print-help{color:var(--muted);font-size:12px;flex:1 1 260px}
+    .calendar-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:22px 0}
+    .calendar-stat{border:1px solid var(--border);border-radius:13px;background:#FAFBFC;padding:15px 16px;min-width:0}
+    .calendar-stat.primary{background:var(--green-light);border-color:#D0E7D8}
+    .calendar-stat-label{display:block;color:var(--muted);font-size:12px;line-height:1.35}
+    .calendar-stat strong{display:block;color:var(--navy);font-size:clamp(21px,2.2vw,29px);line-height:1.2;margin-top:7px;font-variant-numeric:tabular-nums}
+    .calendar-stat.primary strong{color:var(--green)}
+    .calendar-legend{display:flex;align-items:center;gap:9px 15px;flex-wrap:wrap;margin:18px 0 22px}
+    .calendar-legend-item{display:inline-flex;align-items:center;gap:7px;color:#465564;font-size:12px;font-weight:650}
+    .calendar-legend-swatch{display:inline-block;width:15px;height:15px;border:1px solid rgba(23,50,77,.10);border-radius:4px;flex:0 0 auto}
+    .calendar-event-state{background:#DDEAF7!important;color:#244D76!important}
+    .calendar-event-islamic{background:#E1F2E6!important;color:#216443!important}
+    .calendar-event-catholic{background:#FBE7D8!important;color:#8A4A24!important}
+    .calendar-event-orthodox{background:#ECE5FA!important;color:#5F468B!important}
+    .calendar-weekend-swatch{background:#F0F2F4}
+    .calendar-month-header{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:13px}
+    .calendar-month-header h3{font-size:25px;line-height:1.2;color:var(--navy);margin:0}
+    .calendar-month-header p{font-size:12px;color:var(--muted);margin:4px 0 0}
+    .calendar-weekdays,.calendar-days-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+    .calendar-weekday{text-align:center;padding:8px 3px;color:#586776;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.2px}
+    .calendar-day{min-width:0;min-height:112px;border:1px solid var(--border);border-radius:9px;padding:8px;background:#fff;overflow:hidden}
+    .calendar-day.weekend{background:#F5F6F8}
+    .calendar-day.empty{background:#FAFBFC;border-style:dashed;opacity:.65}
+    .calendar-day-number{display:flex;align-items:center;justify-content:space-between;color:var(--navy);font-size:14px;font-weight:800;margin-bottom:5px}
+    .calendar-day-number small{font-size:9px;color:#8793A0;font-weight:600}
+    .calendar-day-events{display:flex;flex-direction:column;gap:4px}
+    .calendar-event-label{display:block;border-radius:5px;padding:3px 5px;font-size:10px;font-weight:650;line-height:1.3;overflow-wrap:anywhere;border:1px solid rgba(23,50,77,.05)}
+    .calendar-event-label .event-estimate{font-size:9px;font-weight:500;opacity:.9}
+    .calendar-annual-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+    .calendar-mini-month{border:1px solid var(--border);border-radius:13px;padding:12px;background:#fff;min-width:0;break-inside:avoid}
+    .calendar-mini-month h3{margin:0 0 8px;color:var(--navy);font-size:15px}
+    .calendar-mini-weekdays,.calendar-mini-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+    .calendar-mini-weekday{text-align:center;font-size:9px;color:#778391;font-weight:800;padding:3px 0}
+    .calendar-mini-day{position:relative;min-width:0;min-height:25px;display:flex;align-items:center;justify-content:center;border-radius:4px;color:#334252;font-size:10px;font-variant-numeric:tabular-nums}
+    .calendar-mini-day.weekend{background:#F3F4F6}
+    .calendar-mini-day.blank{background:transparent}
+    .calendar-mini-day.holiday{font-weight:800;border:1px solid rgba(23,50,77,.09)}
+    .calendar-mini-markers{position:absolute;bottom:2px;display:flex;gap:2px;justify-content:center}
+    .calendar-mini-marker{width:4px;height:4px;border-radius:50%;display:block}
+    .calendar-mini-marker.state{background:#4E7DAD}.calendar-mini-marker.islamic{background:#3D9365}.calendar-mini-marker.catholic{background:#D8894E}.calendar-mini-marker.orthodox{background:#8A70BC}
+    .calendar-mini-metrics{margin:8px 0 0;padding-top:7px;border-top:1px solid #EDF0F2;color:var(--muted);font-size:10px;line-height:1.4}
+    .calendar-holiday-list-wrap{margin-top:25px}
+    .calendar-holiday-list-wrap h3,.calendar-notes h3{margin:0 0 12px;font-size:19px;color:var(--navy)}
+    .calendar-holiday-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 15px}
+    .calendar-holiday-item{border:1px solid var(--border);border-radius:10px;padding:10px 12px;display:grid;grid-template-columns:minmax(120px,.8fr) minmax(140px,1.2fr);gap:4px 10px;align-items:start;break-inside:avoid}
+    .calendar-holiday-date{font-size:12px;font-weight:800;color:var(--navy)}
+    .calendar-holiday-detail{min-width:0}
+    .calendar-holiday-name{font-size:12px;font-weight:750;line-height:1.35}
+    .calendar-holiday-status{font-size:10px;line-height:1.35;color:var(--muted);margin-top:3px}
+    .calendar-holiday-empty{color:var(--muted);font-size:13px;padding:14px;border:1px dashed var(--border);border-radius:10px;grid-column:1/-1}
+    .calendar-notes{margin-top:24px;padding:19px 20px;border-radius:13px;background:#FFF8DF;border:1px solid #F0E3B1;color:#66572E}
+    .calendar-notes h3{color:var(--navy)}
+    .calendar-notes p{font-size:12px;line-height:1.55;margin:8px 0}
+    .calendar-notes p:last-child{margin-bottom:0}
+    .calendar-method-note{padding-top:9px;border-top:1px solid rgba(102,87,46,.18)}
+    @media(max-width:900px){.calendar-controls{grid-template-columns:1fr 1fr}.calendar-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.calendar-annual-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.calendar-holiday-list{grid-template-columns:1fr}}
+    @media(max-width:600px){.calendar-card{padding:16px}.calendar-controls{grid-template-columns:1fr}.calendar-controls .button{width:100%}.calendar-print-actions .button{width:100%}.calendar-summary{gap:8px}.calendar-stat{padding:12px}.calendar-stat strong{font-size:22px}.calendar-annual-grid{grid-template-columns:1fr}.calendar-day{min-height:85px;padding:5px}.calendar-event-label{font-size:9px;padding:2px 3px}.calendar-holiday-item{grid-template-columns:1fr}.calendar-month-header h3{font-size:22px}}
+    @media print{
+      @page{size:A4 landscape;margin:8mm}
+      html,body{height:auto!important;background:#fff!important}
+      body.calendar-print-only{-webkit-print-color-adjust:exact;print-color-adjust:exact;color:#172331!important;font-size:9pt}
+      body.calendar-print-only>.topbar,body.calendar-print-only>header,body.calendar-print-only>footer{display:none!important}
+      body.calendar-print-only>main{display:block!important;margin:0!important;padding:0!important}
+      body.calendar-print-only>main>section:not(#kalendar){display:none!important}
+      body.calendar-print-only #kalendar{display:block!important;background:#fff!important;margin:0!important;padding:0!important}
+      body.calendar-print-only #kalendar .container{width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
+      body.calendar-print-only .calendar-controls,body.calendar-print-only .calendar-print-actions{display:none!important}
+      body.calendar-print-only .calendar-card{box-shadow:none!important;border:0!important;border-radius:0!important;padding:0!important}
+      body.calendar-print-only .calendar-section-heading{margin-bottom:8px!important;max-width:none!important}
+      body.calendar-print-only .calendar-section-heading .eyebrow{padding:2px 7px;font-size:7pt}
+      body.calendar-print-only .calendar-section-heading h2{font-size:18pt;margin:4px 0}
+      body.calendar-print-only .calendar-section-heading p{font-size:8pt}
+      body.calendar-print-only .calendar-summary{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:8px 0}
+      body.calendar-print-only .calendar-stat{padding:6px 8px;border-radius:5px}
+      body.calendar-print-only .calendar-stat-label{font-size:7pt}
+      body.calendar-print-only .calendar-stat strong{font-size:14pt;margin-top:3px}
+      body.calendar-print-only .calendar-legend{gap:5px 10px;margin:7px 0}
+      body.calendar-print-only .calendar-legend-item{font-size:7pt}
+      body.calendar-print-only .calendar-legend-swatch{width:10px;height:10px}
+      body.calendar-print-only .calendar-month-header{margin-bottom:5px}
+      body.calendar-print-only .calendar-month-header h3{font-size:14pt}
+      body.calendar-print-only .calendar-month-header p{font-size:7pt}
+      body.calendar-print-only .calendar-weekdays,body.calendar-print-only .calendar-days-grid{gap:2px}
+      body.calendar-print-only .calendar-weekday{padding:3px 1px;font-size:7pt}
+      body.calendar-print-only .calendar-day{min-height:18mm;border-radius:3px;padding:3px}
+      body.calendar-print-only .calendar-day-number{font-size:8pt;margin-bottom:2px}
+      body.calendar-print-only .calendar-day-number small{font-size:5pt}
+      body.calendar-print-only .calendar-event-label{padding:1px 2px;border-radius:2px;font-size:5.7pt;line-height:1.15}
+      body.calendar-print-only .calendar-event-label .event-estimate{font-size:5pt}
+      body.calendar-print-only .calendar-annual-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+      body.calendar-print-only .calendar-mini-month{padding:5px;border-radius:4px}
+      body.calendar-print-only .calendar-mini-month h3{font-size:8pt;margin-bottom:3px}
+      body.calendar-print-only .calendar-mini-weekdays,body.calendar-print-only .calendar-mini-days{gap:1px}
+      body.calendar-print-only .calendar-mini-weekday{font-size:5.5pt;padding:1px}
+      body.calendar-print-only .calendar-mini-day{min-height:4.5mm;border-radius:2px;font-size:6pt}
+      body.calendar-print-only .calendar-mini-metrics{font-size:5.5pt;margin-top:3px;padding-top:3px}
+      body.calendar-print-only .calendar-holiday-list-wrap{margin-top:8px}
+      body.calendar-print-only .calendar-holiday-list-wrap h3,body.calendar-print-only .calendar-notes h3{font-size:10pt;margin-bottom:5px}
+      body.calendar-print-only .calendar-holiday-list{grid-template-columns:1fr 1fr;gap:3px 8px}
+      body.calendar-print-only .calendar-holiday-item{grid-template-columns:minmax(95px,.75fr) minmax(130px,1.25fr);gap:2px 5px;padding:4px 5px;border-radius:3px}
+      body.calendar-print-only .calendar-holiday-date,body.calendar-print-only .calendar-holiday-name{font-size:6.5pt}
+      body.calendar-print-only .calendar-holiday-status{font-size:5.5pt;margin-top:1px}
+      body.calendar-print-only .calendar-notes{margin-top:8px;padding:8px 10px;border-radius:4px;break-inside:avoid}
+      body.calendar-print-only .calendar-notes p{font-size:6pt;line-height:1.3;margin:4px 0}
+      body.calendar-print-only .calendar-method-note{padding-top:4px}
+      body.calendar-print-only .calendar-month-view,body.calendar-print-only .calendar-annual-grid,body.calendar-print-only .calendar-holiday-item{break-inside:avoid}
+    }
+
   </style>
 </head>
 <body>
@@ -138,7 +255,7 @@
   <header>
     <nav class="container nav" aria-label="Glavna navigacija">
       <a class="brand" href="#pocetna"><span class="brand-mark">K</span><span>Knjigovodstveni<br>kalkulatori</span></a>
-      <div class="nav-links"><a href="#kategorije">Kategorije</a><a href="#freelanceri">Freelanceri</a><a href="#o-projektu">O projektu</a><a class="button" href="#kalkulator">Pronađi kalkulator ↗</a></div>
+      <div class="nav-links"><a href="#kategorije">Kategorije</a><a href="#kalendar">Kalendar</a><a href="#freelanceri">Freelanceri</a><a href="#o-projektu">O projektu</a><a class="button" href="#kalkulator">Pronađi kalkulator ↗</a></div>
     </nav>
   </header>
   <main>
@@ -183,6 +300,12 @@
             <a href="#freelanceri">Generiši AMS-1035 →</a>
           </article>
           <article class="category">
+            <div class="category-icon">▦</div>
+            <h3>Kalendar</h3>
+            <p>Radni dani i sati te državni i vjerski praznici u Federaciji BiH.</p>
+            <a href="#kalendar">Otvori kalendar →</a>
+          </article>
+          <article class="category">
             <div class="category-icon">§</div>
             <h3>Ugovor o djelu</h3>
             <p>Obračuni naknada, poreza i doprinosa po osnovu ugovora o djelu.</p>
@@ -216,6 +339,72 @@
       </div>
     </section>
 
+    <section class="calendar-section" id="kalendar">
+      <div class="container">
+        <div class="section-heading calendar-section-heading">
+          <span class="eyebrow">Radni kalendar FBiH</span>
+          <h2>Kalendar radnih dana i praznika</h2>
+          <p>Odaberite bilo koju godinu i mjesec. Kalendar prikazuje dane ponedjeljak–petak, procjenu radnih sati, državne praznike te islamske, katoličke i pravoslavne vjerske datume.</p>
+        </div>
+
+        <div class="calendar-card" id="calendarCard">
+          <div class="calendar-controls calendar-ui-only">
+            <div class="calendar-control">
+              <label for="calendarYear">Godina</label>
+              <input id="calendarYear" type="number" min="1900" max="2100" step="1" inputmode="numeric" aria-label="Odaberite godinu">
+            </div>
+            <div class="calendar-control">
+              <label for="calendarMonth">Mjesec</label>
+              <select id="calendarMonth" aria-label="Odaberite mjesec">
+                <option value="0">Januar</option><option value="1">Februar</option><option value="2">Mart</option>
+                <option value="3">April</option><option value="4">Maj</option><option value="5">Juni</option>
+                <option value="6">Juli</option><option value="7">August</option><option value="8">Septembar</option>
+                <option value="9">Oktobar</option><option value="10">Novembar</option><option value="11">Decembar</option>
+              </select>
+            </div>
+            <div class="calendar-control">
+              <label for="calendarView">Prikaz kalendara</label>
+              <select id="calendarView" aria-label="Odaberite mjesečni ili godišnji prikaz">
+                <option value="month">Mjesečni pregled</option>
+                <option value="year">Godišnji pregled</option>
+              </select>
+            </div>
+            <button class="button" type="button" id="calendarShowButton">Prikaži kalendar</button>
+          </div>
+
+          <div class="calendar-print-actions calendar-ui-only">
+            <button class="button secondary" type="button" id="calendarPrintMonth">Štampaj mjesec / PDF</button>
+            <button class="button secondary" type="button" id="calendarPrintYear">Štampaj godinu / PDF</button>
+            <span class="calendar-print-help">U prozoru za štampu odaberite „Sačuvaj kao PDF“ za preuzimanje dokumenta.</span>
+          </div>
+
+          <div class="calendar-summary" id="calendarSummary" aria-live="polite"></div>
+
+          <div class="calendar-legend" aria-label="Legenda boja praznika">
+            <span class="calendar-legend-item"><i class="calendar-legend-swatch calendar-event-state"></i> Državni praznici</span>
+            <span class="calendar-legend-item"><i class="calendar-legend-swatch calendar-event-islamic"></i> Islamski praznici</span>
+            <span class="calendar-legend-item"><i class="calendar-legend-swatch calendar-event-catholic"></i> Katolički praznici</span>
+            <span class="calendar-legend-item"><i class="calendar-legend-swatch calendar-event-orthodox"></i> Pravoslavni praznici</span>
+            <span class="calendar-legend-item"><i class="calendar-legend-swatch calendar-weekend-swatch"></i> Vikend</span>
+          </div>
+
+          <div id="calendarDisplay" class="calendar-display" data-mode="month"></div>
+
+          <div class="calendar-holiday-list-wrap">
+            <h3 id="calendarHolidayListTitle">Praznici i obilježavanja</h3>
+            <ul id="calendarHolidayList" class="calendar-holiday-list"></ul>
+          </div>
+
+          <div class="calendar-notes">
+            <h3>Važne napomene</h3>
+            <p><strong>Informativni karakter:</strong> kalendar je informativnog karaktera. Moguća su odstupanja zbog različitih faktora na koje se ne može utjecati, uključujući službene odluke o neradnim danima, eventualne posebne odluke Vlade FBiH i promjene propisa. Državni praznici se ne prenose automatski na naredni radni dan; za svaki konkretan period provjerite zvanična saopćenja nadležnih institucija.</p>
+            <p><strong>Islamski praznici:</strong> datumi se računaju prema lunarnom (mjesečevom) kalendaru. Prikazani datumi su orijentacioni i mogu odstupati za jedan dan; konačan datum potvrdite prema objavama Islamske zajednice u Bosni i Hercegovini.</p>
+            <p><strong>Vjersko odsustvo:</strong> prema članu 54. stav 3. Zakona o radu FBiH, poslodavac je dužan omogućiti radniku odsustvo do četiri radna dana u jednoj kalendarskoj godini radi zadovoljavanja njegovih vjerskih odnosno tradicijskih potreba, od čega se dva dana koriste uz naknadu plaće kao plaćeno odsustvo. Vjerski datumi zato se ne oduzimaju automatski od općeg broja radnih dana za sve radnike.</p>
+            <p class="calendar-method-note">Statistika prikazuje sve dane ponedjeljak–petak, zatim broj državnih neradnih praznika koji padaju radnim danom i procjenu radnih dana nakon tih praznika. Procijenjeni radni sati izračunavaju se kao 8 sati po procijenjenom radnom danu. Rasporedi smjena, kolektivni ugovori i posebne odluke mogu dovesti do drugačijeg fonda sati.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section class="calculator-section" id="freelanceri">
       <div class="container">
@@ -846,6 +1035,337 @@
         amsStatus.classList.remove("error");
       }, 0);
     });
+  </script>
+  <script>
+    // Kalendar FBiH: calculated entirely in the browser; no personal data is requested or stored.
+    (() => {
+      const calendarYearInput = document.getElementById("calendarYear");
+      const calendarMonthInput = document.getElementById("calendarMonth");
+      const calendarViewInput = document.getElementById("calendarView");
+      const calendarShowButton = document.getElementById("calendarShowButton");
+      const calendarPrintMonthButton = document.getElementById("calendarPrintMonth");
+      const calendarPrintYearButton = document.getElementById("calendarPrintYear");
+      const calendarSummary = document.getElementById("calendarSummary");
+      const calendarDisplay = document.getElementById("calendarDisplay");
+      const calendarHolidayList = document.getElementById("calendarHolidayList");
+      const calendarHolidayListTitle = document.getElementById("calendarHolidayListTitle");
+      if (!calendarYearInput || !calendarMonthInput || !calendarViewInput || !calendarDisplay) return;
+
+      const calMonths = ["Januar", "Februar", "Mart", "April", "Maj", "Juni", "Juli", "August", "Septembar", "Oktobar", "Novembar", "Decembar"];
+      const calWeekdays = ["Pon", "Uto", "Sri", "Čet", "Pet", "Sub", "Ned"];
+      const calWeekdaysFull = ["nedjelja", "ponedjeljak", "utorak", "srijeda", "četvrtak", "petak", "subota"];
+      const calCategories = { state: "Državni", islamic: "Islamski", catholic: "Katolički", orthodox: "Pravoslavni" };
+      const pad2 = (n) => String(n).padStart(2, "0");
+      const isoDate = (year, month, day) => `${year}-${pad2(month)}-${pad2(day)}`;
+      const utcDate = (year, monthIndex, day) => new Date(Date.UTC(year, monthIndex, day, 12, 0, 0));
+      const dateFromISO = (iso) => {
+        const [year, month, day] = iso.split("-").map(Number);
+        return utcDate(year, month - 1, day);
+      };
+      const toISO = (date) => isoDate(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate());
+      const shiftDate = (iso, delta) => {
+        const d = dateFromISO(iso);
+        d.setUTCDate(d.getUTCDate() + delta);
+        return toISO(d);
+      };
+      const daysInMonth = (year, monthIndex) => new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate();
+      const isWeekday = (iso) => {
+        const day = dateFromISO(iso).getUTCDay();
+        return day >= 1 && day <= 5;
+      };
+      const escapeText = (value) => String(value).replace(/[&<>"']/g, (ch) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;", "'":"&#39;"}[ch]));
+      const niceDate = (iso) => {
+        const d = dateFromISO(iso);
+        return `${calWeekdaysFull[d.getUTCDay()]}, ${d.getUTCDate()}. ${calMonths[d.getUTCMonth()].toLowerCase()} ${d.getUTCFullYear()}.`;
+      };
+      const shortDate = (iso) => {
+        const d = dateFromISO(iso);
+        return `${d.getUTCDate()}. ${calMonths[d.getUTCMonth()].toLowerCase()}`;
+      };
+      const addHoliday = (list, date, category, name, options = {}) => {
+        list.push({ date, category, name, nonWorking: Boolean(options.nonWorking), estimated: Boolean(options.estimated), status: options.status || "" });
+      };
+
+      function westernEaster(year) {
+        const a = year % 19;
+        const b = Math.floor(year / 100);
+        const c = year % 100;
+        const d = Math.floor(b / 4);
+        const e = b % 4;
+        const f = Math.floor((b + 8) / 25);
+        const g = Math.floor((b - f + 1) / 3);
+        const h = (19 * a + b - d - g + 15) % 30;
+        const i = Math.floor(c / 4);
+        const k = c % 4;
+        const l = (32 + 2 * e + 2 * i - h - k) % 7;
+        const m = Math.floor((a + 11 * h + 22 * l) / 451);
+        const month = Math.floor((h + l - 7 * m + 114) / 31);
+        const day = ((h + l - 7 * m + 114) % 31) + 1;
+        return isoDate(year, month, day);
+      }
+
+      function orthodoxEaster(year) {
+        // Julian computus, converted to Gregorian calendar. Correct for the contemporary 1900-2099 offset and onward with the century offset formula.
+        const a = year % 4;
+        const b = year % 7;
+        const c = year % 19;
+        const d = (19 * c + 15) % 30;
+        const e = (2 * a + 4 * b - d + 34) % 7;
+        const julianMonth = Math.floor((d + e + 114) / 31);
+        const julianDay = ((d + e + 114) % 31) + 1;
+        const gregorianJulianDifference = Math.floor(year / 100) - Math.floor(year / 400) - 2;
+        const julianDateAsGregorian = utcDate(year, julianMonth - 1, julianDay);
+        julianDateAsGregorian.setUTCDate(julianDateAsGregorian.getUTCDate() + gregorianJulianDifference);
+        return toISO(julianDateAsGregorian);
+      }
+
+      function islamicEidDates(year, holidays) {
+        // Uses the browser's tabular Islamic-civil calendar. Bosnian lunar observations can differ by one day.
+        try {
+          const formatter = new Intl.DateTimeFormat("en-u-ca-islamic-civil-nu-latn", {
+            day: "numeric", month: "numeric", year: "numeric", timeZone: "UTC"
+          });
+          let ramadanEidFound = false;
+          let sacrificeEidFound = false;
+          // Iterate over Gregorian days in the requested year; date values are created at UTC noon to avoid timezone shifts.
+          const numberOfDays = (Date.UTC(year + 1, 0, 1) - Date.UTC(year, 0, 1)) / 86400000;
+          for (let index = 0; index < numberOfDays; index++) {
+            const d = utcDate(year, 0, 1 + index);
+            const parts = Object.fromEntries(formatter.formatToParts(d).map((part) => [part.type, part.value]));
+            const month = Number(parts.month);
+            const day = Number(parts.day);
+            const iso = toISO(d);
+            if (month === 10 && day === 1 && !ramadanEidFound) {
+              addHoliday(holidays, iso, "islamic", "Ramazanski bajram", { estimated: true, status: "Orijentacioni lunarni datum — moguće odstupanje ±1 dan." });
+              ramadanEidFound = true;
+            }
+            if (month === 12 && day === 10 && !sacrificeEidFound) {
+              addHoliday(holidays, iso, "islamic", "Kurban-bajram", { estimated: true, status: "Orijentacioni lunarni datum — moguće odstupanje ±1 dan." });
+              sacrificeEidFound = true;
+            }
+          }
+          return ramadanEidFound && sacrificeEidFound;
+        } catch (error) {
+          console.warn("Islamski datumi nisu dostupni u ovom pregledniku:", error);
+          return false;
+        }
+      }
+
+      function buildHolidays(year) {
+        const holidays = [];
+        // State holidays observed in the Federation of Bosnia and Herzegovina.
+        addHoliday(holidays, isoDate(year, 1, 1), "state", "Nova godina (1. dan)", { nonWorking: true, status: "Državni praznik — neradni dan." });
+        addHoliday(holidays, isoDate(year, 1, 2), "state", "Nova godina (2. dan)", { nonWorking: true, status: "Državni praznik — neradni dan." });
+        addHoliday(holidays, isoDate(year, 3, 1), "state", "Dan nezavisnosti Bosne i Hercegovine", { nonWorking: true, status: "Državni praznik — neradni dan na zakonom određen datum." });
+        addHoliday(holidays, isoDate(year, 5, 1), "state", "Međunarodni praznik rada (1. dan)", { nonWorking: true, status: "Državni praznik — neradni dan." });
+        addHoliday(holidays, isoDate(year, 5, 2), "state", "Međunarodni praznik rada (2. dan)", { nonWorking: true, status: "Državni praznik — neradni dan." });
+        addHoliday(holidays, isoDate(year, 5, 9), "state", "Dan pobjede nad fašizmom", { nonWorking: false, status: "Obilježava se radno; nije oduzet iz fonda radnih dana." });
+        addHoliday(holidays, isoDate(year, 11, 25), "state", "Dan državnosti Bosne i Hercegovine", { nonWorking: true, status: "Državni praznik — neradni dan na zakonom određen datum." });
+
+        // Catholic Christian dates: Western/Gregorian Easter.
+        const catholicEaster = westernEaster(year);
+        addHoliday(holidays, shiftDate(catholicEaster, -2), "catholic", "Veliki petak (katolički)", { status: "Vjerski datum; pravo na odsustvo prema propisima i potrebama radnika." });
+        addHoliday(holidays, catholicEaster, "catholic", "Uskrs (katolički)", { status: "Vjerski datum; pravo na odsustvo prema propisima i potrebama radnika." });
+        addHoliday(holidays, shiftDate(catholicEaster, 1), "catholic", "Uskrsni ponedjeljak (katolički)", { status: "Vjerski datum; pravo na odsustvo prema propisima i potrebama radnika." });
+        addHoliday(holidays, isoDate(year, 12, 24), "catholic", "Badnjak (katolički)", { status: "Vjerski datum; nije automatski neradni dan za sve radnike." });
+        addHoliday(holidays, isoDate(year, 12, 25), "catholic", "Božić (katolički)", { status: "Vjerski datum; pravo na odsustvo prema propisima i potrebama radnika." });
+
+        // Orthodox Christian dates: Julian Easter computus converted to Gregorian calendar.
+        addHoliday(holidays, isoDate(year, 1, 6), "orthodox", "Badnji dan (pravoslavni)", { status: "Vjerski datum; nije automatski neradni dan za sve radnike." });
+        addHoliday(holidays, isoDate(year, 1, 7), "orthodox", "Božić (pravoslavni)", { status: "Vjerski datum; pravo na odsustvo prema propisima i potrebama radnika." });
+        const orthodoxEasterDate = orthodoxEaster(year);
+        addHoliday(holidays, shiftDate(orthodoxEasterDate, -2), "orthodox", "Veliki petak (pravoslavni)", { status: "Vjerski datum; pravo na odsustvo prema propisima i potrebama radnika." });
+        addHoliday(holidays, shiftDate(orthodoxEasterDate, -1), "orthodox", "Velika subota (pravoslavna)", { status: "Vjerski datum." });
+        addHoliday(holidays, orthodoxEasterDate, "orthodox", "Vaskrs (pravoslavni)", { status: "Vjerski datum; pravo na odsustvo prema propisima i potrebama radnika." });
+        addHoliday(holidays, shiftDate(orthodoxEasterDate, 1), "orthodox", "Vaskršnji ponedjeljak (pravoslavni)", { status: "Vjerski datum; pravo na odsustvo prema propisima i potrebama radnika." });
+
+        const islamicSupported = islamicEidDates(year, holidays);
+        holidays.sort((a, b) => a.date.localeCompare(b.date) || ["state", "islamic", "catholic", "orthodox"].indexOf(a.category) - ["state", "islamic", "catholic", "orthodox"].indexOf(b.category));
+        return { holidays, islamicSupported };
+      }
+
+      function getMetrics(year, monthIndex, holidays) {
+        const firstMonth = monthIndex === null ? 0 : monthIndex;
+        const lastMonth = monthIndex === null ? 11 : monthIndex;
+        let weekdays = 0;
+        for (let month = firstMonth; month <= lastMonth; month++) {
+          const days = daysInMonth(year, month);
+          for (let day = 1; day <= days; day++) {
+            const d = utcDate(year, month, day);
+            const weekday = d.getUTCDay();
+            if (weekday >= 1 && weekday <= 5) weekdays++;
+          }
+        }
+        const stateDates = new Set(holidays.filter((h) => h.category === "state" && h.nonWorking && isWeekday(h.date)).map((h) => h.date));
+        let stateWeekdays = 0;
+        for (const date of stateDates) {
+          const d = dateFromISO(date);
+          const month = d.getUTCMonth();
+          if (month >= firstMonth && month <= lastMonth) stateWeekdays++;
+        }
+        const estimatedDays = Math.max(0, weekdays - stateWeekdays);
+        return { weekdays, stateWeekdays, estimatedDays, hours: estimatedDays * 8 };
+      }
+
+      function renderStats(year, monthIndex, holidays) {
+        const metrics = getMetrics(year, monthIndex, holidays);
+        calendarSummary.innerHTML = `
+          <div class="calendar-stat"><span class="calendar-stat-label">Dani ponedjeljak–petak</span><strong>${metrics.weekdays}</strong></div>
+          <div class="calendar-stat"><span class="calendar-stat-label">Državni neradni praznici koji padaju radnim danom</span><strong>${metrics.stateWeekdays}</strong></div>
+          <div class="calendar-stat primary"><span class="calendar-stat-label">Procijenjeni radni dani nakon državnih praznika</span><strong>${metrics.estimatedDays}</strong></div>
+          <div class="calendar-stat"><span class="calendar-stat-label">Procijenjeni radni sati (8 h po danu)</span><strong>${metrics.hours}</strong></div>`;
+      }
+
+      function renderMonth(year, monthIndex, holidays) {
+        const title = `${calMonths[monthIndex]} ${year}.`;
+        const monthHolidays = holidays.filter((holiday) => Number(holiday.date.slice(5, 7)) === monthIndex + 1);
+        const holidayMap = new Map();
+        monthHolidays.forEach((event) => {
+          if (!holidayMap.has(event.date)) holidayMap.set(event.date, []);
+          holidayMap.get(event.date).push(event);
+        });
+        let cells = "";
+        const firstWeekday = (utcDate(year, monthIndex, 1).getUTCDay() + 6) % 7;
+        for (let i = 0; i < firstWeekday; i++) cells += '<div class="calendar-day empty" aria-hidden="true"></div>';
+        for (let day = 1; day <= daysInMonth(year, monthIndex); day++) {
+          const date = isoDate(year, monthIndex + 1, day);
+          const dateObj = dateFromISO(date);
+          const weekend = dateObj.getUTCDay() === 0 || dateObj.getUTCDay() === 6;
+          const events = holidayMap.get(date) || [];
+          const className = `calendar-day${weekend ? " weekend" : ""}${events.length ? " has-holiday" : ""}`;
+          const eventLabels = events.map((event) => `<span class="calendar-event-label calendar-event-${event.category}" title="${escapeText(`${calCategories[event.category]} praznik: ${event.name}${event.status ? ` — ${event.status}` : ""}`)}">${escapeText(event.name)}${event.estimated ? ' <span class="event-estimate">(okvirno)</span>' : ""}</span>`).join("");
+          cells += `<div class="${className}" title="${escapeText(events.map((event) => event.name).join("; "))}"><div class="calendar-day-number"><span>${day}</span>${weekend ? '<small>VIKEND</small>' : ""}</div><div class="calendar-day-events">${eventLabels}</div></div>`;
+        }
+        const totalCells = firstWeekday + daysInMonth(year, monthIndex);
+        const trailing = (7 - (totalCells % 7)) % 7;
+        for (let i = 0; i < trailing; i++) cells += '<div class="calendar-day empty" aria-hidden="true"></div>';
+        return `<div class="calendar-month-view"><div class="calendar-month-header"><div><h3>${title}</h3><p>Državni i vjerski datumi označeni su pastelnim bojama.</p></div></div><div class="calendar-weekdays">${calWeekdays.map((day) => `<div class="calendar-weekday">${day}</div>`).join("")}</div><div class="calendar-days-grid">${cells}</div></div>`;
+      }
+
+      function renderAnnual(year, holidays) {
+        const miniDays = calWeekdays.map((day) => `<div class="calendar-mini-weekday">${day.slice(0, 2)}</div>`).join("");
+        let monthsMarkup = "";
+        for (let month = 0; month < 12; month++) {
+          const monthEvents = holidays.filter((event) => Number(event.date.slice(5, 7)) === month + 1);
+          const eventMap = new Map();
+          monthEvents.forEach((event) => {
+            if (!eventMap.has(event.date)) eventMap.set(event.date, []);
+            eventMap.get(event.date).push(event);
+          });
+          let daysMarkup = "";
+          const firstWeekday = (utcDate(year, month, 1).getUTCDay() + 6) % 7;
+          for (let i = 0; i < firstWeekday; i++) daysMarkup += '<div class="calendar-mini-day blank"></div>';
+          for (let day = 1; day <= daysInMonth(year, month); day++) {
+            const iso = isoDate(year, month + 1, day);
+            const d = dateFromISO(iso);
+            const weekend = d.getUTCDay() === 0 || d.getUTCDay() === 6;
+            const events = eventMap.get(iso) || [];
+            const primaryCategory = events.length ? events[0].category : "";
+            const catClasses = events.map((event) => event.category).filter((cat, i, list) => list.indexOf(cat) === i);
+            const markers = catClasses.map((cat) => `<i class="calendar-mini-marker ${cat}" aria-hidden="true"></i>`).join("");
+            const title = events.map((event) => `${calCategories[event.category]}: ${event.name}`).join("; ");
+            daysMarkup += `<div class="calendar-mini-day${weekend ? " weekend" : ""}${events.length ? ` holiday calendar-event-${primaryCategory}` : ""}" title="${escapeText(title)}" aria-label="${escapeText(`${day}. ${calMonths[month]}${title ? `: ${title}` : ""}`)}">${day}${markers ? `<span class="calendar-mini-markers">${markers}</span>` : ""}</div>`;
+          }
+          const total = firstWeekday + daysInMonth(year, month);
+          const trailing = (7 - (total % 7)) % 7;
+          for (let i = 0; i < trailing; i++) daysMarkup += '<div class="calendar-mini-day blank"></div>';
+          const metrics = getMetrics(year, month, holidays);
+          monthsMarkup += `<article class="calendar-mini-month"><h3>${calMonths[month]}</h3><div class="calendar-mini-weekdays">${miniDays}</div><div class="calendar-mini-days">${daysMarkup}</div><div class="calendar-mini-metrics">Dani pon–pet: <strong>${metrics.weekdays}</strong> · Procijenjeni radni dani: <strong>${metrics.estimatedDays}</strong> · Sati: <strong>${metrics.hours}</strong></div></article>`;
+        }
+        return `<div class="calendar-annual-view"><div class="calendar-month-header"><div><h3>Godišnji pregled — ${year}.</h3><p>Boje u datumima označavaju kategorije praznika; puni nazivi i napomene navedeni su ispod kalendara.</p></div></div><div class="calendar-annual-grid">${monthsMarkup}</div></div>`;
+      }
+
+      function renderHolidayList(year, monthIndex, holidays) {
+        const list = holidays.filter((event) => monthIndex === null || Number(event.date.slice(5, 7)) === monthIndex + 1);
+        calendarHolidayListTitle.textContent = monthIndex === null ? `Praznici i obilježavanja — ${year}. godina` : `Praznici i obilježavanja — ${calMonths[monthIndex]} ${year}.`;
+        if (!list.length) {
+          calendarHolidayList.innerHTML = '<li class="calendar-holiday-empty">Nema evidentiranih praznika za odabrani period.</li>';
+          return;
+        }
+        calendarHolidayList.innerHTML = list.map((event) => {
+          let status = event.status;
+          if (!status && event.category !== "state") status = "Vjerski datum; pravo na odsustvo zavisi od propisa i potreba radnika.";
+          if (event.category === "state" && !status) status = event.nonWorking ? "Državni praznik — neradni dan." : "Obilježava se radno.";
+          return `<li class="calendar-holiday-item"><span class="calendar-holiday-date">${escapeText(niceDate(event.date))}</span><div class="calendar-holiday-detail"><span class="calendar-holiday-name calendar-event-label calendar-event-${event.category}">${escapeText(event.name)}${event.estimated ? " (okvirni datum)" : ""}</span><div class="calendar-holiday-status">${escapeText(status || "")}</div></div></li>`;
+        }).join("");
+      }
+
+      let calendarIslamicSupported = true;
+      function renderWorkingCalendar() {
+        let year = Number(calendarYearInput.value);
+        if (!Number.isInteger(year) || year < 1900 || year > 2100) {
+          calendarSummary.innerHTML = '<div class="calendar-holiday-empty">Unesite godinu između 1900. i 2100.</div>';
+          calendarDisplay.innerHTML = "";
+          calendarHolidayList.innerHTML = "";
+          return;
+        }
+        const monthIndex = Number(calendarMonthInput.value);
+        const mode = calendarViewInput.value;
+        const { holidays, islamicSupported } = buildHolidays(year);
+        calendarIslamicSupported = islamicSupported;
+        renderStats(year, mode === "month" ? monthIndex : null, holidays);
+        calendarDisplay.dataset.mode = mode;
+        calendarDisplay.innerHTML = mode === "month" ? renderMonth(year, monthIndex, holidays) : renderAnnual(year, holidays);
+        renderHolidayList(year, mode === "month" ? monthIndex : null, holidays);
+        const oldSupportNotice = document.getElementById("calendarIslamicSupportNotice");
+        if (!calendarIslamicSupported) {
+          if (!oldSupportNotice) {
+            const notice = document.createElement("p");
+            notice.id = "calendarIslamicSupportNotice";
+            notice.className = "calendar-method-note";
+            notice.textContent = "U ovom pregledniku nije moguće automatski izračunati orijentacione islamske datume. Probajte noviji preglednik s podrškom za islamski kalendar.";
+            const notes = document.querySelector("#kalendar .calendar-notes");
+            if (notes) notes.appendChild(notice);
+          }
+        } else if (oldSupportNotice) {
+          oldSupportNotice.remove();
+        }
+      }
+
+      let priorViewBeforePrint = null;
+      let priorTitleBeforePrint = "";
+      function restoreAfterPrint() {
+        if (!document.body.classList.contains("calendar-print-only")) return;
+        document.body.classList.remove("calendar-print-only");
+        if (priorViewBeforePrint) calendarViewInput.value = priorViewBeforePrint;
+        if (priorTitleBeforePrint) document.title = priorTitleBeforePrint;
+        priorViewBeforePrint = null;
+        priorTitleBeforePrint = "";
+        renderWorkingCalendar();
+      }
+      function printCalendar(mode) {
+        const year = Number(calendarYearInput.value);
+        if (!Number.isInteger(year) || year < 1900 || year > 2100) {
+          calendarYearInput.focus();
+          renderWorkingCalendar();
+          return;
+        }
+        priorViewBeforePrint = calendarViewInput.value;
+        priorTitleBeforePrint = document.title;
+        calendarViewInput.value = mode;
+        renderWorkingCalendar();
+        document.title = mode === "month"
+          ? `Kalendar FBiH - ${calMonths[Number(calendarMonthInput.value)]} ${year}`
+          : `Kalendar FBiH - ${year}`;
+        document.body.classList.add("calendar-print-only");
+        requestAnimationFrame(() => {
+          window.print();
+          restoreAfterPrint();
+        });
+      }
+
+      const thisYear = new Date().getFullYear();
+      calendarYearInput.value = String(thisYear);
+      calendarMonthInput.value = String(new Date().getMonth());
+      calendarShowButton.addEventListener("click", renderWorkingCalendar);
+      calendarYearInput.addEventListener("change", renderWorkingCalendar);
+      calendarMonthInput.addEventListener("change", renderWorkingCalendar);
+      calendarViewInput.addEventListener("change", renderWorkingCalendar);
+      calendarPrintMonthButton.addEventListener("click", () => printCalendar("month"));
+      calendarPrintYearButton.addEventListener("click", () => printCalendar("year"));
+      window.addEventListener("afterprint", restoreAfterPrint);
+      renderWorkingCalendar();
+    })();
   </script>
 </body>
 </html>
