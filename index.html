@@ -60,6 +60,32 @@
     .category p{color:var(--muted);font-size:13px;margin:0 0 15px}
     .category a{color:var(--green);font-size:13px;font-weight:800}
     .category .pill{display:inline-block}
+
+    .ams-section-intro{max-width:760px}
+    .ams-card{margin-top:24px}
+    .ams-card fieldset{border:1px solid var(--border);border-radius:14px;padding:22px;margin:0 0 22px;min-width:0}
+    .ams-card legend{padding:0 9px;color:var(--navy);font-size:17px;font-weight:800}
+    .ams-card .field{min-width:0}
+    .ams-card .field input{min-height:46px}
+    .ams-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 20px}
+    .ams-field-wide{grid-column:1 / -1}
+    .privacy-notice{display:flex;gap:14px;align-items:flex-start;background:#EAF4ED;border:1px solid #D0E7D8;color:#244B37;border-radius:14px;padding:18px;margin:22px 0}
+    .privacy-notice .privacy-icon{font-size:24px;line-height:1.2}
+    .privacy-notice strong{display:block;margin-bottom:5px;color:#1D6041}
+    .privacy-notice p{margin:0;font-size:13px}
+    .ams-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .ams-status{font-size:13px;color:var(--muted);margin-top:12px}
+    .ams-status.error{color:#A32929}
+    .ams-results{margin-top:26px}
+    .payment-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:18px}
+    .payment-card{border:1px solid var(--border);border-radius:16px;background:#fff;padding:20px;box-shadow:var(--shadow)}
+    .payment-card .payment-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--green-light);color:var(--green);font-size:21px;margin-bottom:14px}
+    .payment-card h3{font-size:15px;line-height:1.35;color:var(--navy);margin:0 0 10px}
+    .payment-card strong{display:block;color:var(--green);font-size:25px;margin-bottom:7px;font-variant-numeric:tabular-nums}
+    .payment-card p{font-size:12px;color:var(--muted);margin:0}
+    .ams-download{display:inline-flex;margin-top:20px}
+    @media(max-width:900px){.payment-cards{grid-template-columns:1fr 1fr}}
+    @media(max-width:600px){.ams-card fieldset{padding:17px 14px}.ams-form-grid,.payment-cards{grid-template-columns:1fr}.ams-field-wide{grid-column:auto}.ams-actions .button{width:100%}}
     .calculator-section{background:var(--gray)}
     .calculator{background:#fff;padding:30px;border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow)}
     .calculator-top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:24px}
@@ -104,7 +130,7 @@
     footer p{max-width:520px}
     .footer-bottom{border-top:1px solid #314457;padding-top:19px;color:#AAB8C5}
     @media(max-width:900px){.hero-grid{grid-template-columns:1fr}.preview{max-width:540px}.nav-links{gap:14px}.results{grid-template-columns:repeat(3,minmax(0,1fr))}.categories{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:600px){.container{width:min(100% - 28px,1120px)}.topbar .container{font-size:11px}.nav{min-height:70px}.brand{font-size:14px;gap:9px}.brand-mark{width:37px;height:37px}.nav-links{font-size:12px;gap:12px}.nav-links a:nth-child(2){display:none}.nav-links .button{display:none}.hero{padding:48px 0}.hero-copy{font-size:15px}section{padding:48px 0}.calculator{padding:19px}.inputs{grid-template-columns:1fr}.categories{grid-template-columns:1fr}.results{grid-template-columns:1fr}.result strong{font-size:22px}.cta{padding:26px 22px;align-items:flex-start;flex-direction:column}.preview-total strong{font-size:21px}h1{letter-spacing:-1.4px}}
+    @media(max-width:600px){.container{width:min(100% - 28px,1120px)}.topbar .container{font-size:11px}.nav{min-height:70px}.brand{font-size:14px;gap:9px}.brand-mark{width:37px;height:37px}.nav-links{font-size:12px;gap:12px}.nav-links a:nth-child(3){display:none}.nav-links .button{display:none}.hero{padding:48px 0}.hero-copy{font-size:15px}section{padding:48px 0}.calculator{padding:19px}.inputs{grid-template-columns:1fr}.categories{grid-template-columns:1fr}.results{grid-template-columns:1fr}.result strong{font-size:22px}.cta{padding:26px 22px;align-items:flex-start;flex-direction:column}.preview-total strong{font-size:21px}h1{letter-spacing:-1.4px}}
   </style>
 </head>
 <body>
@@ -112,7 +138,7 @@
   <header>
     <nav class="container nav" aria-label="Glavna navigacija">
       <a class="brand" href="#pocetna"><span class="brand-mark">K</span><span>Knjigovodstveni<br>kalkulatori</span></a>
-      <div class="nav-links"><a href="#kategorije">Kategorije</a><a href="#o-projektu">O projektu</a><a class="button" href="#kalkulator">Pronađi kalkulator ↗</a></div>
+      <div class="nav-links"><a href="#kategorije">Kategorije</a><a href="#freelanceri">Freelanceri</a><a href="#o-projektu">O projektu</a><a class="button" href="#kalkulator">Pronađi kalkulator ↗</a></div>
     </nav>
   </header>
   <main>
@@ -151,6 +177,12 @@
             <a href="#kalkulator">Otvori kalkulatore →</a>
           </article>
           <article class="category">
+            <div class="category-icon">ƒ</div>
+            <h3>Freelanceri</h3>
+            <p>Generisanje AMS-1035 obrasca i pregled iznosa za uplatu poreza i doprinosa.</p>
+            <a href="#freelanceri">Generiši AMS-1035 →</a>
+          </article>
+          <article class="category">
             <div class="category-icon">§</div>
             <h3>Ugovor o djelu</h3>
             <p>Obračuni naknada, poreza i doprinosa po osnovu ugovora o djelu.</p>
@@ -180,6 +212,133 @@
             <p>Razumljiva objašnjenja, relevantni propisi i korisni izvori.</p>
             <span class="pill">U pripremi</span>
           </article>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="calculator-section" id="freelanceri">
+      <div class="container">
+        <div class="section-heading ams-section-intro">
+          <span class="eyebrow">Freelanceri</span>
+          <h2>Generisanje obrasca AMS-1035</h2>
+          <p>Popunite podatke, provjerite automatski obračun i preuzmite popunjen obrazac u PDF formatu. Obrazac se generiše na vašem uređaju.</p>
+        </div>
+
+        <form id="amsForm" class="calculator ams-card">
+          <fieldset>
+            <legend>Dio 1 — Podaci o primaocu</legend>
+            <div class="ams-form-grid">
+              <div class="field">
+                <label for="amsRecipientName">Ime i prezime *</label>
+                <input id="amsRecipientName" name="recipientName" type="text" autocomplete="name" maxlength="140" required>
+              </div>
+              <div class="field">
+                <label for="amsJmbg">JMBG (opcionalno)</label>
+                <input id="amsJmbg" name="jmbg" type="text" inputmode="numeric" pattern="[0-9]{13}" maxlength="13" placeholder="13 cifara, ako želite unijeti">
+                <span class="help">JMBG možete preskočiti ako ne želite unositi lični podatak; u tom slučaju ga možete ručno upisati na odštampanom obrascu.</span>
+              </div>
+              <div class="field ams-field-wide">
+                <label for="amsRecipientAddress">Adresa primaoca *</label>
+                <input id="amsRecipientAddress" name="recipientAddress" type="text" autocomplete="street-address" maxlength="180" required>
+              </div>
+              <div class="field">
+                <label for="amsPaymentDate">Datum isplate *</label>
+                <input id="amsPaymentDate" name="paymentDate" type="date" required>
+              </div>
+              <div class="field">
+                <label for="amsPeriod">Period mjesec/godina *</label>
+                <input id="amsPeriod" name="period" type="month" required>
+                <span class="help">Odaberite mjesec i godinu, npr. oktobar 2026. Na obrascu će biti prikazano 10/2026.</span>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Dio 2 — Podaci o isplatiocu / klijentu</legend>
+            <div class="ams-form-grid">
+              <div class="field">
+                <label for="amsPayerName">Naziv klijenta / isplatioca *</label>
+                <input id="amsPayerName" name="payerName" type="text" maxlength="180" required>
+              </div>
+              <div class="field">
+                <label for="amsPayerCountry">Država *</label>
+                <input id="amsPayerCountry" name="payerCountry" type="text" maxlength="100" placeholder="Npr. Njemačka" required>
+              </div>
+              <div class="field ams-field-wide">
+                <label for="amsPayerAddress">Adresa klijenta / isplatioca *</label>
+                <input id="amsPayerAddress" name="payerAddress" type="text" maxlength="180" required>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Dio 3 — Podaci o prihodu, porezu i doprinosima</legend>
+            <div class="ams-form-grid">
+              <div class="field">
+                <label for="amsPaymentAmount">Iznos uplate (KM) *</label>
+                <input id="amsPaymentAmount" name="paymentAmount" type="number" min="0.01" step="0.01" value="1000.00" inputmode="decimal" required>
+                <span class="help">Unesite stvarni iznos uplate od klijenta.</span>
+              </div>
+              <div class="field">
+                <label for="amsDeduction">Odbitak (%) *</label>
+                <input id="amsDeduction" name="deductionPercent" type="number" min="0" max="100" step="0.01" value="20" inputmode="decimal" required>
+                <span class="help">Zadano je 20%. Za autorske naknade unesite 30%.</span>
+              </div>
+              <div class="field ams-field-wide">
+                <label for="amsForeignTaxCredit">Iznos poreznog kredita plaćenog u inostranstvu (KM)</label>
+                <input id="amsForeignTaxCredit" name="foreignTaxCredit" type="number" min="0" step="0.01" value="0.00" inputmode="decimal">
+                <span class="help">Ovaj iznos se upisuje u kolonu 13. Ako nema poreznog kredita, ostavite 0,00 KM.</span>
+              </div>
+            </div>
+            <div class="notice">
+              <strong>Kako se računa iznos dohotka (kolona 9)?</strong><br>
+              Iznos dohotka = iznos uplate × (1 − odbitak). Primjer: 1.000,00 KM × (1 − 0,20) = 800,00 KM. Dobijeni iznos služi kao polazna osnovica za obračun doprinosa i poreza na obrascu.
+            </div>
+          </fieldset>
+
+          <div class="privacy-notice">
+            <div class="privacy-icon" aria-hidden="true">🔒</div>
+            <div>
+              <strong>Privatnost ličnih i osjetljivih podataka</strong>
+              <p>Uneseni podaci obrađuju se privremeno u vašem pregledniku. Kalkulator ih ne šalje na naše servere i ne pohranjuje ih u bazu podataka, kolačiće, lokalnu pohranu ili druge trajne spremišne lokacije. JMBG možete ostaviti praznim. PDF se generiše na vašem uređaju; preuzeta datoteka ostaje pod vašom kontrolom. Osvježavanjem ili zatvaranjem stranice uneseni podaci iz forme se uklanjaju.</p>
+            </div>
+          </div>
+
+          <div class="ams-actions">
+            <button id="amsGenerateButton" class="button" type="submit">Generiši AMS-1035 PDF →</button>
+            <button class="button secondary" type="reset">Očisti formu</button>
+          </div>
+          <p id="amsStatus" class="ams-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <div id="amsResult" class="ams-results" hidden>
+          <div class="section-heading">
+            <span class="eyebrow">Pregled uplatnica</span>
+            <h2>Iznosi za uplatu</h2>
+            <p>Iznosi su preuzeti iz izračuna na obrascu AMS-1035. Ovdje nisu navedeni brojevi računa, šifre prihoda, općine niti pozivi na broj; te podatke provjerite u važećim instrukcijama za uplatu.</p>
+          </div>
+          <div class="payment-cards">
+            <article class="payment-card">
+              <div class="payment-icon" aria-hidden="true">₼</div>
+              <h3>Porez — uplata Poreznoj upravi</h3>
+              <strong id="amsPayTax">0,00 KM</strong>
+              <p>Razlika poreza za uplatu iz kolone 14.</p>
+            </article>
+            <article class="payment-card">
+              <div class="payment-icon" aria-hidden="true">＋</div>
+              <h3>Doprinos za zdravstveno osiguranje — Kanton (89,80%)</h3>
+              <strong id="amsPayHealthCanton">0,00 KM</strong>
+              <p>89,80% od doprinosa za zdravstveno osiguranje iz kolone 10.</p>
+            </article>
+            <article class="payment-card">
+              <div class="payment-icon" aria-hidden="true">＋</div>
+              <h3>Doprinos za zdravstveno osiguranje — Federacija (10,20%)</h3>
+              <strong id="amsPayHealthFederation">0,00 KM</strong>
+              <p>10,20% od doprinosa za zdravstveno osiguranje iz kolone 10.</p>
+            </article>
+          </div>
+          <a id="amsDownloadLink" class="button ams-download" href="#" download="ams-1035-obrazac.pdf">Preuzmi popunjen obrazac AMS-1035 (PDF) ↓</a>
         </div>
       </div>
     </section>
@@ -334,6 +493,8 @@
       <div class="footer-bottom">© <span id="year"></span> Knjigovodstveni kalkulatori.</div>
     </div>
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js"></script>
   <script>
     const $ = (id) => document.getElementById(id);
     const money = (value) => new Intl.NumberFormat("bs-BA", {minimumFractionDigits:2, maximumFractionDigits:2}).format(Number.isFinite(value) ? value : 0) + " KM";
@@ -405,6 +566,215 @@
     $("year").textContent = new Date().getFullYear();
     calculate();
     calculateGrossFromNet();
+
+    // AMS-1035 generator: values are processed only in this browser session.
+    const amsForm = $("amsForm");
+    const amsStatus = $("amsStatus");
+    const amsResult = $("amsResult");
+    const amsGenerateButton = $("amsGenerateButton");
+    const amsDownloadLink = $("amsDownloadLink");
+    let amsPdfObjectUrl = null;
+    let lastAmsCalculations = null;
+    let amsWasGenerated = false;
+    let amsResultStale = false;
+
+    function roundCurrency(value) {
+      return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+    }
+    function formatAmsMoney(value) {
+      return new Intl.NumberFormat("bs-BA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(roundCurrency(value)) + " KM";
+    }
+    function formatPdfAmount(value) {
+      return new Intl.NumberFormat("bs-BA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(roundCurrency(value));
+    }
+    function calculateAmsValues() {
+      const payment = Number($("amsPaymentAmount").value);
+      const deductionPercent = Number($("amsDeduction").value);
+      const foreignCreditRaw = $("amsForeignTaxCredit").value;
+      const foreignTaxCredit = roundCurrency(foreignCreditRaw === "" ? 0 : Number(foreignCreditRaw));
+      const income = roundCurrency(payment * (1 - deductionPercent / 100));
+      const healthContribution = roundCurrency(income * 0.04);
+      const taxBase = roundCurrency(income - healthContribution);
+      const taxAmount = roundCurrency(taxBase * 0.10);
+      const taxDifference = roundCurrency(Math.max(0, taxAmount - foreignTaxCredit));
+      const cantonHealth = roundCurrency(healthContribution * 0.898);
+      const federationHealth = roundCurrency(healthContribution * 0.102);
+      return {
+        payment, deductionPercent, foreignTaxCredit, income, healthContribution,
+        taxBase, taxAmount, taxDifference, cantonHealth, federationHealth
+      };
+    }
+    function clearAmsResult(message = "") {
+      if (amsPdfObjectUrl) {
+        URL.revokeObjectURL(amsPdfObjectUrl);
+        amsPdfObjectUrl = null;
+      }
+      amsDownloadLink.removeAttribute("href");
+      amsResult.hidden = true;
+      lastAmsCalculations = null;
+      amsWasGenerated = false;
+      if (!message) amsResultStale = false;
+      amsStatus.classList.remove("error");
+      amsStatus.textContent = message;
+    }
+    function updateAmsPaymentCards(values) {
+      $("amsPayTax").textContent = formatAmsMoney(values.taxDifference);
+      $("amsPayHealthCanton").textContent = formatAmsMoney(values.cantonHealth);
+      $("amsPayHealthFederation").textContent = formatAmsMoney(values.federationHealth);
+    }
+    async function generateAmsPdf(values) {
+      if (!window.PDFLib || !window.fontkit) {
+        throw new Error("Biblioteke za izradu PDF-a nisu učitane. Provjerite internetsku vezu i pokušajte ponovo.");
+      }
+      const templateResponse = await fetch("./ams-1035-blank.pdf", { cache: "no-store" });
+      if (!templateResponse.ok) {
+        throw new Error("Nije pronađen prazan AMS-1035 obrazac. Datoteku ams-1035-blank.pdf treba dodati u isti GitHub repozitorij kao index.html.");
+      }
+      const [templateBytes, fontResponse] = await Promise.all([
+        templateResponse.arrayBuffer(),
+        fetch("https://fonts.gstatic.com/s/arimo/v35/P5sfzZCDf9_T_3cV7NCUECyoxNk37cxsBxDAVQI4aA.ttf")
+      ]);
+      if (!fontResponse.ok) throw new Error("Nije moguće učitati font potreban za ispis obrasca. Pokušajte ponovo kasnije.");
+      const fontBytes = await fontResponse.arrayBuffer();
+      const pdfDoc = await PDFLib.PDFDocument.load(templateBytes);
+      pdfDoc.registerFontkit(window.fontkit);
+      const font = await pdfDoc.embedFont(fontBytes, { subset: true });
+      const form = pdfDoc.getForm();
+
+      function setText(fieldName, value) {
+        form.getTextField(fieldName).setText(String(value ?? ""));
+      }
+      const recipientName = $("amsRecipientName").value.trim();
+      const jmbg = $("amsJmbg").value.trim();
+      const recipientAddress = $("amsRecipientAddress").value.trim();
+      const payerName = $("amsPayerName").value.trim();
+      const payerAddress = $("amsPayerAddress").value.trim();
+      const payerCountry = $("amsPayerCountry").value.trim();
+      const paymentDate = $("amsPaymentDate").value;
+      const period = $("amsPeriod").value;
+      const [payYear, payMonth, payDay] = paymentDate.split("-");
+      const [periodYear, periodMonth] = period.split("-");
+      const shortPayYear = payYear.slice(-2);
+      const shortPeriodYear = periodYear.slice(-2);
+
+      // Header and recipient / payer information.
+      setText("StranicaRow1", "1");
+      setText("OdRow1", "1");
+      setText("1 Ime i prezime", recipientName);
+      if (jmbg) setText("2 JMBG", jmbg);
+      setText("3 dresa", recipientAddress);
+      setText("undefined", payDay);
+      setText("undefined_2", payMonth);
+      setText("undefined_3", shortPayYear);
+      setText("5 Period mjesecgodina", periodMonth);
+      setText("20", shortPeriodYear);
+      setText("6 Naziv", payerName);
+      setText("7 dresa", payerAddress);
+      setText("8 Država", payerCountry);
+
+      // AMS-1035 income, contribution, tax, credit and payable tax columns.
+      const row1 = {
+        "9 Iznos dohotkaRow1": values.income,
+        "10 Zdravstveno osiguranje na teret osiguranika kolona 9 X 004Row1": values.healthContribution,
+        "11 Osnovica za porez kolona 9  10Row1": values.taxBase,
+        "12 Iznos poreza kolona 11 X 01Row1": values.taxAmount,
+        "fill_7": values.foreignTaxCredit,
+        "14 Razlika poreza za uplatuRow1": values.taxDifference
+      };
+      Object.entries(row1).forEach(([fieldName, value]) => setText(fieldName, formatPdfAmount(value)));
+
+      // Totals row on this one-page declaration (column 9 has no separate total field in the supplied PDF).
+      setText("10 Zdravstveno osiguranje na teret osiguranika kolona 9 X 004Ukupno za sve straniceprijenos Ukoliko su potrebni dodatni redovi koristiti dodatni primjerak ovog obrasca", formatPdfAmount(values.healthContribution));
+      setText("11 Osnovica za porez kolona 9  10Ukupno za sve straniceprijenos Ukoliko su potrebni dodatni redovi koristiti dodatni primjerak ovog obrasca", formatPdfAmount(values.taxBase));
+      setText("12 Iznos poreza kolona 11 X 01Ukupno za sve straniceprijenos Ukoliko su potrebni dodatni redovi koristiti dodatni primjerak ovog obrasca", formatPdfAmount(values.taxAmount));
+      setText("fill_36", formatPdfAmount(values.foreignTaxCredit));
+      setText("14 Razlika poreza za uplatuUkupno za sve straniceprijenos Ukoliko su potrebni dodatni redovi koristiti dodatni primjerak ovog obrasca", formatPdfAmount(values.taxDifference));
+
+      form.updateFieldAppearances(font);
+      form.flatten();
+      pdfDoc.setTitle("Obrazac AMS-1035 — Akontacija poreza po odbitku");
+      pdfDoc.setAuthor("Knjigovodstveni kalkulatori");
+      pdfDoc.setSubject("Popunjen obrazac AMS-1035");
+      pdfDoc.setCreator("Knjigovodstveni kalkulatori — lokalni generator PDF-a");
+      pdfDoc.setProducer("Knjigovodstveni kalkulatori");
+      const pdfBytes = await pdfDoc.save();
+      return new Blob([pdfBytes], { type: "application/pdf" });
+    }
+
+    amsForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearAmsResult();
+      amsStatus.classList.remove("error");
+      const jmbg = $("amsJmbg").value.trim();
+      if (jmbg && !/^\d{13}$/.test(jmbg)) {
+        amsStatus.textContent = "Ako unosite JMBG, unesite tačno 13 cifara ili ostavite polje prazno.";
+        amsStatus.classList.add("error");
+        $("amsJmbg").focus();
+        return;
+      }
+      const payment = Number($("amsPaymentAmount").value);
+      const deduction = Number($("amsDeduction").value);
+      const credit = Number($("amsForeignTaxCredit").value || 0);
+      if (!Number.isFinite(payment) || payment <= 0 || !Number.isFinite(deduction) || deduction < 0 || deduction > 100 || !Number.isFinite(credit) || credit < 0) {
+        amsStatus.textContent = "Provjerite iznos uplate, procenat odbitka (0–100%) i iznos poreznog kredita.";
+        amsStatus.classList.add("error");
+        return;
+      }
+      amsGenerateButton.disabled = true;
+      amsGenerateButton.textContent = "Generisanje obrasca…";
+      amsStatus.textContent = "Obrazac se priprema u vašem pregledniku. Uneseni podaci se ne šalju na server.";
+      try {
+        const values = calculateAmsValues();
+        const pdfBlob = await generateAmsPdf(values);
+        amsPdfObjectUrl = URL.createObjectURL(pdfBlob);
+        amsDownloadLink.href = amsPdfObjectUrl;
+        amsResult.hidden = false;
+        updateAmsPaymentCards(values);
+        amsStatus.textContent = "Obrazac AMS-1035 je generisan. Pregledajte iznose za uplatu i preuzmite PDF.";
+        lastAmsCalculations = values;
+        amsWasGenerated = true;
+        amsResultStale = false;
+        amsResult.scrollIntoView({ behavior: "smooth", block: "start" });
+      } catch (error) {
+        console.error("AMS-1035 generator error:", error);
+        amsStatus.textContent = error instanceof Error ? error.message : "Došlo je do greške pri generisanju obrasca. Pokušajte ponovo.";
+        amsStatus.classList.add("error");
+      } finally {
+        amsGenerateButton.disabled = false;
+        amsGenerateButton.textContent = "Generiši AMS-1035 PDF →";
+      }
+    });
+    function handleAmsDataChange() {
+      const changedMessage = "Podaci su promijenjeni. Ponovo generišite obrazac kako bi PDF i pregled uplata odgovarali novim vrijednostima.";
+      if (amsWasGenerated || amsPdfObjectUrl || !amsResult.hidden) {
+        if (amsPdfObjectUrl) {
+          URL.revokeObjectURL(amsPdfObjectUrl);
+          amsPdfObjectUrl = null;
+        }
+        amsDownloadLink.removeAttribute("href");
+        amsResult.hidden = true;
+        amsWasGenerated = false;
+        amsResultStale = true;
+        lastAmsCalculations = null;
+      }
+      amsStatus.classList.remove("error");
+      amsStatus.textContent = amsResultStale ? changedMessage : "";
+    }
+    amsForm.addEventListener("input", handleAmsDataChange);
+    amsForm.addEventListener("change", handleAmsDataChange);
+    amsForm.addEventListener("reset", () => {
+      setTimeout(() => {
+        clearAmsResult("Forma je očišćena. Uneseni podaci nisu sačuvani.");
+        amsResultStale = false;
+        amsStatus.classList.remove("error");
+      }, 0);
+    });
   </script>
 </body>
 </html>
