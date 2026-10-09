@@ -1,0 +1,654 @@
+
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17324D">
+  <meta name="description" content="Besplatni knjigovodstveni, porezni i finansijski kalkulatori za fizička i pravna lica u Federaciji Bosne i Hercegovine.">
+  <title>Knjigovodstveni kalkulatori | FBiH</title>
+  <style>
+    :root {
+      --navy: #17324D;
+      --navy-dark: #102438;
+      --green: #267A57;
+      --green-light: #E7F2EB;
+      --cream: #F5E8B8;
+      --white: #FFFFFF;
+      --gray: #F3F5F7;
+      --text: #263442;
+      --muted: #657383;
+      --border: #E0E6EB;
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(23,50,77,.07);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--white);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    .topbar {
+      background: var(--navy-dark);
+      color: #EAF0F5;
+      font-size: 13px;
+      padding: 9px 0;
+    }
+
+    .topbar .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    header {
+      background: rgba(255,255,255,.97);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav {
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--navy);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: white;
+      background: var(--navy);
+      font-size: 24px;
+      font-weight: 800;
+      box-shadow: 4px 4px 0 var(--cream);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      color: #4D5B68;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .nav-links a:hover { color: var(--green); }
+
+    .button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 10px;
+      padding: 13px 19px;
+      background: var(--green);
+      color: white;
+      font-weight: 750;
+      cursor: pointer;
+      transition: transform .15s, background .15s;
+    }
+
+    .button:hover {
+      background: #1E6447;
+      transform: translateY(-1px);
+    }
+
+    .button.secondary {
+      color: var(--navy);
+      background: white;
+      border: 1px solid var(--border);
+    }
+
+    .hero {
+      overflow: hidden;
+      position: relative;
+      padding: 88px 0 82px;
+      background:
+        radial-gradient(ellipse at 90% 15%, rgba(232,201,106,.25), transparent 35%),
+        linear-gradient(120deg, #F5F8FA, #FFFFFF 65%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #D5E7DC;
+      background: var(--green-light);
+      color: var(--green);
+      border-radius: 30px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+    }
+
+    h1 {
+      margin: 22px 0;
+      max-width: 680px;
+      color: var(--navy);
+      font-size: clamp(38px, 5vw, 62px);
+      line-height: 1.08;
+      letter-spacing: -2.3px;
+    }
+
+    h1 span { color: var(--green); }
+
+    .hero-copy {
+      max-width: 590px;
+      color: var(--muted);
+      font-size: 17px;
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-note {
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .preview {
+      background: white;
+      padding: 26px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: 0 25px 70px rgba(23,50,77,.12);
+      transform: rotate(1deg);
+    }
+
+    .preview-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 23px;
+    }
+
+    .preview-head strong { color: var(--navy); }
+    .live-dot { color: var(--green); font-size: 12px; font-weight: 750; }
+
+    .preview-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .preview-row span { color: var(--muted); }
+    .preview-row strong { color: var(--navy); }
+
+    .preview-total {
+      margin-top: 20px;
+      background: var(--green-light);
+      padding: 17px;
+      border-radius: 12px;
+    }
+
+    .preview-total span {
+      display: block;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .preview-total strong {
+      color: var(--navy);
+      font-size: 27px;
+    }
+
+    section { padding: 76px 0; }
+
+    .section-heading {
+      max-width: 670px;
+      margin-bottom: 35px;
+    }
+
+    .section-heading h2 {
+      color: var(--navy);
+      font-size: clamp(27px, 4vw, 38px);
+      line-height: 1.2;
+      letter-spacing: -1px;
+      margin: 12px 0;
+    }
+
+    .section-heading p { color: var(--muted); margin: 0; }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 18px;
+    }
+
+    .category {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      background: white;
+      box-shadow: var(--shadow);
+      transition: transform .18s, border-color .18s;
+    }
+
+    .category:hover {
+      transform: translateY(-4px);
+      border-color: #A9CDB8;
+    }
+
+    .category-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--green-light);
+      font-size: 23px;
+      margin-bottom: 19px;
+    }
+
+    .category h3 { color: var(--navy); margin: 0 0 9px; font-size: 17px; }
+    .category p { color: var(--muted); font-size: 13px; margin: 0 0 17px; }
+    .category a { color: var(--green); font-size: 13px; font-weight: 800; }
+
+    .calculator-section { background: var(--gray); }
+
+    .calculator-layout {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 35px;
+      align-items: start;
+    }
+
+    .calculator-intro h2 {
+      color: var(--navy);
+      font-size: 35px;
+      line-height: 1.15;
+      letter-spacing: -1px;
+    }
+
+    .calculator-intro p { color: var(--muted); }
+
+    .calculator {
+      background: white;
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .calculator h3 { margin: 0 0 7px; color: var(--navy); font-size: 21px; }
+    .calculator .sub { color: var(--muted); font-size: 13px; margin: 0 0 24px; }
+
+    .field { margin-bottom: 18px; }
+    .field label { display: block; font-size: 13px; font-weight: 750; margin-bottom: 7px; }
+
+    .field input, .field select {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #D4DDE4;
+      border-radius: 10px;
+      background: white;
+      color: var(--text);
+    }
+
+    .field input:focus, .field select:focus {
+      outline: 2px solid #B9DCC8;
+      border-color: var(--green);
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 24px 0 18px;
+    }
+
+    .result {
+      background: var(--gray);
+      padding: 15px;
+      border-radius: 12px;
+    }
+
+    .result.primary { background: var(--green-light); }
+    .result span { display: block; font-size: 12px; color: var(--muted); }
+    .result strong { display: block; font-size: 22px; color: var(--navy); margin-top: 5px; }
+
+    .notice {
+      padding: 13px;
+      border-radius: 10px;
+      background: #FFF8DF;
+      color: #675624;
+      font-size: 12px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 22px;
+    }
+
+    .info-card {
+      border-top: 3px solid var(--green);
+      padding: 22px;
+      background: white;
+      border-radius: 0 0 14px 14px;
+    }
+
+    .info-card h3 { color: var(--navy); font-size: 17px; }
+    .info-card p { color: var(--muted); font-size: 14px; }
+
+    .cta {
+      background: var(--navy);
+      color: white;
+      padding: 45px;
+      border-radius: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .cta h2 { font-size: 30px; margin: 0 0 8px; }
+    .cta p { margin: 0; color: #D5E0E9; }
+
+    footer {
+      background: #102438;
+      color: #D4DEE7;
+      padding: 40px 0 25px;
+      font-size: 13px;
+    }
+
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      flex-wrap: wrap;
+      padding-bottom: 28px;
+    }
+
+    footer strong { color: white; }
+    footer p { max-width: 520px; }
+    .footer-bottom { border-top: 1px solid #314457; padding-top: 20px; color: #AAB8C5; }
+
+    @media (max-width: 900px) {
+      .hero-grid, .calculator-layout { grid-template-columns: 1fr; }
+      .preview { max-width: 500px; transform: none; }
+      .categories { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .nav-links { gap: 13px; }
+      .nav-links .button { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .container { width: min(100% - 28px,1120px); }
+      .topbar .container { font-size: 11px; }
+      .nav { min-height: 70px; }
+      .brand { font-size: 14px; gap: 9px; }
+      .brand-mark { width: 37px; height: 37px; }
+      .nav-links { gap: 12px; font-size: 12px; }
+      .nav-links a:nth-child(2) { display: none; }
+      .hero { padding: 56px 0; }
+      h1 { letter-spacing: -1.4px; }
+      .hero-copy { font-size: 15px; }
+      section { padding: 55px 0; }
+      .categories, .info-grid { grid-template-columns: 1fr; }
+      .calculator { padding: 20px; }
+      .results { grid-template-columns: 1fr 1fr; }
+      .result strong { font-size: 18px; }
+      .cta { padding: 28px 22px; align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <span>Praktični alati za FBiH</span>
+      <span>Besplatno • Jednostavno • Dostupno svima</span>
+    </div>
+  </div>
+
+  <header>
+    <nav class="container nav" aria-label="Glavna navigacija">
+      <a class="brand" href="#pocetna">
+        <span class="brand-mark">K</span>
+        <span>Knjigovodstveni<br>kalkulatori</span>
+      </a>
+      <div class="nav-links">
+        <a href="#kategorije">Kalkulatori</a>
+        <a href="#o-projektu">O projektu</a>
+        <a class="button" href="#obracun">Isprobaj kalkulator ↗</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="pocetna">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">✦ Vaš praktični finansijski alat</span>
+          <h1>Vaši obračuni.<br><span>Jednostavnije.</span></h1>
+          <p class="hero-copy">
+            Besplatni online kalkulatori za fizička i pravna lica u Federaciji
+            Bosne i Hercegovine. Jednostavni obračuni, jasne formule i korisne
+            informacije na jednom mjestu.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#kategorije">Pronađi kalkulator →</a>
+            <a class="button secondary" href="#o-projektu">Upoznaj projekat</a>
+          </div>
+          <p class="hero-note">Informativni alati • Bez registracije • Besplatan pristup</p>
+        </div>
+
+        <div class="preview" aria-label="Ilustracija pregleda obračuna">
+          <div class="preview-head">
+            <strong>Pregled obračuna</strong>
+            <span class="live-dot">● PRIMJER</span>
+          </div>
+          <div class="preview-row"><span>Vrsta alata</span><strong>Obračun plaće</strong></div>
+          <div class="preview-row"><span>Područje</span><strong>Federacija BiH</strong></div>
+          <div class="preview-row"><span>Pristup</span><strong>Besplatan</strong></div>
+          <div class="preview-total">
+            <span>JEDNOSTAVNIJE ODLUKE</span>
+            <strong>Jasno. Tačno. Pregledno.</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="kategorije">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Istražite alate</span>
+          <h2>Šta želite izračunati?</h2>
+          <p>Odaberite oblast i pronađite alat koji vam je potreban.</p>
+        </div>
+
+        <div class="categories">
+          <article class="category">
+            <div class="category-icon">₥</div>
+            <h3>Plaće i naknade</h3>
+            <p>Bruto i neto plaća, doprinosi i druga primanja.</p>
+            <a href="#obracun">Istraži alate →</a>
+          </article>
+          <article class="category">
+            <div class="category-icon">▤</div>
+            <h3>Porezi i doprinosi</h3>
+            <p>Informativni obračuni poreznih obaveza i doprinosa.</p>
+            <a href="#obracun">Istraži alate →</a>
+          </article>
+          <article class="category">
+            <div class="category-icon">▣</div>
+            <h3>Poslovanje</h3>
+            <p>Praktični alati za obrte i privredna društva.</p>
+            <a href="#obracun">Istraži alate →</a>
+          </article>
+          <article class="category">
+            <div class="category-icon">§</div>
+            <h3>Propisi i vodiči</h3>
+            <p>Objašnjenja obračuna, relevantni propisi i izvori.</p>
+            <a href="#o-projektu">Saznaj više →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="calculator-section" id="obracun">
+      <div class="container calculator-layout">
+        <div class="calculator-intro">
+          <span class="eyebrow">Uskoro detaljnije</span>
+          <h2>Počnimo s jednostavnim obračunom.</h2>
+          <p>Ovo je demonstracija interaktivnog kalkulatora. Prije objavljivanja stvarnih obračuna za FBiH, unijet ćemo i provjeriti važeće stope, osnovice, lične odbitke i ostala zakonska pravila.</p>
+          <p>Rezultati ispod nisu službeni obračun plaće i ne smiju se koristiti za isplatu ili prijavu obaveza.</p>
+        </div>
+
+        <div class="calculator">
+          <h3>Demo kalkulator</h3>
+          <p class="sub">Primjer matematičkog izračuna — nije obračun po propisima FBiH.</p>
+          <div class="field">
+            <label for="amount">Unesite iznos (KM)</label>
+            <input id="amount" type="number" min="0" step="0.01" value="2000" inputmode="decimal">
+          </div>
+          <div class="field">
+            <label for="rate">Probna stopa (%)</label>
+            <input id="rate" type="number" min="0" max="100" step="0.01" value="10" inputmode="decimal">
+          </div>
+          <div class="results" aria-live="polite">
+            <div class="result primary">
+              <span>Iznos nakon odbitka</span>
+              <strong id="net">1.800,00 KM</strong>
+            </div>
+            <div class="result">
+              <span>Iznos odbitka</span>
+              <strong id="deduction">200,00 KM</strong>
+            </div>
+          </div>
+          <div class="notice">Napomena: probna stopa služi isključivo za demonstraciju rada kalkulatora. Nije zakonska stopa za obračun plaće.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="o-projektu">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">O projektu</span>
+          <h2>Znanje i obračuni, dostupni svima.</h2>
+          <p>Cilj projekta je olakšati svakodnevne obračune kroz jednostavne digitalne alate i razumljiva objašnjenja.</p>
+        </div>
+        <div class="info-grid">
+          <article class="info-card">
+            <h3>Besplatan pristup</h3>
+            <p>Kalkulatori su zamišljeni kao besplatni alati dostupni bez registracije.</p>
+          </article>
+          <article class="info-card">
+            <h3>Jasna metodologija</h3>
+            <p>Uz svaki kalkulator navest ćemo korištene formule, pretpostavke i izvore.</p>
+          </article>
+          <article class="info-card">
+            <h3>Propisi i ažuriranja</h3>
+            <p>Obračune ćemo usklađivati s relevantnim propisima i jasno označiti datum posljednje provjere.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="container">
+        <div class="cta">
+          <div>
+            <h2>Imate pitanje o obračunu?</h2>
+            <p>Ovaj projekat ćemo postepeno širiti novim alatima i vodičima.</p>
+          </div>
+          <a class="button" href="#kategorije" style="background:var(--cream);color:var(--navy)">Pregledaj kategorije →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <strong>Knjigovodstveni kalkulatori</strong>
+          <p>Besplatni informativni alati za fizička i pravna lica u Federaciji Bosne i Hercegovine.</p>
+        </div>
+        <div>
+          <strong>Važna napomena</strong>
+          <p>Rezultati su informativni. Za službene obračune provjerite važeće propise i konsultujte stručnu osobu.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">© <span id="year"></span> Knjigovodstveni kalkulatori. Sva prava zadržana.</div>
+    </div>
+  </footer>
+
+  <script>
+    const amountInput = document.getElementById("amount");
+    const rateInput = document.getElementById("rate");
+    const netOutput = document.getElementById("net");
+    const deductionOutput = document.getElementById("deduction");
+
+    function formatKM(value) {
+      return new Intl.NumberFormat("bs-BA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(value) + " KM";
+    }
+
+    function calculateDemo() {
+      const amount = Math.max(0, Number(amountInput.value) || 0);
+      const rate = Math.min(100, Math.max(0, Number(rateInput.value) || 0));
+      const deduction = amount * rate / 100;
+      netOutput.textContent = formatKM(amount - deduction);
+      deductionOutput.textContent = formatKM(deduction);
+    }
+
+    amountInput.addEventListener("input", calculateDemo);
+    rateInput.addEventListener("input", calculateDemo);
+    document.getElementById("year").textContent = new Date().getFullYear();
+    calculateDemo();
+  </script>
+</body>
+</html>
