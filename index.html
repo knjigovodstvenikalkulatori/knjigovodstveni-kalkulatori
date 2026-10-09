@@ -645,7 +645,10 @@
       const fontBytes = await fontResponse.arrayBuffer();
       const pdfDoc = await PDFLib.PDFDocument.load(templateBytes);
       pdfDoc.registerFontkit(window.fontkit);
-      const font = await pdfDoc.embedFont(fontBytes, { subset: true });
+      // Do not subset this font. pdf-lib/fontkit subsetting can drop or remap
+      // glyphs in some TTF fonts, which caused missing letters and punctuation
+      // in generated AMS-1035 documents. Full embedding is larger but reliable.
+      const font = await pdfDoc.embedFont(fontBytes, { subset: false });
       const page = pdfDoc.getPages()[0];
 
       // The source form contains several comb-style text fields for individual
