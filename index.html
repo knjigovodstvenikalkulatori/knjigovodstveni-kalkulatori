@@ -6,6 +6,13 @@
   <meta name="theme-color" content="#17324D">
   <meta name="description" content="Besplatni knjigovodstveni kalkulatori, kalendar radnih dana i praznika te obrasci za Federaciju Bosne i Hercegovine.">
   <title>Knjigovodstveni kalkulatori | Vaši obračuni. Jednostavnije.</title>
+  <script>
+    (function () {
+      const allowed = new Set(["home", "calendar", "freelancers", "contract", "author-fee", "net-pay", "gross-pay"]);
+      const requested = new URLSearchParams(window.location.search).get("page") || "home";
+      document.documentElement.dataset.sitePage = allowed.has(requested) ? requested : "home";
+    })();
+  </script>
   <style>
     :root {
       --navy:#17324D; --navy-dark:#102438; --green:#267A57;
@@ -25,8 +32,31 @@
     .nav{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:24px}
     .brand{display:flex;align-items:center;gap:12px;color:var(--navy);font-size:18px;font-weight:800;letter-spacing:-.5px}
     .brand-mark{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;color:white;background:var(--navy);font-size:24px;font-weight:800;box-shadow:4px 4px 0 var(--cream)}
-    .nav-links{display:flex;align-items:center;gap:24px;color:#4D5B68;font-size:14px;font-weight:650}
-    .nav-links a:hover{color:var(--green)}
+    .nav-links{display:flex;align-items:center;gap:15px;color:#4D5B68;font-size:13px;font-weight:650}
+    .nav-links a:hover,.nav-links button:hover{color:var(--green)}
+    .nav-item{position:relative;display:flex;align-items:center}
+    .nav-dropdown-trigger{appearance:none;border:0;background:transparent;color:inherit;font:inherit;font-weight:inherit;padding:12px 0;cursor:pointer;white-space:nowrap}
+    .nav-dropdown-trigger::after{content:"⌄";font-size:12px;margin-left:5px;color:#7B8792}
+    .dropdown-menu{display:none;position:absolute;top:100%;left:-12px;min-width:235px;max-width:290px;padding:8px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 16px 38px rgba(23,50,77,.16);z-index:30}
+    .nav-item:hover .dropdown-menu,.nav-item:focus-within .dropdown-menu,.nav-item.is-open .dropdown-menu{display:block}
+    .dropdown-menu a{display:block;padding:10px 12px;border-radius:8px;line-height:1.35;white-space:normal;font-size:13px}
+    .dropdown-menu a:hover{background:#F3F7F5;color:var(--green)}
+    .dropdown-menu .coming-soon{display:block;padding:10px 12px;color:#8A6C20;font-size:12px;font-weight:750}
+    html[data-site-page="home"] main>section:not(#pocetna):not(#kategorije):not(#o-projektu):not(#metodologija):not(#home-cta){display:none!important}
+    html[data-site-page="calendar"] main>section:not(#kalendar){display:none!important}
+    html[data-site-page="freelancers"] main>section:not(#freelanceri){display:none!important}
+    html[data-site-page="contract"] main>section:not(#ugovor-o-djelu){display:none!important}
+    html[data-site-page="author-fee"] main>section:not(#autorski-honorar){display:none!important}
+    html[data-site-page="net-pay"] main>section:not(#kalkulator){display:none!important}
+    html[data-site-page="gross-pay"] main>section:not(#kalkulator){display:none!important}
+    html[data-site-page="net-pay"] #izracun-bruto{display:none!important}
+    html[data-site-page="gross-pay"] #neto-kalkulator-card{display:none!important}
+    html[data-site-page="home"] #home-cta{display:none!important}
+    .page-placeholder{min-height:45vh;display:flex;align-items:center}
+    .page-placeholder-card{max-width:760px;border:1px solid var(--border);border-radius:var(--radius);padding:clamp(24px,5vw,44px);background:linear-gradient(135deg,#F7FAF8,#fff);box-shadow:var(--shadow)}
+    .page-placeholder-card h2{color:var(--navy);font-size:clamp(28px,4vw,38px);line-height:1.2;margin:12px 0}
+    .page-placeholder-card p{color:var(--muted)}
+    .route-home-link{display:inline-flex;margin-top:12px;color:var(--green);font-weight:800}
     .button{display:inline-flex;justify-content:center;align-items:center;gap:8px;border:0;border-radius:10px;padding:13px 19px;background:var(--green);color:white;font-weight:750;cursor:pointer;transition:transform .15s,background .15s}
     .button:hover{background:#1E6447;transform:translateY(-1px)}
     .button.secondary{color:var(--navy);background:#fff;border:1px solid var(--border)}
@@ -152,8 +182,8 @@
     footer strong{color:#fff}
     footer p{max-width:520px}
     .footer-bottom{border-top:1px solid #314457;padding-top:19px;color:#AAB8C5}
-    @media(max-width:900px){.hero-grid{grid-template-columns:1fr}.preview{max-width:540px}.nav-links{gap:14px}.results{grid-template-columns:repeat(3,minmax(0,1fr))}.categories{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:600px){.container{width:min(100% - 28px,1120px)}.topbar .container{font-size:11px}.nav{min-height:70px}.brand{font-size:14px;gap:9px}.brand-mark{width:37px;height:37px}.nav-links{font-size:12px;gap:12px}.nav-links a:nth-child(1),.nav-links a:nth-child(4){display:none}.nav-links .button{display:none}.hero{padding:48px 0}.hero-copy{font-size:15px}section{padding:48px 0}.calculator{padding:19px}.inputs{grid-template-columns:1fr}.categories{grid-template-columns:1fr}.results{grid-template-columns:1fr}.result strong{font-size:22px}.cta{padding:26px 22px;align-items:flex-start;flex-direction:column}.preview-total strong{font-size:21px}h1{letter-spacing:-1.4px}}
+    @media(max-width:900px){.hero-grid{grid-template-columns:1fr}.preview{max-width:540px}.nav{align-items:flex-start;flex-wrap:wrap;padding:12px 0}.nav-links{gap:12px;flex-wrap:wrap;justify-content:flex-end}.results{grid-template-columns:repeat(3,minmax(0,1fr))}.categories{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:600px){.container{width:min(100% - 28px,1120px)}.topbar .container{font-size:11px}.nav{min-height:0;gap:10px}.brand{font-size:14px;gap:9px}.brand-mark{width:37px;height:37px}.nav-links{width:100%;justify-content:flex-start;gap:6px 14px;font-size:12px}.nav-dropdown-trigger{padding:7px 0}.dropdown-menu{left:0;min-width:220px}.nav-links>.button{display:inline-flex;padding:8px 10px;font-size:11px}.hero{padding:48px 0}.hero-copy{font-size:15px}section{padding:48px 0}.calculator{padding:19px}.inputs{grid-template-columns:1fr}.categories{grid-template-columns:1fr}.results{grid-template-columns:1fr}.result strong{font-size:22px}.cta{padding:26px 22px;align-items:flex-start;flex-direction:column}.preview-total strong{font-size:21px}h1{letter-spacing:-1.4px}}
 
     /* Kalendar FBiH — isolated styles; existing calculator and AMS styles stay unchanged. */
     .calendar-section{background:#F7F9FB}
@@ -306,8 +336,28 @@
   <div class="topbar"><div class="container"><span>Praktični alati za FBiH</span><span>Besplatno • Jednostavno • Dostupno svima</span></div></div>
   <header>
     <nav class="container nav" aria-label="Glavna navigacija">
-      <a class="brand" href="#pocetna"><span class="brand-mark">K</span><span>Knjigovodstveni<br>kalkulatori</span></a>
-      <div class="nav-links"><a href="#kategorije">Kategorije</a><a href="#kalendar">Kalendar</a><a href="#freelanceri">Freelanceri</a><a href="#o-projektu">O projektu</a><a class="button" href="#kalkulator">Pronađi kalkulator ↗</a></div>
+      <a class="brand" href="?page=home#pocetna"><span class="brand-mark">K</span><span>Knjigovodstveni<br>kalkulatori</span></a>
+      <div class="nav-links">
+        <a href="?page=home#kategorije">Kategorije</a>
+        <div class="nav-item" data-dropdown>
+          <button class="nav-dropdown-trigger" type="button" aria-expanded="false">Kalendar</button>
+          <div class="dropdown-menu"><a href="?page=calendar">Kalendar radnih dana i praznika</a></div>
+        </div>
+        <div class="nav-item" data-dropdown>
+          <button class="nav-dropdown-trigger" type="button" aria-expanded="false">Freelanceri</button>
+          <div class="dropdown-menu"><a href="?page=freelancers">Generisanje obrasca AMS-1035</a></div>
+        </div>
+        <div class="nav-item" data-dropdown>
+          <button class="nav-dropdown-trigger" type="button" aria-expanded="false">Ugovor o djelu/autorskom honoraru</button>
+          <div class="dropdown-menu"><a href="?page=contract">Ugovor o djelu</a><a href="?page=author-fee">Ugovor o autorskom honoraru</a><span class="coming-soon">U pripremi</span></div>
+        </div>
+        <div class="nav-item" data-dropdown>
+          <button class="nav-dropdown-trigger" type="button" aria-expanded="false">Plaće i naknade</button>
+          <div class="dropdown-menu"><a href="?page=net-pay">Kalkulator plaća i naknada</a><a href="?page=gross-pay">Izračun bruto plaće</a></div>
+        </div>
+        <a href="?page=home#o-projektu">O projektu</a>
+        <a class="button" href="?page=home#kategorije">Pronađi kalkulator ↗</a>
+      </div>
     </nav>
   </header>
   <main>
@@ -343,25 +393,25 @@
             <div class="category-icon">₥</div>
             <h3>Plaće i naknade</h3>
             <p>Bruto i neto plaća, doprinosi i druga primanja.</p>
-            <a href="#kalkulator">Otvori kalkulatore →</a>
+            <a href="?page=net-pay">Otvori kalkulatore →</a>
           </article>
           <article class="category">
             <div class="category-icon">ƒ</div>
             <h3>Freelanceri</h3>
             <p>Generisanje AMS-1035 obrasca i pregled iznosa za uplatu poreza i doprinosa.</p>
-            <a href="#freelanceri">Generiši AMS-1035 →</a>
+            <a href="?page=freelancers">Generiši AMS-1035 →</a>
           </article>
           <article class="category">
             <div class="category-icon">▦</div>
             <h3>Kalendar</h3>
             <p>Radni dani i sati te državni i vjerski praznici u Federaciji BiH.</p>
-            <a href="#kalendar">Otvori kalendar →</a>
+            <a href="?page=calendar">Otvori kalendar →</a>
           </article>
           <article class="category">
             <div class="category-icon">§</div>
             <h3>Ugovor o djelu</h3>
             <p>Obračun bruto naknade, poreza i doprinosa te generisanje obrasca AUG-1031.</p>
-            <a href="#ugovor-o-djelu">Otvori obračun →</a>
+            <a href="?page=contract">Otvori obračun →</a>
           </article>
           <article class="category">
             <div class="category-icon">▤</div>
@@ -733,12 +783,12 @@
 
     <section class="calculator-section" id="kalkulator">
       <div class="container">
-        <div class="section-heading">
-          <span class="eyebrow">Kalkulator plaće</span>
-          <h2>Kalkulatori plaća i naknada</h2>
-          <p>Odaberite odgovarajući alat: izračun neto plaće iz bruto iznosa ili izračun bruto plaće kada je poznata neto isplata zaposleniku.</p>
+        <div class="section-heading" id="payroll-section-heading">
+          <span class="eyebrow" id="payroll-eyebrow">Kalkulator plaće</span>
+          <h2 id="payroll-title">Kalkulatori plaća i naknada</h2>
+          <p id="payroll-description">Odaberite odgovarajući alat: izračun neto plaće iz bruto iznosa ili izračun bruto plaće kada je poznata neto isplata zaposleniku.</p>
         </div>
-        <div class="calculator">
+        <div class="calculator" id="neto-kalkulator-card">
           <div class="calculator-top">
             <div><h3>Izračun neto plaće</h3><p class="sub">Kada je poznata bruto plaća · Federacija BiH</p></div>
             <span class="pill">Automatski obračun</span>
@@ -856,6 +906,17 @@
       </div>
     </section>
 
+    <section id="autorski-honorar" class="page-placeholder">
+      <div class="container">
+        <div class="page-placeholder-card">
+          <span class="eyebrow">Ugovor o autorskom honoraru</span>
+          <h2>Kalkulator i obrazac su u pripremi.</h2>
+          <p>Ova sekcija će naknadno sadržavati obračun autorskog honorara i pripadajući obrazac. Postojeći kalkulatori i obrasci ostaju dostupni u svojim kategorijama.</p>
+          <a class="route-home-link" href="?page=home#kategorije">← Povratak na početnu stranicu</a>
+        </div>
+      </div>
+    </section>
+
     <section id="o-projektu">
       <div class="container"><div class="section-heading"><span class="eyebrow">O projektu</span><h2>Knjigovodstveni alati za svakodnevne potrebe.</h2><p>Projekat okuplja besplatne informativne kalkulatore, predloške i vodiče za fizička i pravna lica u Federaciji Bosne i Hercegovine. Sadržaj ćemo širiti po kategorijama, uz jasno navedene pretpostavke i izvore.</p></div></div>
     </section>
@@ -871,7 +932,7 @@
       </div>
     </section>
 
-    <section style="padding-top:0">
+    <section id="home-cta" style="padding-top:0">
       <div class="container"><div class="cta"><div><h2>Obračun na jednom mjestu.</h2><p>Besplatan alat dostupan bez registracije.</p></div><a class="button" href="#kalkulator" style="background:var(--cream);color:var(--navy)">Izračunaj plaću ↑</a></div></div>
     </section>
   </main>
@@ -1870,6 +1931,68 @@
       calendarPrintYearButton.addEventListener("click", () => printCalendar("year"));
       window.addEventListener("afterprint", restoreAfterPrint);
       renderWorkingCalendar();
+    })();
+
+    // Dedicated page views share one source file to preserve all existing calculator logic.
+    (function initializePageNavigation() {
+      const page = document.documentElement.dataset.sitePage || "home";
+      const titles = {
+        home: "Knjigovodstveni kalkulatori | Vaši obračuni. Jednostavnije.",
+        calendar: "Kalendar radnih dana i praznika | Knjigovodstveni kalkulatori",
+        freelancers: "Generisanje obrasca AMS-1035 | Knjigovodstveni kalkulatori",
+        contract: "Ugovor o djelu | Knjigovodstveni kalkulatori",
+        "author-fee": "Ugovor o autorskom honoraru | Knjigovodstveni kalkulatori",
+        "net-pay": "Kalkulator plaća i naknada | Knjigovodstveni kalkulatori",
+        "gross-pay": "Izračun bruto plaće | Knjigovodstveni kalkulatori"
+      };
+      document.title = titles[page] || titles.home;
+      if (page === "net-pay" || page === "gross-pay") {
+        const eyebrow = document.getElementById("payroll-eyebrow");
+        const title = document.getElementById("payroll-title");
+        const description = document.getElementById("payroll-description");
+        if (eyebrow) eyebrow.textContent = "Plaće i naknade";
+        if (title) title.textContent = page === "gross-pay" ? "Izračun bruto plaće" : "Izračun neto plaće";
+        if (description) description.textContent = page === "gross-pay"
+          ? "Izračunajte bruto plaću kada je poznat neto iznos koji se isplaćuje zaposleniku."
+          : "Izračunajte neto plaću, porez, doprinose i trošak poslodavca kada je poznata bruto plaća.";
+      }
+      document.querySelectorAll("[data-dropdown]").forEach((item) => {
+        const trigger = item.querySelector(".nav-dropdown-trigger");
+        if (!trigger) return;
+        trigger.addEventListener("click", () => {
+          const open = item.classList.toggle("is-open");
+          trigger.setAttribute("aria-expanded", String(open));
+          document.querySelectorAll("[data-dropdown]").forEach((other) => {
+            if (other !== item) {
+              other.classList.remove("is-open");
+              const otherTrigger = other.querySelector(".nav-dropdown-trigger");
+              if (otherTrigger) otherTrigger.setAttribute("aria-expanded", "false");
+            }
+          });
+        });
+        item.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            item.classList.remove("is-open");
+            trigger.setAttribute("aria-expanded", "false");
+            trigger.focus();
+          }
+        });
+      });
+      document.addEventListener("click", (event) => {
+        if (!event.target.closest("[data-dropdown]")) {
+          document.querySelectorAll("[data-dropdown]").forEach((item) => {
+            item.classList.remove("is-open");
+            const trigger = item.querySelector(".nav-dropdown-trigger");
+            if (trigger) trigger.setAttribute("aria-expanded", "false");
+          });
+        }
+      });
+      if (window.location.hash && page === "home") {
+        window.addEventListener("load", () => {
+          const target = document.querySelector(window.location.hash);
+          if (target) target.scrollIntoView({block: "start"});
+        }, {once: true});
+      }
     })();
   </script>
 </body>
