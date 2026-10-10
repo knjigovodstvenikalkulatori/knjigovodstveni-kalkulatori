@@ -8,7 +8,7 @@
   <title>Knjigovodstveni kalkulatori | Vaši obračuni. Jednostavnije.</title>
   <script>
     (function () {
-      const allowed = new Set(["home", "calendar", "freelancers", "contract", "author-fee", "net-pay", "gross-pay"]);
+      const allowed = new Set(["home", "calendar", "freelancers", "contract", "author-fee", "net-pay", "gross-pay", "templates"]);
       const requested = new URLSearchParams(window.location.search).get("page") || "home";
       document.documentElement.dataset.sitePage = allowed.has(requested) ? requested : "home";
     })();
@@ -52,9 +52,27 @@
     html[data-site-page="author-fee"] main>section:not(#autorski-honorar){display:none!important}
     html[data-site-page="net-pay"] main>section:not(#kalkulator){display:none!important}
     html[data-site-page="gross-pay"] main>section:not(#kalkulator){display:none!important}
+    html[data-site-page="templates"] main>section:not(#predlosci){display:none!important}
     html[data-site-page="net-pay"] #izracun-bruto{display:none!important}
     html[data-site-page="gross-pay"] #neto-kalkulator-card{display:none!important}
     html[data-site-page="home"] #home-cta{display:none!important}
+
+    /* Predlošci dokumenata */
+    .templates-section{background:linear-gradient(180deg,#F7F9FA 0%,#FFFFFF 100%);min-height:65vh}
+    .templates-intro{max-width:800px;margin-bottom:34px}
+    .template-card{display:grid;grid-template-columns:84px minmax(0,1fr);gap:24px;max-width:900px;padding:30px;background:#fff;border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow)}
+    .template-card-icon{width:72px;height:82px;display:grid;place-items:center;border-radius:14px;background:#E7F2EB;border:1px solid #D3E7DA;color:var(--green);font-size:32px;font-weight:850;position:relative}
+    .template-card-icon:after{content:".DOCX";position:absolute;bottom:9px;font-size:10px;letter-spacing:.6px;font-weight:800}
+    .template-card-content{min-width:0}
+    .template-type{display:inline-block;color:var(--green);font-size:11px;font-weight:850;letter-spacing:.7px;margin-bottom:7px}
+    .template-card h3{margin:0 0 10px;color:var(--navy);font-size:clamp(21px,3vw,27px);line-height:1.25}
+    .template-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.7}
+    .template-card-meta{display:flex;gap:8px 18px;flex-wrap:wrap;margin:18px 0;color:#536372;font-size:12px}
+    .template-card-meta span:before{content:"✓";display:inline-grid;place-items:center;width:17px;height:17px;margin-right:6px;border-radius:50%;background:var(--green-light);color:var(--green);font-weight:900}
+    .template-download{margin-top:2px}
+    .templates-note{max-width:900px;margin-top:18px;color:var(--muted);font-size:12px;line-height:1.6}
+    @media(max-width:600px){.template-card{grid-template-columns:1fr;padding:21px;gap:17px}.template-card-icon{width:60px;height:68px;font-size:27px}.template-download{width:100%;text-align:center}}
+
     .page-placeholder{min-height:45vh;display:flex;align-items:center}
     .page-placeholder-card{max-width:760px;border:1px solid var(--border);border-radius:var(--radius);padding:clamp(24px,5vw,44px);background:linear-gradient(135deg,#F7FAF8,#fff);box-shadow:var(--shadow)}
     .page-placeholder-card h2{color:var(--navy);font-size:clamp(28px,4vw,38px);line-height:1.2;margin:12px 0}
@@ -364,6 +382,7 @@
           <button class="nav-dropdown-trigger" type="button" aria-expanded="false">Freelanceri</button>
           <div class="dropdown-menu"><a href="?page=freelancers">Generisanje obrasca AMS-1035</a></div>
         </div>
+        <a href="?page=templates">Predlošci</a>
         <a href="?page=home#o-projektu">O projektu</a>
         <a class="button" href="?page=home#kategorije">Pronađi kalkulator ↗</a>
       </div>
@@ -923,6 +942,30 @@
           <p>Ova sekcija će naknadno sadržavati obračun autorskog honorara i pripadajući obrazac. Postojeći kalkulatori i obrasci ostaju dostupni u svojim kategorijama.</p>
           <a class="route-home-link" href="?page=home#kategorije">← Povratak na početnu stranicu</a>
         </div>
+      </div>
+    </section>
+
+
+    <section id="predlosci" class="templates-section">
+      <div class="container">
+        <div class="section-heading templates-intro">
+          <span class="eyebrow">Predlošci dokumenata</span>
+          <h2>Rješenja, odluke i poslovni dokumenti</h2>
+          <p>Na ovom mjestu možete pronaći praktične predloške rješenja, odluka i sličnih dokumenata u Word formatu. Preuzmite dokument, unesite podatke koji odgovaraju vašoj situaciji i prilagodite ga prije upotrebe.</p>
+        </div>
+        <article class="template-card">
+          <div class="template-card-icon" aria-hidden="true">W</div>
+          <div class="template-card-content">
+            <span class="template-type">WORD DOKUMENT • .DOCX</span>
+            <h3>Rješenje o korištenju godišnjeg odmora</h3>
+            <p>Predložak u Word formatu sadrži rješenje o korištenju <strong>prvog i drugog dijela godišnjeg odmora</strong>. Preuzmite dokument i unesite podatke poslodavca, radnika, datume i druge podatke koji se odnose na konkretan slučaj.</p>
+            <div class="template-card-meta"><span>2 predloška u jednom dokumentu</span><span>Uređivanje u Microsoft Wordu</span></div>
+            <a class="button template-download" href="Rjesenje_GodisnjiOdmor.docx" download>
+              <span aria-hidden="true">↓</span> Preuzmi predložak u Word formatu
+            </a>
+          </div>
+        </article>
+        <p class="templates-note">Napomena: prije potpisivanja i korištenja, provjerite da li su podaci, datumi i pravni osnovi u dokumentu odgovarajući za konkretan slučaj.</p>
       </div>
     </section>
 
