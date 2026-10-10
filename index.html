@@ -42,6 +42,9 @@
     .dropdown-menu a{display:block;padding:10px 12px;border-radius:8px;line-height:1.35;white-space:normal;font-size:13px}
     .dropdown-menu a:hover{background:#F3F7F5;color:var(--green)}
     .dropdown-menu .coming-soon{display:block;padding:10px 12px;color:#8A6C20;font-size:12px;font-weight:750}
+    .dropdown-menu .menu-category{display:block;padding:11px 12px 5px;color:#A17B16;font-size:11px;font-weight:850;letter-spacing:.65px;text-transform:uppercase;line-height:1.35}
+    .dropdown-menu .menu-category:not(:first-child){margin-top:5px;border-top:1px solid #E9EDF0;padding-top:12px}
+    .dropdown-menu .menu-category + a{margin-top:1px}
     html[data-site-page="home"] main>section:not(#pocetna):not(#kategorije):not(#o-projektu):not(#metodologija):not(#home-cta){display:none!important}
     html[data-site-page="calendar"] main>section:not(#kalendar){display:none!important}
     html[data-site-page="freelancers"] main>section:not(#freelanceri){display:none!important}
@@ -340,20 +343,26 @@
       <div class="nav-links">
         <a href="?page=home#kategorije">Kategorije</a>
         <div class="nav-item" data-dropdown>
+          <button class="nav-dropdown-trigger" type="button" aria-expanded="false">Kalkulatori</button>
+          <div class="dropdown-menu" aria-label="Kategorije kalkulatora">
+            <span class="menu-category">Ugovori i honorari</span>
+            <a href="?page=contract">Ugovor o djelu</a>
+            <a href="?page=author-fee">Ugovor o autorskom honoraru</a>
+            <span class="coming-soon">U pripremi</span>
+            <span class="menu-category">Plaće i naknade</span>
+            <a href="?page=net-pay">Kalkulator plaća i naknada</a>
+            <a href="?page=gross-pay">Izračun bruto plaće</a>
+            <span class="menu-category">Porezi i doprinosi</span>
+            <span class="coming-soon">Novi kalkulatori uskoro</span>
+          </div>
+        </div>
+        <div class="nav-item" data-dropdown>
           <button class="nav-dropdown-trigger" type="button" aria-expanded="false">Kalendar</button>
           <div class="dropdown-menu"><a href="?page=calendar">Kalendar radnih dana i praznika</a></div>
         </div>
         <div class="nav-item" data-dropdown>
           <button class="nav-dropdown-trigger" type="button" aria-expanded="false">Freelanceri</button>
           <div class="dropdown-menu"><a href="?page=freelancers">Generisanje obrasca AMS-1035</a></div>
-        </div>
-        <div class="nav-item" data-dropdown>
-          <button class="nav-dropdown-trigger" type="button" aria-expanded="false">Ugovor o djelu/autorskom honoraru</button>
-          <div class="dropdown-menu"><a href="?page=contract">Ugovor o djelu</a><a href="?page=author-fee">Ugovor o autorskom honoraru</a><span class="coming-soon">U pripremi</span></div>
-        </div>
-        <div class="nav-item" data-dropdown>
-          <button class="nav-dropdown-trigger" type="button" aria-expanded="false">Plaće i naknade</button>
-          <div class="dropdown-menu"><a href="?page=net-pay">Kalkulator plaća i naknada</a><a href="?page=gross-pay">Izračun bruto plaće</a></div>
         </div>
         <a href="?page=home#o-projektu">O projektu</a>
         <a class="button" href="?page=home#kategorije">Pronađi kalkulator ↗</a>
