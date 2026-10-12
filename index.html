@@ -580,6 +580,8 @@
           <div class="calc-actions">
             <button class="button" type="button" id="calcPrint">Štampaj / Sačuvaj PDF</button>
             <button class="button secondary" type="button" id="calcNew">Nova kalkulacija</button>
+            <button class="button secondary" type="button" id="calcClearAll">Očisti formu</button>
+            <span class="calc-status">„Nova kalkulacija“ zadržava podatke o preduzeću; „Očisti formu“ briše sve unesene podatke.</span>
             <span class="calc-status">Za PDF odaberite „Sačuvaj kao PDF“ u dijalogu za štampu.</span>
           </div>
         </form>
@@ -2339,14 +2341,34 @@
         document.body.classList.remove("calc-print-only");
         document.title = document.querySelector("html").dataset.sitePage==="calculation" ? "Kalkulacija | Knjigovodstveni kalkulatori" : document.title;
       });
-      $("calcNew").addEventListener("click", () => {
-        if (!window.confirm("Želite li započeti novu kalkulaciju? Uneseni podaci bit će obrisani.")) return;
-        form.reset();
-        $("calcDate").value = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}`;
+      function resetSupplierAndItems() {
+        // Keep Section 1 (company/header details) untouched for the next calculation.
+        ["calcSupplier", "calcSupplierAddress", "calcSupplierId", "calcSupplierVat", "calcInvoice"].forEach(id => { $(id).value = ""; });
+        $("calcDepCosts").value = "0";
         rows.innerHTML = "";
         rowCounter = 0;
         addRow();
         addRow({qty:"1"});
+        recalculate();
+      }
+
+      $("calcNew").addEventListener("click", () => {
+        if (!window.confirm("Započeti novu kalkulaciju? Podaci o preduzeću iz odjeljka 1 ostat će sačuvani, a dobavljač i artikli bit će obrisani.")) return;
+        resetSupplierAndItems();
+        window.scrollTo({top:document.getElementById("kalkulacija").offsetTop-90,behavior:"smooth"});
+      });
+
+      $("calcClearAll").addEventListener("click", () => {
+        if (!window.confirm("Očistiti cijelu formu? Svi podaci o preduzeću, dobavljaču i artiklima bit će obrisani.")) return;
+        form.reset();
+        // The form's date is user-editable; unlike the initial page load, clear it fully here.
+        $("calcDate").value = "";
+        $("calcDepCosts").value = "0";
+        rows.innerHTML = "";
+        rowCounter = 0;
+        addRow();
+        addRow({qty:"1"});
+        recalculate();
         window.scrollTo({top:document.getElementById("kalkulacija").offsetTop-90,behavior:"smooth"});
       });
       addRow();
