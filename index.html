@@ -8,7 +8,7 @@
   <title>Knjigovodstveni kalkulatori | Vaši obračuni. Jednostavnije.</title>
   <script>
     (function () {
-      const allowed = new Set(["home", "calendar", "freelancers", "contract", "author-fee", "net-pay", "gross-pay", "templates"]);
+      const allowed = new Set(["home", "calendar", "freelancers", "contract", "author-fee", "net-pay", "gross-pay", "templates", "calculation"]);
       const requested = new URLSearchParams(window.location.search).get("page") || "home";
       document.documentElement.dataset.sitePage = allowed.has(requested) ? requested : "home";
     })();
@@ -53,6 +53,7 @@
     html[data-site-page="net-pay"] main>section:not(#kalkulator){display:none!important}
     html[data-site-page="gross-pay"] main>section:not(#kalkulator){display:none!important}
     html[data-site-page="templates"] main>section:not(#predlosci){display:none!important}
+    html[data-site-page="calculation"] main>section:not(#kalkulacija){display:none!important}
     html[data-site-page="net-pay"] #izracun-bruto{display:none!important}
     html[data-site-page="gross-pay"] #neto-kalkulator-card{display:none!important}
     html[data-site-page="home"] #home-cta{display:none!important}
@@ -72,6 +73,74 @@
     .template-download{margin-top:2px}
     .templates-note{max-width:900px;margin-top:18px;color:var(--muted);font-size:12px;line-height:1.6}
     @media(max-width:600px){.template-card{grid-template-columns:1fr;padding:21px;gap:17px}.template-card-icon{width:60px;height:68px;font-size:27px}.template-download{width:100%;text-align:center}}
+
+
+    /* Kalkulacija maloprodaje — styles isolated from existing tools. */
+    .calc-entry-section{background:#F7F9FB}
+    .calc-entry-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:clamp(18px,3vw,30px);box-shadow:var(--shadow)}
+    .calc-entry-card fieldset{border:1px solid var(--border);border-radius:13px;padding:18px;margin:0 0 20px;min-width:0}
+    .calc-entry-card legend{padding:0 8px;color:var(--navy);font-weight:800}
+    .calc-form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .calc-form-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .calc-field{min-width:0}
+    .calc-field label{display:block;font-size:12px;font-weight:750;margin-bottom:6px;color:#3A4A59}
+    .calc-field input,.calc-field select{width:100%;min-width:0;min-height:43px;padding:10px 11px;border:1px solid #D4DDE4;border-radius:9px;background:#fff;color:var(--text)}
+    .calc-field input:focus,.calc-field select:focus{outline:2px solid #B9DCC8;border-color:var(--green)}
+    .calc-check{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;background:var(--green-light);border-radius:10px;font-size:13px;font-weight:750;color:var(--navy)}
+    .calc-check input{width:18px;height:18px;accent-color:var(--green)}
+    .calc-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px}
+    .calc-input-table{min-width:1450px;font-size:12px}
+    .calc-input-table th{vertical-align:bottom;line-height:1.35;white-space:normal}
+    .calc-input-table td{padding:7px 6px;vertical-align:top}
+    .calc-input-table input,.calc-input-table select{width:100%;min-width:70px;padding:8px 6px;border:1px solid #D8E0E6;border-radius:6px;font:inherit;color:var(--text);background:#fff}
+    .calc-input-table .calc-readonly{background:#F4F6F8;border-color:#E7EBEF;color:#344657}
+    .calc-row-number{text-align:center;font-weight:800;color:var(--navy);padding-top:13px!important}
+    .calc-help{font-size:12px;color:var(--muted);margin:9px 0 0}
+    .calc-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:20px 0}
+    .calc-status{font-size:12px;color:var(--muted)}
+    .calc-recap{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:18px}
+    .calc-recap-item{min-width:0;border:1px solid var(--border);border-radius:9px;padding:12px;background:#F8FAFB}
+    .calc-recap-item span{display:block;font-size:10px;line-height:1.3;color:var(--muted);font-weight:750;text-transform:uppercase}
+    .calc-recap-item strong{display:block;margin-top:7px;color:var(--navy);font-size:clamp(13px,1.4vw,17px);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+    .calc-preview{margin-top:24px;padding:20px;border:1px solid var(--border);border-radius:12px;background:white}
+    .calc-preview h3{color:var(--navy);margin:0 0 12px}
+    .calc-preview-note{font-size:12px;color:var(--muted)}
+    .calc-remove-row{border:1px solid #E5CACA;background:#FFF7F7;color:#9D3333;border-radius:6px;padding:7px 9px;cursor:pointer}
+    .calc-document{color:#172331;background:#fff}
+    .calc-doc-head{text-align:center;border:1px solid #DCE3EA;border-radius:5px;background:#F4F7FA;padding:10px;margin-bottom:10px}
+    .calc-doc-head h2{font-size:15px;line-height:1.25;margin:0 0 3px;color:#172331}
+    .calc-doc-head p{font-size:8px;line-height:1.35;margin:0}
+    .calc-doc-parties{display:grid;grid-template-columns:1fr 1.05fr;gap:10px;margin-bottom:10px}
+    .calc-doc-box{border:1px solid #DCE3EA;border-radius:5px;padding:9px;min-width:0;font-size:8px;line-height:1.45}
+    .calc-doc-box h3{font-size:8px;margin:0 0 5px;color:#31516E}
+    .calc-doc-box p{margin:1px 0;overflow-wrap:anywhere}
+    .calc-doc-right{text-align:right}
+    .calc-doc-table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:6.3px;line-height:1.2}
+    .calc-doc-table th,.calc-doc-table td{border:1px solid #D5DDE5;padding:4px 2px;text-align:center;white-space:normal;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+    .calc-doc-table th{background:#E9EEF3;color:#293D50;text-transform:none;letter-spacing:0;font-size:6.1px}
+    .calc-doc-table .calc-doc-desc{text-align:left}
+    .calc-doc-table .calc-doc-total td{background:#F0F3F6;font-weight:800}
+    .calc-doc-recap{width:65%;margin-top:12px;font-size:7px}
+    .calc-doc-recap th,.calc-doc-recap td{padding:5px 3px;text-align:center}
+    .calc-doc-signature{margin:24px 0 0 auto;width:25%;text-align:center;font-size:8px}
+    .calc-doc-signature div{border-bottom:1px dashed #9BAAB7;height:24px;margin-bottom:5px}
+    .calc-doc-page{margin-top:45px;text-align:right;font-size:7px;color:#687685}
+    @media(max-width:850px){.calc-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.calc-recap{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:560px){.calc-form-grid,.calc-form-grid.two{grid-template-columns:1fr}.calc-entry-card fieldset{padding:14px 11px}.calc-actions .button{width:100%}.calc-recap{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @page calcReport{size:A4 landscape;margin:8mm}
+    @media print{
+      body.calc-print-only{page:calcReport;background:#fff!important;color:#172331!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      body.calc-print-only>.topbar,body.calc-print-only>header,body.calc-print-only>footer{display:none!important}
+      body.calc-print-only>main{display:block!important;margin:0!important;padding:0!important}
+      body.calc-print-only>main>section:not(#kalkulacija){display:none!important}
+      body.calc-print-only #kalkulacija{display:block!important;padding:0!important;margin:0!important;background:#fff!important}
+      body.calc-print-only #kalkulacija>.container{width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
+      body.calc-print-only #kalkulacija>.container>:not(#calcPrintDocument){display:none!important}
+      body.calc-print-only #calcPrintDocument{display:block!important;margin:0!important;padding:0!important;border:0!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-head,body.calc-print-only #calcPrintDocument .calc-doc-box{break-inside:avoid}
+      body.calc-print-only #calcPrintDocument .calc-doc-table{font-size:6.2px!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-table th{font-size:5.8px!important}
+    }
 
     .page-placeholder{min-height:45vh;display:flex;align-items:center}
     .page-placeholder-card{max-width:760px;border:1px solid var(--border);border-radius:var(--radius);padding:clamp(24px,5vw,44px);background:linear-gradient(135deg,#F7FAF8,#fff);box-shadow:var(--shadow)}
@@ -351,6 +420,64 @@
       body.calendar-print-only .calendar-month-view,body.calendar-print-only .calendar-annual-grid,body.calendar-print-only .calendar-holiday-item{break-inside:avoid}
     }
 
+
+    /* Kalkulacija: refined data-entry experience and print layout matching the reference. */
+    .calc-entry-card{background:linear-gradient(180deg,#FFFFFF 0%,#FBFCFD 100%);border:1px solid #DCE5E9;border-radius:22px;padding:clamp(18px,3vw,30px);box-shadow:0 16px 42px rgba(23,50,77,.09)}
+    .calc-entry-card fieldset{position:relative;border:1px solid #DCE5E9;border-top:3px solid #D1E5D8;border-radius:15px;padding:22px 20px 20px;margin:0 0 22px;min-width:0;background:linear-gradient(135deg,#FBFCFD 0%,#FFFFFF 72%)}
+    .calc-entry-card legend{padding:0 10px;color:var(--navy);font-weight:850;font-size:14px;letter-spacing:.1px}
+    .calc-form-grid{gap:18px 16px}
+    .calc-field label{font-size:12px;font-weight:800;margin-bottom:7px;color:#34495B;letter-spacing:.05px}
+    .calc-field input,.calc-field select{min-height:46px;padding:11px 12px;border:1px solid #D5DFE5;border-radius:10px;box-shadow:0 2px 4px rgba(23,50,77,.025);transition:border-color .15s,box-shadow .15s,background .15s}
+    .calc-field input:focus,.calc-field select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(38,122,87,.12);background:#FEFFFE}
+    .calc-check{min-height:46px;padding:11px 13px;background:linear-gradient(135deg,#EAF5EE,#F4FAF6);border:1px solid #D0E6D8;border-radius:10px;font-size:12px;font-weight:800;color:#22563D}
+    .calc-table-wrap{border:1px solid #D9E2E8;border-radius:12px;background:#fff;box-shadow:0 4px 12px rgba(23,50,77,.035)}
+    .calc-input-table{min-width:1600px}
+    .calc-input-table th{min-width:82px;background:#EEF3F7;color:#2C4358;padding:10px 7px;font-size:11px}
+    .calc-input-table td{padding:8px 6px;background:#fff}
+    .calc-help{font-size:12px;color:#647487;line-height:1.55;margin:10px 0 0;padding:10px 12px;border:1px solid #E3EBEF;border-left:3px solid #79AD91;border-radius:8px;background:#F7FAF8}
+    .calc-actions{gap:11px;margin:22px 0}
+    .calc-recap-item{border:1px solid #DCE5EA;border-radius:11px;padding:14px;background:linear-gradient(145deg,#F8FAFB,#FFFFFF);box-shadow:0 3px 10px rgba(23,50,77,.035)}
+    .calc-preview{margin-top:24px;padding:20px;border:1px solid #DCE5EA;border-radius:14px;background:white;box-shadow:0 8px 24px rgba(23,50,77,.055);overflow:hidden}
+    .calc-doc-head{text-align:center;border:1px solid #D7E1EA;border-radius:5px;background:#F2F6FA;padding:12px 10px;margin-bottom:12px}
+    .calc-doc-head h2{font-size:18px;line-height:1.2;margin:0 0 4px;color:#172331;font-weight:850;letter-spacing:.1px}
+    .calc-doc-head p{font-size:9px;line-height:1.35;margin:0;color:#42556A}
+    .calc-doc-parties{gap:12px;margin-bottom:12px}
+    .calc-doc-box{border:1px solid #DCE5ED;border-radius:6px;padding:10px 12px;font-size:9px;line-height:1.45;background:#fff}
+    .calc-doc-box h3{font-size:9px;margin:0 0 5px;padding-bottom:4px;border-bottom:1px solid #DCE5ED;color:#2F66D5;font-weight:850;letter-spacing:.25px}
+    .calc-doc-box p{margin:2px 0;overflow-wrap:anywhere}
+    .calc-doc-right p:first-child{margin-bottom:6px}
+    .calc-doc-right p:first-child strong{display:inline-block;font-size:16px;line-height:1.25;color:#101D2D;font-weight:900;letter-spacing:.05px}
+    .calc-doc-table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:8px;line-height:1.22}
+    .calc-doc-table th,.calc-doc-table td{border:1px solid #D0D9E3;padding:5px 3px;text-align:center;white-space:normal;overflow-wrap:anywhere;word-break:normal;hyphens:auto;font-variant-numeric:tabular-nums;vertical-align:middle}
+    .calc-doc-table th{background:#E9EEF3;color:#293D50;text-transform:none;letter-spacing:0;font-size:7.5px;line-height:1.15;font-weight:800}
+    .calc-doc-table .calc-doc-total td{background:#F0F3F6;font-weight:800}
+    .calc-doc-recap-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-top:12px}
+    .calc-doc-recap{width:65%;margin:0;font-size:8.5px;flex:0 1 65%}
+    .calc-doc-recap th,.calc-doc-recap td{padding:6px 4px;text-align:center}
+    .calc-doc-stamp{flex:1;text-align:center;padding-top:7px;font-size:9px;font-weight:800;color:#7B8A9B;letter-spacing:1px}
+    .calc-doc-signature{margin:8px 0 0 auto;width:25%;text-align:center;font-size:9px}
+    .calc-doc-signature div{border-bottom:1px dashed #9BAAB7;height:28px;margin-bottom:6px}
+    .calc-doc-page{margin-top:48px;text-align:right;font-size:8px;color:#687685}
+    @media(max-width:850px){.calc-doc-table{font-size:7px}.calc-doc-table th{font-size:6.6px}.calc-doc-right p:first-child strong{font-size:14px}}
+    @media(max-width:560px){.calc-entry-card fieldset{padding:15px 12px}.calc-preview{padding:12px}.calc-doc-head h2{font-size:14px}.calc-doc-box{padding:7px;font-size:7px}.calc-doc-box h3{font-size:7px}.calc-doc-right p:first-child strong{font-size:11px}}
+    @page calcReport{size:A4 landscape;margin:8mm}
+    @media print{
+      body.calc-print-only #calcPrintDocument{padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-head{padding:10px 8px!important;margin-bottom:10px!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-head h2{font-size:18px!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-head p{font-size:9px!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-parties{gap:10px!important;margin-bottom:10px!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-box{padding:8px 10px!important;font-size:9px!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-box h3{font-size:9px!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-right p:first-child strong{font-size:16px!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-table{font-size:8px!important;line-height:1.18!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-table th{font-size:7.3px!important;line-height:1.12!important;padding:5px 2px!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-table td{font-size:7.8px!important;padding:5px 2px!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-recap{font-size:8.5px!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-signature{font-size:9px!important;margin-top:8px!important}
+      body.calc-print-only #calcPrintDocument .calc-doc-page{font-size:8px!important;position:fixed;bottom:1mm;right:0}
+    }
+
   </style>
 </head>
 <body>
@@ -370,6 +497,8 @@
             <span class="menu-category">Plaće i naknade</span>
             <a href="?page=net-pay">Kalkulator plaća i naknada</a>
             <a href="?page=gross-pay">Izračun bruto plaće</a>
+            <span class="menu-category">Maloprodaja</span>
+            <a href="?page=calculation">Kalkulacija</a>
             <span class="menu-category">Porezi i doprinosi</span>
             <span class="coming-soon">Novi kalkulatori uskoro</span>
           </div>
@@ -389,6 +518,75 @@
     </nav>
   </header>
   <main>
+
+    <section class="calc-entry-section" id="kalkulacija">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Maloprodaja</span>
+          <h2>Kalkulacija</h2>
+          <p>Unesite podatke o preduzeću, dobavljaču i artiklima. Obračuni se ažuriraju automatski, a dokument možete štampati ili sačuvati kao PDF u A4 landscape formatu.</p>
+        </div>
+
+        <form id="calcForm" class="calc-entry-card" autocomplete="off">
+          <fieldset>
+            <legend>1. Podaci o preduzeću / obrtu</legend>
+            <div class="calc-form-grid">
+              <div class="calc-field"><label for="calcCompany">Naziv preduzeća ili obrta *</label><input id="calcCompany" required maxlength="180"></div>
+              <div class="calc-field"><label for="calcCompanyAddress">Adresa</label><input id="calcCompanyAddress" maxlength="180"></div>
+              <div class="calc-field"><label for="calcCompanyId">ID broj</label><input id="calcCompanyId" maxlength="30"></div>
+              <div class="calc-field"><label for="calcCompanyVat">PDV broj</label><input id="calcCompanyVat" maxlength="30"></div>
+              <div class="calc-field"><label for="calcNumber">Broj kalkulacije *</label><input id="calcNumber" required maxlength="60" placeholder="Npr. KC-00001/2026"></div>
+              <div class="calc-field"><label for="calcStore">Prodavnica / Objekt</label><input id="calcStore" maxlength="160" placeholder="Naziv ili broj objekta"></div>
+              <div class="calc-field"><label for="calcDate">Datum kalkulacije</label><input id="calcDate" type="date"></div>
+              <div class="calc-field"><label>PDV status</label><label class="calc-check"><input id="calcVatPayer" type="checkbox" checked> Preduzeće je PDV obveznik (17%)</label></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>2. Podaci o dobavljaču</legend>
+            <div class="calc-form-grid">
+              <div class="calc-field"><label for="calcSupplier">Naziv dobavljača *</label><input id="calcSupplier" required maxlength="180"></div>
+              <div class="calc-field"><label for="calcSupplierAddress">Adresa</label><input id="calcSupplierAddress" maxlength="180"></div>
+              <div class="calc-field"><label for="calcSupplierId">ID broj</label><input id="calcSupplierId" maxlength="30"></div>
+              <div class="calc-field"><label for="calcSupplierVat">PDV broj</label><input id="calcSupplierVat" maxlength="30"></div>
+              <div class="calc-field"><label for="calcInvoice">Račun / Faktura</label><input id="calcInvoice" maxlength="160"></div>
+              <div class="calc-field"><label for="calcDepCosts">Ukupni zavisni troškovi bez PDV-a (KM)</label><input id="calcDepCosts" type="number" min="0" step="0.01" value="0"></div>
+            </div>
+            <p class="calc-help">Unesite ukupne zavisne troškove za cijelu kalkulaciju. Sistem ih automatski raspoređuje na artikle proporcionalno njihovoj fakturnoj vrijednosti bez PDV-a.</p>
+          </fieldset>
+
+          <fieldset>
+            <legend>3. Artikli i obračun</legend>
+            <div class="calc-actions" style="margin-top:0">
+              <button class="button" type="button" id="calcAddRow">＋ Dodaj artikal</button>
+              <span class="calc-status">Redni brojevi i obračunske kolone popunjavaju se automatski.</span>
+            </div>
+            <div class="calc-table-wrap">
+              <table class="calc-input-table">
+                <thead><tr>
+                  <th>Redni broj</th><th>Trgovački naziv robe</th><th>JM</th><th>Količina</th>
+                  <th>Fakturna cijena po JM bez PDV-a</th><th>Fakturna vrijednost bez PDV-a</th>
+                  <th>Zavisni troškovi bez PDV-a</th><th>Nabavna cijena po JM bez PDV-a</th>
+                  <th>Nabavna / sopstvena maloprodajna vrijednost bez PDV-a</th><th>Stopa razlike u cijeni</th>
+                  <th>Iznos razlike u cijeni</th><th>Prodajna vrijednost bez PDV-a</th><th>Stopa PDV-a</th>
+                  <th>Iznos PDV-a</th><th>Maloprodajna vrijednost sa PDV-om</th><th>Maloprodajna cijena sa PDV-om</th><th>Ukloni</th>
+                </tr></thead>
+                <tbody id="calcRows"></tbody>
+              </table>
+            </div>
+          </fieldset>
+
+          <div class="calc-recap" id="calcRecap" aria-live="polite"></div>
+          <div class="calc-actions">
+            <button class="button" type="button" id="calcPrint">Štampaj / Sačuvaj PDF</button>
+            <button class="button secondary" type="button" id="calcNew">Nova kalkulacija</button>
+            <span class="calc-status">Za PDF odaberite „Sačuvaj kao PDF“ u dijalogu za štampu.</span>
+          </div>
+        </form>
+        <div class="calc-preview" id="calcPrintDocument" aria-label="Pregled kalkulacije za štampu"></div>
+      </div>
+    </section>
+
     <section class="hero" id="pocetna">
       <div class="container hero-grid">
         <div>
@@ -1997,6 +2195,166 @@
       renderWorkingCalendar();
     })();
 
+
+    // Kalkulacija maloprodaje — isolated module.
+    (function initializeRetailCalculation() {
+      const form = document.getElementById("calcForm");
+      if (!form) return;
+      const $ = (id) => document.getElementById(id);
+      const rows = $("calcRows");
+      const recap = $("calcRecap");
+      const printDocument = $("calcPrintDocument");
+      const money = (n) => (Number.isFinite(n) ? n : 0).toLocaleString("de-DE", {minimumFractionDigits:2, maximumFractionDigits:2});
+      const num = (v) => { const n = Number(v); return Number.isFinite(n) && n >= 0 ? n : 0; };
+      const safe = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+      const field = (id) => $(id).value.trim();
+      const today = new Date();
+      $("calcDate").value = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}`;
+      const units = ["kom","kg","g","mg","l","ml","m","m²","m³","pak","set","usl"];
+      let rowCounter = 0;
+
+      function addRow(data = {}) {
+        rowCounter++;
+        const tr = document.createElement("tr");
+        tr.dataset.row = String(rowCounter);
+        tr.innerHTML = `
+          <td class="calc-row-number"></td>
+          <td><input data-k="name" aria-label="Trgovački naziv robe" maxlength="180" value="${safe(data.name || "")}" placeholder="Naziv artikla"></td>
+          <td><select data-k="unit" aria-label="Jedinica mjere">${units.map(u=>`<option${(data.unit||"kom")===u?" selected":""}>${u}</option>`).join("")}</select></td>
+          <td><input data-k="qty" aria-label="Količina" type="number" min="0" step="0.001" value="${data.qty ?? "1"}"></td>
+          <td><input data-k="invoiceUnit" aria-label="Fakturna cijena po jedinici bez PDV-a" type="number" min="0" step="0.01" value="${data.invoiceUnit ?? "0"}"></td>
+          <td><input data-out="invoiceValue" class="calc-readonly" aria-label="Fakturna vrijednost bez PDV-a" readonly></td>
+          <td><input data-out="dependent" class="calc-readonly" aria-label="Raspoređeni zavisni troškovi bez PDV-a" readonly></td>
+          <td><input data-out="purchaseUnit" class="calc-readonly" aria-label="Nabavna cijena po jedinici mjere bez PDV-a" readonly></td>
+          <td><input data-out="purchaseValue" class="calc-readonly" aria-label="Nabavna vrijednost bez PDV-a" readonly></td>
+          <td><input data-out="marginRate" class="calc-readonly" aria-label="Stopa razlike u cijeni" readonly></td>
+          <td><input data-out="marginValue" class="calc-readonly" aria-label="Iznos razlike u cijeni" readonly></td>
+          <td><input data-out="salesValue" class="calc-readonly" aria-label="Prodajna vrijednost bez PDV-a" readonly></td>
+          <td><input data-out="vatRate" class="calc-readonly" aria-label="Stopa PDV-a" readonly></td>
+          <td><input data-out="vatValue" class="calc-readonly" aria-label="Iznos PDV-a" readonly></td>
+          <td><input data-out="retailValue" class="calc-readonly" aria-label="Maloprodajna vrijednost sa PDV-om" readonly></td>
+          <td><input data-k="retailUnit" aria-label="Maloprodajna cijena sa PDV-om" type="number" min="0" step="0.01" value="${data.retailUnit ?? "0"}"></td>
+          <td><button type="button" class="calc-remove-row" aria-label="Ukloni artikal">×</button></td>`;
+        rows.appendChild(tr);
+        tr.addEventListener("input", recalculate);
+        tr.addEventListener("change", recalculate);
+        tr.querySelector(".calc-remove-row").addEventListener("click", () => {
+          if (rows.children.length > 1) { tr.remove(); recalculate(); }
+          else { tr.querySelectorAll('input[data-k]').forEach(i => { if (i.dataset.k==="qty") i.value="1"; else if(i.dataset.k==="name") i.value=""; else i.value="0"; }); recalculate(); }
+        });
+        recalculate();
+      }
+
+      function getRows() {
+        return [...rows.querySelectorAll("tr")].map((tr) => {
+          const get = (key) => tr.querySelector(`[data-k="${key}"]`);
+          const qty = num(get("qty").value);
+          const invoiceUnit = num(get("invoiceUnit").value);
+          const retailUnit = num(get("retailUnit").value);
+          return {tr, name:get("name").value.trim(), unit:get("unit").value, qty, invoiceUnit, retailUnit, invoiceValue:qty*invoiceUnit};
+        });
+      }
+      function recalculate() {
+        const items = getRows();
+        const invoiceTotal = items.reduce((s,x)=>s+x.invoiceValue,0);
+        const dependentTotal = num($("calcDepCosts").value);
+        const vatPayer = $("calcVatPayer").checked;
+        let totals = {qty:0,invoiceValue:0,dependent:0,purchaseValue:0,marginValue:0,salesValue:0,vatValue:0,retailValue:0};
+        items.forEach((item,index) => {
+          const dep = invoiceTotal > 0 ? dependentTotal * item.invoiceValue / invoiceTotal : (items.length ? dependentTotal / items.length : 0);
+          const purchaseValue = item.invoiceValue + dep;
+          const retailValue = item.qty * item.retailUnit;
+          const vatValue = vatPayer ? retailValue * 17 / 117 : 0;
+          const salesValue = retailValue - vatValue;
+          const marginValue = salesValue - purchaseValue;
+          const marginRate = purchaseValue ? marginValue / purchaseValue * 100 : 0;
+          const purchaseUnit = item.qty ? purchaseValue / item.qty : 0;
+          const values = {invoiceValue:item.invoiceValue,dependent:dep,purchaseUnit,purchaseValue,marginRate,marginValue,salesValue,vatRate:vatPayer?17:0,vatValue,retailValue};
+          item.tr.querySelector(".calc-row-number").textContent = String(index+1);
+          Object.entries(values).forEach(([key,value]) => {
+            const input = item.tr.querySelector(`[data-out="${key}"]`);
+            if (input) input.value = key==="marginRate" || key==="vatRate" ? `${money(value)}%` : money(value);
+          });
+          totals.qty += item.qty;
+          for (const key of ["invoiceValue","dependent","purchaseValue","marginValue","salesValue","vatValue","retailValue"]) totals[key] += values[key];
+        });
+        const base = totals.purchaseValue;
+        const recapVat = vatPayer ? base * .17 : 0;
+        const supplierTotal = base + recapVat;
+        const entries = [
+          ["Osnovica",base],["PDV",recapVat],["Ukupno – dobavljač",supplierTotal],
+          ["Zaduženje",totals.retailValue],["Ukalkulisani PDV",totals.vatValue],["Ukalkulisana RUC",totals.marginValue]
+        ];
+        recap.innerHTML = entries.map(([label,value])=>`<div class="calc-recap-item"><span>${label}</span><strong>${money(value)} KM</strong></div>`).join("");
+        renderDocument(items, totals, recapVat, supplierTotal);
+      }
+
+      function renderDocument(items, totals, recapVat, supplierTotal) {
+        const vatPayer = $("calcVatPayer").checked;
+        const company = field("calcCompany");
+        const companyAddress = field("calcCompanyAddress");
+        const companyId = field("calcCompanyId");
+        const companyVat = field("calcCompanyVat");
+        const dateRaw = field("calcDate");
+        const date = dateRaw ? new Date(`${dateRaw}T12:00:00`).toLocaleDateString("bs-BA") : "";
+        const col = (key) => items.reduce((s,x)=>s+num(x.tr.querySelector(`[data-out="${key}"]`).value.replace(/\./g,"").replace(",",".").replace("%","")),0);
+        const sum = (key) => items.reduce((s,x)=>s+num(x.tr.querySelector(`[data-out="${key}"]`).value.replace(/\./g,"").replace(",",".").replace("%","")),0);
+        const totalsFields = {
+          qty:items.reduce((s,x)=>s+x.qty,0), invoiceValue:totals.invoiceValue, dependent:totals.dependent,
+          purchaseUnit:null, purchaseValue:totals.purchaseValue, marginRate:null, marginValue:totals.marginValue,
+          salesValue:totals.salesValue, vatRate:null, vatValue:totals.vatValue, retailValue:totals.retailValue, retailUnit:null
+        };
+        const headings = ["Redni<br>broj","Trgovački naziv robe","JM","Količina","Fakturna cijena po jedinici mjere bez PDV-a","Fakturna vrijednost bez PDV-a","Zavisni troškovi bez PDV-a","Nabavna cijena po jedinici mjere bez PDV-a","Nabavna odnosno sopstvena maloprodajna vrijednost bez PDV-a","Stopa razlike u cijeni","Iznos razlike u cijeni","Prodajna vrijednost proizvoda ili robe bez PDV-a","Stopa PDV-a","Iznos PDV-a","Maloprodajna vrijednost sa PDV-om","Maloprodajna cijena sa PDV-om"];
+        const colgroup = `<colgroup>${[3,15,4,4,7,7,5,7,8,4,6,7,4,5,7,7].map(w=>`<col style="width:${w}%">`).join("")}</colgroup>`;
+        const itemRows = items.map((x,i)=>{
+          const getOut=(k)=>x.tr.querySelector(`[data-out="${k}"]`).value;
+          return `<tr><td>${i+1}</td><td class="calc-doc-desc">${safe(x.name)}</td><td>${safe(x.unit)}</td><td>${money(x.qty)}</td><td>${money(x.invoiceUnit)}</td><td>${money(x.invoiceValue)}</td><td>${getOut("dependent")}</td><td>${getOut("purchaseUnit")}</td><td>${getOut("purchaseValue")}</td><td>${getOut("marginRate")}</td><td>${getOut("marginValue")}</td><td>${getOut("salesValue")}</td><td>${getOut("vatRate")}</td><td>${getOut("vatValue")}</td><td>${getOut("retailValue")}</td><td>${money(x.retailUnit)}</td></tr>`;
+        }).join("");
+        printDocument.innerHTML = `<div class="calc-document">
+          <div class="calc-doc-head"><h2>${safe(company || "NAZIV PREDUZEĆA / OBRTA")}</h2><p>Adresa: ${safe(companyAddress)} &nbsp;•&nbsp; ID broj: ${safe(companyId)} &nbsp;•&nbsp; PDV broj: ${safe(companyVat)}</p></div>
+          <div class="calc-doc-parties">
+            <div class="calc-doc-box"><h3>PODACI O DOBAVLJAČU</h3><p><strong>${safe(field("calcSupplier") || "Naziv dobavljača")}</strong></p><p>Adresa: ${safe(field("calcSupplierAddress"))}</p><p>ID: ${safe(field("calcSupplierId"))} &nbsp;|&nbsp; PDV: ${safe(field("calcSupplierVat"))}</p><p>Račun/Faktura: ${safe(field("calcInvoice"))}</p></div>
+            <div class="calc-doc-box calc-doc-right"><p><strong>Broj kalkulacije: ${safe(field("calcNumber"))}</strong></p><p>Trgovac: ${safe(company)}</p><p>Prodavnica/Objekt: ${safe(field("calcStore"))}</p><p>Datum kalkulacije: ${safe(date)}</p></div>
+          </div>
+          <table class="calc-doc-table">${colgroup}<thead><tr>${headings.map(h=>`<th>${h}</th>`).join("")}</tr><tr>${Array.from({length:16},(_,i)=>`<th>${i+1}</th>`).join("")}</tr></thead><tbody>${itemRows}
+            <tr class="calc-doc-total"><td colspan="3">UKUPNO ZA KALKULACIJU:</td><td>${money(totals.qty)}</td><td>—</td><td>${money(totals.invoiceValue)}</td><td>${money(totals.dependent)}</td><td>—</td><td>${money(totals.purchaseValue)}</td><td>—</td><td>${money(totals.marginValue)}</td><td>${money(totals.salesValue)}</td><td>—</td><td>${money(totals.vatValue)}</td><td>${money(totals.retailValue)}</td><td>—</td></tr>
+          </tbody></table>
+          <div class="calc-doc-recap-row"><table class="calc-doc-table calc-doc-recap"><thead><tr><th>OSNOVICA</th><th>PDV</th><th>UKUPNO - DOBAVLJAČ</th><th>ZADUŽENJE</th><th>UKALKULISANI PDV</th><th>UKALKULISANA RUC</th></tr></thead><tbody><tr><td>${money(totals.purchaseValue)}</td><td>${money(recapVat)}</td><td>${money(supplierTotal)}</td><td>${money(totals.retailValue)}</td><td>${money(totals.vatValue)}</td><td>${money(totals.marginValue)}</td></tr></tbody></table><div class="calc-doc-stamp">M.P.</div></div>
+          <div class="calc-doc-signature"><div></div><strong>Ovlašteno lice</strong></div>
+          <div class="calc-doc-page">Stranica 1 od 1</div>
+        </div>`;
+      }
+
+      $("calcAddRow").addEventListener("click", () => addRow());
+      $("calcDepCosts").addEventListener("input", recalculate);
+      $("calcVatPayer").addEventListener("change", recalculate);
+      ["calcCompany","calcCompanyAddress","calcCompanyId","calcCompanyVat","calcNumber","calcStore","calcDate","calcSupplier","calcSupplierAddress","calcSupplierId","calcSupplierVat","calcInvoice"].forEach(id=>$(id).addEventListener("input",recalculate));
+      $("calcPrint").addEventListener("click", () => {
+        if (!form.reportValidity()) return;
+        document.title = `Kalkulacija ${field("calcNumber") || ""}`.trim();
+        document.body.classList.add("calc-print-only");
+        window.print();
+      });
+      window.addEventListener("afterprint", () => {
+        document.body.classList.remove("calc-print-only");
+        document.title = document.querySelector("html").dataset.sitePage==="calculation" ? "Kalkulacija | Knjigovodstveni kalkulatori" : document.title;
+      });
+      $("calcNew").addEventListener("click", () => {
+        if (!window.confirm("Želite li započeti novu kalkulaciju? Uneseni podaci bit će obrisani.")) return;
+        form.reset();
+        $("calcDate").value = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}`;
+        rows.innerHTML = "";
+        rowCounter = 0;
+        addRow();
+        addRow({qty:"1"});
+        window.scrollTo({top:document.getElementById("kalkulacija").offsetTop-90,behavior:"smooth"});
+      });
+      addRow();
+      const originalTitle = document.title;
+      window.addEventListener("afterprint", () => { if (originalTitle) document.title = originalTitle; });
+    })();
+
+
     // Dedicated page views share one source file to preserve all existing calculator logic.
     (function initializePageNavigation() {
       const page = document.documentElement.dataset.sitePage || "home";
@@ -2007,7 +2365,8 @@
         contract: "Ugovor o djelu | Knjigovodstveni kalkulatori",
         "author-fee": "Ugovor o autorskom honoraru | Knjigovodstveni kalkulatori",
         "net-pay": "Kalkulator plaća i naknada | Knjigovodstveni kalkulatori",
-        "gross-pay": "Izračun bruto plaće | Knjigovodstveni kalkulatori"
+        "gross-pay": "Izračun bruto plaće | Knjigovodstveni kalkulatori",
+        calculation: "Kalkulacija | Knjigovodstveni kalkulatori"
       };
       document.title = titles[page] || titles.home;
       if (page === "net-pay" || page === "gross-pay") {
